@@ -1,0 +1,7 @@
+node_modules/
+_audit_src/
+docs/.vitepress/dist/
+docs/.vitepress/cache/
+test-results/
+playwright-report/
+.workbuddy/

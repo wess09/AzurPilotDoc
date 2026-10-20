@@ -1,0 +1,30 @@
+{
+  "name": "azurpilot-docs",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "AzurPilot 官方文档站：核心程序、Android 宿主与桌面启动器的统一文档门户",
+  "scripts": {
+    "dev": "vitepress dev docs",
+    "build": "vitepress build docs",
+    "preview": "vitepress preview docs",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+    "check:links": "node scripts/check-links.mjs",
+    "check:nav": "node scripts/check-coverage.mjs",
+    "check:seo": "node scripts/check-seo.mjs",
+    "check": "npm run check:links && npm run check:nav && npm run check:seo",
+    "test:e2e": "playwright test",
+    "shots": "node scripts/capture.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "gray-matter": "^4.0.3",
+    "typescript": "^5.9.0",
+    "vitepress": "1.6.4",
+    "vue": "^3.5.44",
+    "vue-tsc": "^2.2.10"
+  },
+  "dependencies": {
+    "lucide-vue-next": "^0.545.0"
+  }
+}
