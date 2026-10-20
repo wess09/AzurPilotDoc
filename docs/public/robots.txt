@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://docs.azurpilot.com/sitemap.xml
+Sitemap: https://doc.azurpilot.com/sitemap.xml

@@ -40,6 +40,36 @@ function copySourceMarkdown(): Plugin {
 }
 
 
+/**
+ * 把 VitePress 生成的单行 sitemap.xml 美化为换行格式。
+ * VitePress 在 vite build 结束后才写 sitemap，因此借 process 'exit'
+ * 钩子（最后执行）做落盘后的整理；文件内容不变，只加换行。
+ */
+function prettySitemap(): Plugin {
+  let outDir = ''
+  return {
+    name: 'ap-pretty-sitemap',
+    apply: 'build',
+    configResolved(resolved) {
+      outDir = path.resolve(resolved.root, resolved.build.outDir)
+    },
+    closeBundle() {
+      process.on('exit', () => {
+        try {
+          const file = path.join(outDir, 'sitemap.xml')
+          if (!fs.existsSync(file)) return
+          const raw = fs.readFileSync(file, 'utf8')
+          if (!raw.includes('><')) return
+          fs.writeFileSync(file, raw.replace(/></g, '>\n<') + '\n', 'utf8')
+        } catch {
+          /* 美化失败不影响构建产物 */
+        }
+      })
+    },
+  }
+}
+
+
 const SITE_URL = process.env.DOCS_SITE_URL || 'https://docs.azurpilot.com'
 const REPO = 'https://github.com/wess09'
 const SRC = {
@@ -1328,7 +1358,7 @@ export default withMermaid(
     ssr: { noExternal: ['lucide-vue-next'] },
     // mermaid 11 依赖的 fastdom 是 CJS，必须预打包，否则浏览器里拿不到 default 导出
     optimizeDeps: { include: ['mermaid', 'fastdom'] },
-    plugins: [llmstxt(), copySourceMarkdown()],
+    plugins: [llmstxt(), copySourceMarkdown(), prettySitemap()],
   },
   themeConfig: {
     // 项目自带 logo（AzurPilot/doc/logo.webp），此处为导航用的徽记裁切

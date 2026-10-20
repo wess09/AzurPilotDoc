@@ -4,6 +4,7 @@ node_modules/
 # ---- 构建产物 ----
 docs/.vitepress/dist/
 docs/.vitepress/cache/
+docs/.vitepress/.temp/
 docs/.vitepress/config.mts.timestamp-*.mjs
 
 # ---- 测试 / 截图 ----

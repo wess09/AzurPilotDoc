@@ -1,0 +1,10 @@
+# CF Pages 响应头：纯文本资源显式声明 UTF-8，
+# 否则浏览器按系统区域（zh-CN → GBK）猜测，llms.txt 等中文内容会变乱码。
+/llms.txt
+  Content-Type: text/plain; charset=utf-8
+/llms-full.txt
+  Content-Type: text/plain; charset=utf-8
+/sitemap.xml
+  Content-Type: application/xml; charset=utf-8
+/*.md
+  Content-Type: text/markdown; charset=utf-8
