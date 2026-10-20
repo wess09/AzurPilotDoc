@@ -1,0 +1,1842 @@
+{
+  "source": {
+    "repository": "https://github.com/wess09/AzurPilot",
+    "branch": "master",
+    "commit": "7de6bb914da5798e76ef34a85a75648a526d319f",
+    "audited": "2026-10-20"
+  },
+  "menus": [
+    {
+      "key": "Alas",
+      "name": "系统",
+      "subgroups": {
+        "Alas": [
+          "Emulator",
+          "EmulatorInfo",
+          "Error",
+          "DailySummary",
+          "Optimization",
+          "DropRecord",
+          "Backup",
+          "EmulatorManagement"
+        ],
+        "General": [
+          "Log",
+          "Retirement",
+          "OneClickRetire",
+          "Enhance",
+          "OldRetire",
+          "PublicEmotion",
+          "OilControl",
+          "YukikazeTaskManager"
+        ],
+        "Restart": [
+          "Scheduler",
+          "Restart"
+        ]
+      }
+    },
+    {
+      "key": "Farm",
+      "name": "出击",
+      "subgroups": {
+        "Main": [
+          "Scheduler",
+          "Campaign",
+          "StopCondition",
+          "Fleet",
+          "Submarine",
+          "Emotion",
+          "HpControl",
+          "EnemyPriority"
+        ],
+        "Main2": [
+          "Scheduler",
+          "Campaign",
+          "StopCondition",
+          "Fleet",
+          "Submarine",
+          "Emotion",
+          "HpControl",
+          "EnemyPriority"
+        ],
+        "Main3": [
+          "Scheduler",
+          "Campaign",
+          "StopCondition",
+          "Fleet",
+          "Submarine",
+          "Emotion",
+          "HpControl",
+          "EnemyPriority"
+        ],
+        "GemsFarming": [
+          "Scheduler",
+          "GemsFarming",
+          "Campaign",
+          "StopCondition",
+          "Fleet",
+          "Submarine",
+          "Emotion",
+          "EnemyPriority"
+        ],
+        "ThreeOilLowCost": [
+          "Scheduler",
+          "GemsFarming",
+          "Campaign",
+          "StopCondition",
+          "Fleet",
+          "Submarine",
+          "Emotion",
+          "EnemyPriority"
+        ],
+        "Ambush11": [
+          "Scheduler",
+          "GemsFarming",
+          "Campaign",
+          "StopCondition",
+          "Fleet",
+          "Submarine",
+          "Emotion"
+        ]
+      }
+    },
+    {
+      "key": "Event",
+      "name": "活动",
+      "subgroups": {
+        "EventGeneral": [
+          "EventGeneral",
+          "TaskBalancer"
+        ],
+        "Event": [
+          "Scheduler",
+          "Campaign",
+          "StopCondition",
+          "Fleet",
+          "Submarine",
+          "Emotion",
+          "HpControl",
+          "EnemyPriority"
+        ],
+        "Event2": [
+          "Scheduler",
+          "Campaign",
+          "StopCondition",
+          "Fleet",
+          "Submarine",
+          "Emotion",
+          "HpControl",
+          "EnemyPriority"
+        ],
+        "Event3": [
+          "Scheduler",
+          "Campaign",
+          "StopCondition",
+          "Fleet",
+          "Submarine",
+          "Emotion",
+          "HpControl",
+          "EnemyPriority"
+        ],
+        "Raid": [
+          "Scheduler",
+          "Raid",
+          "Campaign",
+          "StopCondition",
+          "Emotion"
+        ],
+        "RaidScuttle": [
+          "Scheduler",
+          "Raid",
+          "Campaign",
+          "StopCondition",
+          "Fleet",
+          "Submarine",
+          "Emotion"
+        ],
+        "Hospital": [
+          "Scheduler",
+          "Hospital",
+          "StopCondition",
+          "Emotion"
+        ],
+        "Coalition": [
+          "Scheduler",
+          "Campaign",
+          "Coalition",
+          "StopCondition",
+          "Emotion"
+        ],
+        "CoalitionScuttle": [
+          "Scheduler",
+          "CoalitionScuttle",
+          "Campaign",
+          "Coalition",
+          "StopCondition",
+          "Emotion"
+        ],
+        "MaritimeEscort": [
+          "Scheduler",
+          "MaritimeEscort"
+        ],
+        "EventShop": [
+          "Scheduler",
+          "EventShop"
+        ],
+        "WarArchives": [
+          "Scheduler",
+          "Campaign",
+          "StopCondition",
+          "WarArchives",
+          "Fleet",
+          "Submarine",
+          "Emotion",
+          "HpControl",
+          "EnemyPriority"
+        ]
+      }
+    },
+    {
+      "key": "EventDaily",
+      "name": "活动-每日任务",
+      "subgroups": {
+        "EventA": [
+          "Scheduler",
+          "EventDaily",
+          "Campaign",
+          "StopCondition",
+          "Fleet",
+          "Submarine",
+          "Emotion",
+          "HpControl",
+          "EnemyPriority"
+        ],
+        "EventB": [
+          "Scheduler",
+          "EventDaily",
+          "Campaign",
+          "StopCondition",
+          "Fleet",
+          "Submarine",
+          "Emotion",
+          "HpControl",
+          "EnemyPriority"
+        ],
+        "EventC": [
+          "Scheduler",
+          "EventDaily",
+          "Campaign",
+          "StopCondition",
+          "Fleet",
+          "Submarine",
+          "Emotion",
+          "HpControl",
+          "EnemyPriority"
+        ],
+        "EventD": [
+          "Scheduler",
+          "EventDaily",
+          "Campaign",
+          "StopCondition",
+          "Fleet",
+          "Submarine",
+          "Emotion",
+          "HpControl",
+          "EnemyPriority"
+        ],
+        "EventSp": [
+          "Scheduler",
+          "Campaign",
+          "StopCondition",
+          "Fleet",
+          "Submarine",
+          "Emotion",
+          "HpControl",
+          "EnemyPriority"
+        ],
+        "RaidDaily": [
+          "Scheduler",
+          "RaidDaily",
+          "Campaign",
+          "StopCondition",
+          "Emotion"
+        ],
+        "CoalitionSp": [
+          "Scheduler",
+          "Campaign",
+          "Coalition",
+          "StopCondition",
+          "Emotion"
+        ]
+      }
+    },
+    {
+      "key": "Reward",
+      "name": "自动收获",
+      "subgroups": {
+        "Commission": [
+          "Scheduler",
+          "Commission"
+        ],
+        "Tactical": [
+          "Scheduler",
+          "Tactical",
+          "ControlExpOverflow",
+          "AddNewStudent"
+        ],
+        "Research": [
+          "Scheduler",
+          "Research"
+        ],
+        "StorageStatistics": [
+          "Scheduler",
+          "StorageStatistics"
+        ],
+        "Dorm": [
+          "Scheduler",
+          "Dorm",
+          "BuyFurniture"
+        ],
+        "Meowfficer": [
+          "Scheduler",
+          "Meowfficer",
+          "MeowfficerTrain"
+        ],
+        "Guild": [
+          "Scheduler",
+          "GuildLogistics",
+          "GuildOperation"
+        ],
+        "Reward": [
+          "Scheduler",
+          "Reward"
+        ],
+        "Awaken": [
+          "Scheduler",
+          "Awaken"
+        ],
+        "Secretary": [
+          "Scheduler",
+          "Secretary"
+        ],
+        "OperationHandover": [
+          "Scheduler",
+          "Campaign",
+          "OperationHandover"
+        ]
+      }
+    },
+    {
+      "key": "DailyMission",
+      "name": "每日任务",
+      "subgroups": {
+        "Daily": [
+          "Scheduler",
+          "Daily"
+        ],
+        "LimitChallenge": [
+          "Scheduler",
+          "LimitChallenge"
+        ],
+        "Hard": [
+          "Scheduler",
+          "Hard"
+        ],
+        "Exercise": [
+          "Scheduler",
+          "Exercise"
+        ],
+        "ShopFrequent": [
+          "Scheduler",
+          "GeneralShop"
+        ],
+        "ShopOnce": [
+          "Scheduler",
+          "GuildShop",
+          "MedalShop2",
+          "MeritShop",
+          "CoreShop"
+        ],
+        "Shipyard": [
+          "Scheduler",
+          "ShipyardDr",
+          "Shipyard"
+        ],
+        "Gacha": [
+          "Scheduler",
+          "Gacha"
+        ],
+        "Freebies": [
+          "Scheduler",
+          "BattlePass",
+          "DataKey",
+          "Mail",
+          "SupplyPack"
+        ],
+        "Minigame": [
+          "Scheduler"
+        ],
+        "PrivateQuarters": [
+          "Scheduler",
+          "PrivateQuarters"
+        ]
+      }
+    },
+    {
+      "key": "Opsi",
+      "name": "大世界",
+      "subgroups": {
+        "OpsiGeneral": [
+          "OpsiGeneral"
+        ],
+        "OpsiAshBeacon": [
+          "Scheduler",
+          "OpsiAshBeacon"
+        ],
+        "OpsiAshAssist": [
+          "Scheduler",
+          "OpsiAshAssist"
+        ],
+        "OpsiExplore": [
+          "Scheduler",
+          "OpsiExplore",
+          "OpsiFleet"
+        ],
+        "OpsiExploreCleanup": [
+          "Scheduler",
+          "OpsiExploreCleanup",
+          "OpsiFleet"
+        ],
+        "OpsiShop": [
+          "Scheduler",
+          "OpsiShop"
+        ],
+        "OpsiVoucher": [
+          "Scheduler",
+          "OpsiVoucher"
+        ],
+        "OpsiDaily": [
+          "Scheduler",
+          "OpsiDaily",
+          "OpsiFleet"
+        ],
+        "OpsiObscure": [
+          "Scheduler",
+          "OpsiObscure",
+          "OpsiFleet"
+        ],
+        "OpsiAbyssal": [
+          "Scheduler",
+          "OpsiAbyssal",
+          "OpsiFleetFilter"
+        ],
+        "OpsiArchive": [
+          "Scheduler",
+          "OpsiFleet"
+        ],
+        "OpsiStronghold": [
+          "Scheduler",
+          "OpsiStronghold",
+          "OpsiFleetFilter"
+        ],
+        "OpsiMonthBoss": [
+          "Scheduler",
+          "OpsiMonthBoss",
+          "OpsiFleetFilter"
+        ],
+        "OpsiMeowfficerFarming": [
+          "Scheduler",
+          "OpsiMeowfficerFarming",
+          "OpsiSirenBug",
+          "OpsiTarget",
+          "OpsiFleet"
+        ],
+        "OpsiHazard1Leveling": [
+          "Scheduler",
+          "OpsiHazard1Leveling",
+          "OpsiSirenBug",
+          "OpsiFleet",
+          "OpsiCheckLeveling",
+          "OpsiFleetAutoChange"
+        ],
+        "OpsiScheduling": [
+          "Scheduler",
+          "OpsiScheduling",
+          "OpsiSmartExplore"
+        ],
+        "OpsiPreventActionPointOverflow": [
+          "Scheduler",
+          "OpsiPreventActionPointOverflow"
+        ],
+        "OpsiCrossMonth": [
+          "Scheduler"
+        ],
+        "OpsiSimulator": [
+          "OpsiSimulatorParameters"
+        ]
+      }
+    },
+    {
+      "key": "Island",
+      "name": "赤石计划",
+      "subgroups": {
+        "IslandPlan": [
+          "Scheduler",
+          "IslandPlan",
+          "IslandWalk"
+        ],
+        "IslandBusiness": [
+          "Scheduler",
+          "IslandBusiness",
+          "IslandBusinessShop1",
+          "IslandBusinessShop2",
+          "IslandBusinessShop3",
+          "IslandBusinessShop4",
+          "IslandBusinessShop5"
+        ],
+        "IslandFarm": [
+          "Scheduler",
+          "IslandFarm",
+          "IslandOrchard",
+          "IslandNursery"
+        ],
+        "IslandRancher": [
+          "Scheduler",
+          "IslandRancher",
+          "IslandFishery"
+        ],
+        "IslandMineForest": [
+          "Scheduler",
+          "IslandMine",
+          "IslandForest"
+        ],
+        "IslandRestaurant": [
+          "Scheduler",
+          "IslandRestaurant",
+          "IslandRestaurantNextTask"
+        ],
+        "IslandTeahouse": [
+          "Scheduler",
+          "IslandTeahouse",
+          "IslandTeahouseNextTask"
+        ],
+        "IslandGrill": [
+          "Scheduler",
+          "IslandGrill",
+          "IslandGrillNextTask"
+        ],
+        "IslandJuuEatery": [
+          "Scheduler",
+          "IslandJuuEatery",
+          "IslandJuuEateryNextTask"
+        ],
+        "IslandJuuCoffee": [
+          "Scheduler",
+          "IslandJuuCoffee",
+          "IslandJuuCoffeeNextTask"
+        ],
+        "IslandManufacture": [
+          "Scheduler",
+          "WoodProcessing",
+          "ElectronicProcessing",
+          "Industrial",
+          "Handmade"
+        ],
+        "IslandDailyGather": [
+          "Scheduler",
+          "IslandDailyGather"
+        ],
+        "IslandAirDrop": [
+          "Scheduler",
+          "IslandAirDrop"
+        ],
+        "IslandCargoPreparation": [
+          "Scheduler",
+          "IslandCargoPreparation"
+        ],
+        "IslandDailyOrder": [
+          "Scheduler",
+          "IslandDailyOrder"
+        ],
+        "IslandDailyInteract": [
+          "Scheduler",
+          "IslandDailyInteract"
+        ],
+        "IslandPearlSell": [
+          "Scheduler",
+          "IslandPearlSell"
+        ]
+      }
+    },
+    {
+      "key": "FleetManagement",
+      "name": "舰队管理",
+      "subgroups": {
+        "FleetInfo": [
+          "FleetInfo"
+        ]
+      }
+    },
+    {
+      "key": "RunParams",
+      "name": "运行参数",
+      "subgroups": {
+        "RunParams": [
+          "Watchdog",
+          "Reboot",
+          "Device",
+          "ScreenRecord",
+          "UiWait",
+          "Handover"
+        ]
+      }
+    },
+    {
+      "key": "Tool",
+      "name": "工具",
+      "subgroups": {
+        "MindCalculatorScan": [
+          "MindCalculator"
+        ],
+        "FleetTechScan": [
+          "FleetTech"
+        ],
+        "Daemon": [
+          "Daemon"
+        ],
+        "OpsiDaemon": [
+          "OpsiDaemon"
+        ],
+        "EventStory": [
+          "EventStory"
+        ],
+        "BoxDisassemble": [
+          "BoxDisassemble"
+        ],
+        "AutoEquip": [
+          "AutoEquip"
+        ],
+        "Benchmark": [
+          "Benchmark"
+        ],
+        "OcrBenchmark": [
+          "OcrBenchmark"
+        ],
+        "AzurLaneUncensored": [
+          "AzurLaneUncensored"
+        ],
+        "GameManager": [
+          "GameManager"
+        ],
+        "EmulatorManager": [
+          "EmulatorManager"
+        ],
+        "MeowfficerScore": [
+          "MeowfficerScore"
+        ]
+      }
+    },
+    {
+      "key": "Dashboard",
+      "name": "Dashboard",
+      "subgroups": {
+        "Dashboard": [
+          "Oil",
+          "Coin",
+          "Gem",
+          "Pt",
+          "Cube",
+          "ActionPoint",
+          "YellowCoin",
+          "PurpleCoin",
+          "Core",
+          "Medal",
+          "Merit",
+          "GuildCoin"
+        ]
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "command": "Ambush11",
+      "name": "1-1刷伏击(尚不完善)",
+      "help": "在1-1不打boss刷伏击获得物资等，支持按紧急委托流程自动换船。",
+      "groups": [
+        "Scheduler",
+        "GemsFarming",
+        "Campaign",
+        "StopCondition",
+        "Fleet",
+        "Submarine",
+        "Emotion",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiAshBeacon",
+      "name": "META作战",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "OpsiAshBeacon",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiAshAssist",
+      "name": "META支援",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "OpsiAshAssist",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OcrBenchmark",
+      "name": "OCR性能测试",
+      "help": "",
+      "groups": [
+        "Storage"
+      ]
+    },
+    {
+      "command": "ThreeOilLowCost",
+      "name": "三油低耗",
+      "help": "使用三油低耗阵容进行战斗，在旗舰达到32级时自动更换旗舰并退役。",
+      "groups": [
+        "Scheduler",
+        "GemsFarming",
+        "Campaign",
+        "StopCondition",
+        "Fleet",
+        "Submarine",
+        "Emotion",
+        "EnemyPriority",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Hard",
+      "name": "主线-困难图",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "Hard",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Main",
+      "name": "主线图-1",
+      "help": "启用此任务需解锁至少四只舰队编队，可以启用“跳过编队检测”以临时满足需求。",
+      "groups": [
+        "Scheduler",
+        "Campaign",
+        "StopCondition",
+        "Fleet",
+        "Submarine",
+        "Emotion",
+        "HpControl",
+        "EnemyPriority",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Main2",
+      "name": "主线图-2",
+      "help": "启用此任务需解锁至少四只舰队编队，可以启用“跳过编队检测”以临时满足需求。",
+      "groups": [
+        "Scheduler",
+        "Campaign",
+        "StopCondition",
+        "Fleet",
+        "Submarine",
+        "Emotion",
+        "HpControl",
+        "EnemyPriority",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Main3",
+      "name": "主线图-3",
+      "help": "启用此任务需解锁至少四只舰队编队，可以启用“跳过编队检测”以临时满足需求。",
+      "groups": [
+        "Scheduler",
+        "Campaign",
+        "StopCondition",
+        "Fleet",
+        "Submarine",
+        "Emotion",
+        "HpControl",
+        "EnemyPriority",
+        "Storage"
+      ]
+    },
+    {
+      "command": "IslandGrill",
+      "name": "乌鱼烤肉",
+      "help": "餐品会按从1~8的顺序依次生产，生产目标为餐品X数量选项，完全满足前一项后才会执行下一项，后一项在运行时不会影响之前几项任务的达成",
+      "groups": [
+        "Scheduler",
+        "IslandGrill",
+        "IslandGrillNextTask",
+        "Storage"
+      ]
+    },
+    {
+      "command": "StorageStatistics",
+      "name": "仓库统计",
+      "help": "每页三行读取材料仓库中的金色/彩色指定物品，完整单遍扫描及同页核对通过后更新统计页面。默认关闭，启用后按运行间隔自动执行（默认 7 天），也可手动运行；不使用或消耗物品。仅支持已验证的国服模板。",
+      "groups": [
+        "Scheduler",
+        "StorageStatistics",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OperationHandover",
+      "name": "作战委托",
+      "help": "消耗作战委托书，自动进行作战委托。",
+      "groups": [
+        "Scheduler",
+        "Campaign",
+        "OperationHandover",
+        "Storage"
+      ]
+    },
+    {
+      "command": "WarArchives",
+      "name": "作战档案",
+      "help": "由于作战档案缺少维护，开荒功能不一定能正常使用，如果发现AzurPilot运行异常，请手动完成开荒后使用自律寻敌功能",
+      "groups": [
+        "Scheduler",
+        "Campaign",
+        "StopCondition",
+        "WarArchives",
+        "Fleet",
+        "Submarine",
+        "Emotion",
+        "HpControl",
+        "EnemyPriority",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiHazard1Leveling",
+      "name": "侵蚀1练级",
+      "help": "此功能开放了大量配置，默认配置已经可以满足大部分需求，配置前请确保你已了解侵蚀1的基础原理，后果自负",
+      "groups": [
+        "Scheduler",
+        "OpsiHazard1Leveling",
+        "OpsiSirenBug",
+        "OpsiFleet",
+        "OpsiCheckLeveling",
+        "OpsiFleetAutoChange",
+        "Storage"
+      ]
+    },
+    {
+      "command": "IslandPlan",
+      "name": "全局配置",
+      "help": "岛屿的全局配置：季节设定与各条走位规则都在这里。启用并运行本任务时，会把「岛屿走位规则」里勾选了校验的路线在岛屿上各走一遍，用来核对角色能否走到目标位置；跑完（或没有勾选任何路线）任务自动推迟到第二天。",
+      "groups": [
+        "Scheduler",
+        "IslandPlan",
+        "IslandWalk",
+        "Storage"
+      ]
+    },
+    {
+      "command": "RaidScuttle",
+      "name": "共斗沉船",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "Raid",
+        "Campaign",
+        "StopCondition",
+        "Fleet",
+        "Submarine",
+        "Emotion",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Raid",
+      "name": "共斗活动",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "Raid",
+        "Campaign",
+        "StopCondition",
+        "Emotion",
+        "Storage"
+      ]
+    },
+    {
+      "command": "RaidDaily",
+      "name": "共斗活动每日",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "RaidDaily",
+        "Campaign",
+        "StopCondition",
+        "Emotion",
+        "Storage"
+      ]
+    },
+    {
+      "command": "ShopOnce",
+      "name": "其他商店",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "GuildShop",
+        "MedalShop2",
+        "MeritShop",
+        "CoreShop",
+        "Storage"
+      ]
+    },
+    {
+      "command": "ShopFrequent",
+      "name": "军火商商店",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "GeneralShop",
+        "Storage"
+      ]
+    },
+    {
+      "command": "IslandFarm",
+      "name": "农田",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "IslandFarm",
+        "IslandOrchard",
+        "IslandNursery",
+        "Storage"
+      ]
+    },
+    {
+      "command": "IslandManufacture",
+      "name": "制造业",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "WoodProcessing",
+        "ElectronicProcessing",
+        "Industrial",
+        "Handmade",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Daemon",
+      "name": "半自动点击",
+      "help": "",
+      "groups": [
+        "Daemon",
+        "Storage"
+      ]
+    },
+    {
+      "command": "AzurLaneUncensored",
+      "name": "反和谐",
+      "help": "",
+      "groups": [
+        "AzurLaneUncensored",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Dorm",
+      "name": "后宅",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "Dorm",
+        "BuyFurniture",
+        "Storage"
+      ]
+    },
+    {
+      "command": "MaritimeEscort",
+      "name": "商路护航",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "MaritimeEscort",
+        "Storage"
+      ]
+    },
+    {
+      "command": "IslandJuuCoffee",
+      "name": "啾咖啡",
+      "help": "餐品会按从1~8的顺序依次生产，生产目标为餐品X数量选项，完全满足前一项后才会执行下一项，后一项在运行时不会影响之前几项任务的达成",
+      "groups": [
+        "Scheduler",
+        "IslandJuuCoffee",
+        "IslandJuuCoffeeNextTask",
+        "Storage"
+      ]
+    },
+    {
+      "command": "IslandJuuEatery",
+      "name": "啾啾简餐",
+      "help": "餐品会按从1~8的顺序依次生产，生产目标为餐品X数量选项，完全满足前一项后才会执行下一项，后一项在运行时不会影响之前几项任务的达成",
+      "groups": [
+        "Scheduler",
+        "IslandJuuEatery",
+        "IslandJuuEateryNextTask",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiStronghold",
+      "name": "塞壬要塞",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "OpsiStronghold",
+        "OpsiFleetFilter",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Coalition",
+      "name": "夜勤病栋",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "Campaign",
+        "Coalition",
+        "StopCondition",
+        "Emotion",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiDaemon",
+      "name": "大世界半自动",
+      "help": "",
+      "groups": [
+        "OpsiDaemon",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiShop",
+      "name": "大世界商店",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "OpsiShop",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiSimulator",
+      "name": "大世界模拟器 Alpha",
+      "help": "使用蒙特卡洛算法估算在当前状态下持续进行侵蚀循环一段时间后的结果，该功能不会影响AzurPilot正常运行\n模型所用参数均取自AzurPilot配置和统计，请确保正确配置了智能调度等大世界设置\n目前为测试版本，结果不具备太多参考价值\n关于奸商售卖行动力的模型无足够充分的证据支撑。具体来讲，这里认为奸商卖6种行动力箱子满足超几何分布X~H(6,6,28)\n关于坠机：这里坠机是指整个模拟流程中行动力低于智能调度中设置的行动力保留阈值至少一次。若低于该阈值，模拟器将停止侵蚀循环等待行动力自然回复",
+      "groups": [
+        "OpsiSimulatorParameters",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiDaily",
+      "name": "大世界每日",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "OpsiDaily",
+        "OpsiFleet",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Guild",
+      "name": "大舰队",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "GuildLogistics",
+        "GuildOperation",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Commission",
+      "name": "委托",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "Commission",
+        "Storage"
+      ]
+    },
+    {
+      "command": "PrivateQuarters",
+      "name": "宿舍计划",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "PrivateQuarters",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Minigame",
+      "name": "小游戏",
+      "help": "游戏币不会溢出时自动领取游戏币，有游戏币且奖励没满时自动进行小游戏",
+      "groups": [
+        "Scheduler",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Shipyard",
+      "name": "开发船坞",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "ShipyardDr",
+        "Shipyard",
+        "Storage"
+      ]
+    },
+    {
+      "command": "MindCalculatorScan",
+      "name": "心智单元船坞扫描",
+      "help": "扫描国服 1280×720 船坞，结果在心智单元计算器中核对。完成前保留旧数据；会重置船坞筛选。",
+      "groups": [
+        "MindCalculator",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Benchmark",
+      "name": "性能测试",
+      "help": "",
+      "groups": [
+        "Benchmark",
+        "Storage"
+      ]
+    },
+    {
+      "command": "CoalitionSp",
+      "name": "怪谈纪实：逃离白夜山庄SP",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "Campaign",
+        "Coalition",
+        "StopCondition",
+        "Emotion",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Tactical",
+      "name": "战术学院",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "Tactical",
+        "ControlExpOverflow",
+        "AddNewStudent",
+        "Storage"
+      ]
+    },
+    {
+      "command": "BoxDisassemble",
+      "name": "拆装备箱",
+      "help": "",
+      "groups": [
+        "BoxDisassemble",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Meowfficer",
+      "name": "指挥喵",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "Meowfficer",
+        "MeowfficerTrain",
+        "Storage"
+      ]
+    },
+    {
+      "command": "MeowfficerScore",
+      "name": "指挥喵评分",
+      "help": "识别指挥喵天赋，按公开攻略口径评分",
+      "groups": [
+        "MeowfficerScore",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Reward",
+      "name": "收获",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "Reward",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiExploreCleanup",
+      "name": "普通海域事件补扫",
+      "help": "每月开荒达到 100% 后，按原顺序重新进入普通海域（不进入安全海域），全图识别并逐队扫描雷达，处理遗漏事件及事件生成的敌人。使用独立月度断点，每张图退出成功后保存，本月完成后不重复。开荒未完成时提示重新运行每月开荒。",
+      "groups": [
+        "Scheduler",
+        "OpsiExploreCleanup",
+        "OpsiFleet",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiScheduling",
+      "name": "智能调度",
+      "help": "大世界智能调度功能，可接管如下任务：侵蚀一练级（默认开启）、短猫相接、隐秘海域、深渊坐标、塞壬要塞；\n接管后，除本页面已有设置外，其他设置应用对应任务页面的具体设置；\n*如无必要且对Azurpilot运行机制有一定程度了解，最好不要同时运行智能调度及其子任务。",
+      "groups": [
+        "Scheduler",
+        "OpsiScheduling",
+        "OpsiSmartExplore",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiMonthBoss",
+      "name": "月度Boss",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "OpsiMonthBoss",
+        "OpsiFleetFilter",
+        "Storage"
+      ]
+    },
+    {
+      "command": "IslandRestaurant",
+      "name": "有鱼餐馆",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "IslandRestaurant",
+        "IslandRestaurantNextTask",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiArchive",
+      "name": "档案坐标",
+      "help": "从白票商店购买档案坐标并运行，档案海域不消耗行动力\n使用此功能前必须满足以下条件：\n- 通关大世界主线并完成模拟战+塞壬试验场\n- 启用每月开荒任务或使用战役信息记录仪（5000油道具）",
+      "groups": [
+        "Scheduler",
+        "OpsiFleet",
+        "Storage"
+      ]
+    },
+    {
+      "command": "EmulatorManager",
+      "name": "模拟器管理器",
+      "help": "提供手动重启模拟器的入口",
+      "groups": [
+        "EmulatorManager",
+        "Storage"
+      ]
+    },
+    {
+      "command": "IslandPearlSell",
+      "name": "每周珍珠采购与售卖",
+      "help": "移动仅支持 minitouch / MaaTouch / uiautomator2 / azurpilot_android 控制方式。每周二 01:00 自动处理珍珠：先采购本周珍珠，再售卖已有珍珠。金币一定要够购买200x220个，这是最低要求，能一次买光本周珍珠，否则可能会报错。",
+      "groups": [
+        "Scheduler",
+        "IslandPearlSell",
+        "Storage"
+      ]
+    },
+    {
+      "command": "IslandDailyInteract",
+      "name": "每日/周任务",
+      "help": "移动仅支持 minitouch / MaaTouch / uiautomator2 / azurpilot_android 控制方式。处理岛屿摸猫、JUU速运、商区外送服务与每周照相任务。相关按钮资源生成后可启用。",
+      "groups": [
+        "Scheduler",
+        "IslandDailyInteract",
+        "Storage"
+      ]
+    },
+    {
+      "command": "EventA",
+      "name": "每日A图",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "EventDaily",
+        "Campaign",
+        "StopCondition",
+        "Fleet",
+        "Submarine",
+        "Emotion",
+        "HpControl",
+        "EnemyPriority",
+        "Storage"
+      ]
+    },
+    {
+      "command": "EventB",
+      "name": "每日B图",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "EventDaily",
+        "Campaign",
+        "StopCondition",
+        "Fleet",
+        "Submarine",
+        "Emotion",
+        "HpControl",
+        "EnemyPriority",
+        "Storage"
+      ]
+    },
+    {
+      "command": "EventC",
+      "name": "每日C图",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "EventDaily",
+        "Campaign",
+        "StopCondition",
+        "Fleet",
+        "Submarine",
+        "Emotion",
+        "HpControl",
+        "EnemyPriority",
+        "Storage"
+      ]
+    },
+    {
+      "command": "EventD",
+      "name": "每日D图",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "EventDaily",
+        "Campaign",
+        "StopCondition",
+        "Fleet",
+        "Submarine",
+        "Emotion",
+        "HpControl",
+        "EnemyPriority",
+        "Storage"
+      ]
+    },
+    {
+      "command": "EventSp",
+      "name": "每日SP图",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "Campaign",
+        "StopCondition",
+        "Fleet",
+        "Submarine",
+        "Emotion",
+        "HpControl",
+        "EnemyPriority",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Daily",
+      "name": "每日任务",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "Daily",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Gacha",
+      "name": "每日抽卡",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "Gacha",
+        "Storage"
+      ]
+    },
+    {
+      "command": "IslandAirDrop",
+      "name": "每日补给",
+      "help": "移动仅支持 minitouch / MaaTouch / uiautomator2 / azurpilot_android 控制方式。每日收取本岛空中补给，并可拜访其他玩家岛屿拿补给。",
+      "groups": [
+        "Scheduler",
+        "IslandAirDrop",
+        "Storage"
+      ]
+    },
+    {
+      "command": "IslandDailyOrder",
+      "name": "每日订单",
+      "help": "从岛屿手机页面进入每日订单界面，自动检测订单类型（紧急/挑战/轻松），根据物品条件交付或驳回。不支持\"标准\"类型订单。",
+      "groups": [
+        "Scheduler",
+        "IslandDailyOrder",
+        "Storage"
+      ]
+    },
+    {
+      "command": "IslandDailyGather",
+      "name": "每日采集",
+      "help": "通过管理界面采集页签，UI模拟点击完成每日采集。执行时间：凌晨3:10、下午6:00。流程：选择采集目标→切换开关→分配角色→出发",
+      "groups": [
+        "Scheduler",
+        "IslandDailyGather",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiExplore",
+      "name": "每月开荒",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "OpsiExplore",
+        "OpsiFleet",
+        "Storage"
+      ]
+    },
+    {
+      "command": "EventStory",
+      "name": "活动剧情",
+      "help": "",
+      "groups": [
+        "EventStory",
+        "Storage"
+      ]
+    },
+    {
+      "command": "EventShop",
+      "name": "活动商店",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "EventShop",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Event",
+      "name": "活动图-1",
+      "help": "此功能是为常规活动设计的，共斗类活动通常拥有独立设置页",
+      "groups": [
+        "Scheduler",
+        "Campaign",
+        "StopCondition",
+        "Fleet",
+        "Submarine",
+        "Emotion",
+        "HpControl",
+        "EnemyPriority",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Event2",
+      "name": "活动图-2",
+      "help": "此功能是为常规活动设计的，共斗类活动通常拥有独立设置页",
+      "groups": [
+        "Scheduler",
+        "Campaign",
+        "StopCondition",
+        "Fleet",
+        "Submarine",
+        "Emotion",
+        "HpControl",
+        "EnemyPriority",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Event3",
+      "name": "活动图-3",
+      "help": "此功能是为常规活动设计的，共斗类活动通常拥有独立设置页",
+      "groups": [
+        "Scheduler",
+        "Campaign",
+        "StopCondition",
+        "Fleet",
+        "Submarine",
+        "Emotion",
+        "HpControl",
+        "EnemyPriority",
+        "Storage"
+      ]
+    },
+    {
+      "command": "EventGeneral",
+      "name": "活动通用设置",
+      "help": "",
+      "groups": [
+        "EventGeneral",
+        "TaskBalancer",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiAbyssal",
+      "name": "深渊坐标",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "OpsiAbyssal",
+        "OpsiFleetFilter",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Hospital",
+      "name": "深谷来信",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "Hospital",
+        "StopCondition",
+        "Emotion",
+        "Storage"
+      ]
+    },
+    {
+      "command": "GameManager",
+      "name": "游戏管理器(未完成)",
+      "help": "",
+      "groups": [
+        "GameManager",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Exercise",
+      "name": "演习",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "Exercise",
+        "Storage"
+      ]
+    },
+    {
+      "command": "IslandRancher",
+      "name": "牧场",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "IslandRancher",
+        "IslandFishery",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Freebies",
+      "name": "白嫖奖励",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "BattlePass",
+        "DataKey",
+        "Mail",
+        "SupplyPack",
+        "Storage"
+      ]
+    },
+    {
+      "command": "IslandTeahouse",
+      "name": "白熊饮品",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "IslandTeahouse",
+        "IslandTeahouseNextTask",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiVoucher",
+      "name": "白票商店",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "OpsiVoucher",
+        "Storage"
+      ]
+    },
+    {
+      "command": "IslandMineForest",
+      "name": "矿山林场",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "IslandMine",
+        "IslandForest",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Research",
+      "name": "科研",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "Research",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Secretary",
+      "name": "秘书舰",
+      "help": "自动检测秘书舰好感度，达到设定值后自动更换秘书舰",
+      "groups": [
+        "Scheduler",
+        "Secretary",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Alas",
+      "name": "系统设置",
+      "help": "",
+      "groups": [
+        "Emulator",
+        "EmulatorInfo",
+        "Error",
+        "DailySummary",
+        "Optimization",
+        "DropRecord",
+        "Backup",
+        "EmulatorManagement",
+        "Storage"
+      ]
+    },
+    {
+      "command": "GemsFarming",
+      "name": "紧急委托",
+      "help": "紧急委托和三油低耗只能开启一个",
+      "groups": [
+        "Scheduler",
+        "GemsFarming",
+        "Campaign",
+        "StopCondition",
+        "Fleet",
+        "Submarine",
+        "Emotion",
+        "EnemyPriority",
+        "Storage"
+      ]
+    },
+    {
+      "command": "IslandBusiness",
+      "name": "经营模块",
+      "help": "自动经营岛屿计划中的5个商店（有鱼餐馆、白熊饮品、乌鱼烤肉、啾啾简餐、啾咖啡）\n包括：选择角色、选择餐品、开始经营等自动化操作",
+      "groups": [
+        "Scheduler",
+        "IslandBusiness",
+        "IslandBusinessShop1",
+        "IslandBusinessShop2",
+        "IslandBusinessShop3",
+        "IslandBusinessShop4",
+        "IslandBusinessShop5",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiMeowfficerFarming",
+      "name": "耄耋相接",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "OpsiMeowfficerFarming",
+        "OpsiSirenBug",
+        "OpsiTarget",
+        "OpsiFleet",
+        "Storage"
+      ]
+    },
+    {
+      "command": "CoalitionScuttle",
+      "name": "联盟沉船",
+      "help": "联盟活动中舰船被击沉后刷取好感度，建议多队出击，第一队就沉，建议看相关教程",
+      "groups": [
+        "Scheduler",
+        "CoalitionScuttle",
+        "Campaign",
+        "Coalition",
+        "StopCondition",
+        "Emotion",
+        "Storage"
+      ]
+    },
+    {
+      "command": "AutoEquip",
+      "name": "自动装备",
+      "help": "从船坞第一艘舰船开始，进入快速更换并开启“装备中”过滤，随后按舰船详情页滑动遍历。实际换装策略尚待配置。",
+      "groups": [
+        "AutoEquip",
+        "Storage"
+      ]
+    },
+    {
+      "command": "FleetTechScan",
+      "name": "舰船科技扫描",
+      "help": "独立记录舰船身份和等级，不按心智计费条件排除。",
+      "groups": [
+        "FleetTech",
+        "Storage"
+      ]
+    },
+    {
+      "command": "FleetInfo",
+      "name": "舰队信息",
+      "help": "查看最近一次舰队扫描结果",
+      "groups": [
+        "FleetInfo",
+        "Storage"
+      ]
+    },
+    {
+      "command": "FleetScan",
+      "name": "舰队扫描",
+      "help": "扫描当前编入舰队的舰娘信息",
+      "groups": [
+        "Storage"
+      ]
+    },
+    {
+      "command": "Awaken",
+      "name": "认知觉醒",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "Awaken",
+        "Storage"
+      ]
+    },
+    {
+      "command": "IslandCargoPreparation",
+      "name": "货物筹备",
+      "help": "自动处理岛屿货运委托：领取完成的货运奖励，避开牛奶等黑名单货物，进入更换页面确认默认选中的第一个委托，并装载可提交货物。",
+      "groups": [
+        "Scheduler",
+        "IslandCargoPreparation",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiCrossMonth",
+      "name": "跨月每日",
+      "help": "AzurPilot将在大世界跨月重置之前10分钟进入大世界，等待大世界重置但不退出大世界，然后完成新一天的大世界每日、隐秘海域、深渊坐标和耄耋相接，以获得额外的金菜。运行大世界每日时，按\"大世界每日\"任务设置运行，其余同理。\n    重要：AzurPilot等待跨月期间，请不要操作游戏。",
+      "groups": [
+        "Scheduler",
+        "Storage"
+      ]
+    },
+    {
+      "command": "RunParams",
+      "name": "运行参数",
+      "help": "调度器、运行监护、设备与各功能等待节奏的可调参数。普通使用保持默认即可。",
+      "groups": [
+        "Watchdog",
+        "Reboot",
+        "Device",
+        "ScreenRecord",
+        "UiWait",
+        "Handover",
+        "Storage"
+      ]
+    },
+    {
+      "command": "General",
+      "name": "通用设置",
+      "help": "",
+      "groups": [
+        "Log",
+        "Retirement",
+        "OneClickRetire",
+        "Enhance",
+        "OldRetire",
+        "PublicEmotion",
+        "OilControl",
+        "YukikazeTaskManager",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiGeneral",
+      "name": "通用设置",
+      "help": "",
+      "groups": [
+        "OpsiGeneral",
+        "Storage"
+      ]
+    },
+    {
+      "command": "Restart",
+      "name": "重启设置",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "Restart",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiPreventActionPointOverflow",
+      "name": "防止行动力溢出",
+      "help": "当前行动力达到上限时执行大世界任务消耗行动力\n非必要不开启，仅推荐在大世界坠机或者长时间刷委托等不刷大世界的情况下开启",
+      "groups": [
+        "Scheduler",
+        "OpsiPreventActionPointOverflow",
+        "Storage"
+      ]
+    },
+    {
+      "command": "LimitChallenge",
+      "name": "限界挑战",
+      "help": "每月依次挑战至目标难度，每个难度最多出击一次；战败后等待下月。请先在游戏内配置限界挑战舰队。当前使用国服识别资源。",
+      "groups": [
+        "Scheduler",
+        "LimitChallenge",
+        "Storage"
+      ]
+    },
+    {
+      "command": "OpsiObscure",
+      "name": "隐秘海域",
+      "help": "",
+      "groups": [
+        "Scheduler",
+        "OpsiObscure",
+        "OpsiFleet",
+        "Storage"
+      ]
+    }
+  ],
+  "count": 102
+}

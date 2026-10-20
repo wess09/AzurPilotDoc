@@ -1,0 +1,2798 @@
+{
+  "source": {
+    "repository": "https://github.com/wess09/AzurPilot",
+    "commit": "7de6bb914da5798e76ef34a85a75648a526d319f",
+    "audited": "2026-10-20"
+  },
+  "groupCount": 167,
+  "groups": [
+    {
+      "group": "Scheduler",
+      "fields": [
+        "Enable",
+        "PushNotification",
+        "NextRun",
+        "Command",
+        "SuccessInterval",
+        "FailureInterval",
+        "ServerUpdate",
+        "Sensitive"
+      ],
+      "fieldCount": 8,
+      "usedBy": [
+        "Ambush11",
+        "Awaken",
+        "Coalition",
+        "CoalitionScuttle",
+        "CoalitionSp",
+        "Commission",
+        "Daily",
+        "Dorm",
+        "Event",
+        "Event2",
+        "Event3",
+        "EventA",
+        "EventB",
+        "EventC",
+        "EventD",
+        "EventShop",
+        "EventSp",
+        "Exercise",
+        "Freebies",
+        "Gacha",
+        "GemsFarming",
+        "Guild",
+        "Hard",
+        "Hospital",
+        "IslandAirDrop",
+        "IslandBusiness",
+        "IslandCargoPreparation",
+        "IslandDailyGather",
+        "IslandDailyInteract",
+        "IslandDailyOrder",
+        "IslandFarm",
+        "IslandGrill",
+        "IslandJuuCoffee",
+        "IslandJuuEatery",
+        "IslandManufacture",
+        "IslandMineForest",
+        "IslandPearlSell",
+        "IslandPlan",
+        "IslandRancher",
+        "IslandRestaurant",
+        "IslandTeahouse",
+        "LimitChallenge",
+        "Main",
+        "Main2",
+        "Main3",
+        "MaritimeEscort",
+        "Meowfficer",
+        "Minigame",
+        "OperationHandover",
+        "OpsiAbyssal",
+        "OpsiArchive",
+        "OpsiAshAssist",
+        "OpsiAshBeacon",
+        "OpsiCrossMonth",
+        "OpsiDaily",
+        "OpsiExplore",
+        "OpsiExploreCleanup",
+        "OpsiHazard1Leveling",
+        "OpsiMeowfficerFarming",
+        "OpsiMonthBoss",
+        "OpsiObscure",
+        "OpsiPreventActionPointOverflow",
+        "OpsiScheduling",
+        "OpsiShop",
+        "OpsiStronghold",
+        "OpsiVoucher",
+        "PrivateQuarters",
+        "Raid",
+        "RaidDaily",
+        "RaidScuttle",
+        "Research",
+        "Restart",
+        "Reward",
+        "Secretary",
+        "Shipyard",
+        "ShopFrequent",
+        "ShopOnce",
+        "StorageStatistics",
+        "Tactical",
+        "ThreeOilLowCost",
+        "WarArchives"
+      ],
+      "usedByCount": 81
+    },
+    {
+      "group": "Campaign",
+      "fields": [
+        "Name",
+        "Event",
+        "Mode",
+        "UseClearMode",
+        "UseFleetLock",
+        "UseAutoSearch",
+        "Use2xBook",
+        "AmbushEvade",
+        "UseRecommendFleet",
+        "DefeatWithdraw"
+      ],
+      "fieldCount": 10,
+      "usedBy": [
+        "Ambush11",
+        "Coalition",
+        "CoalitionScuttle",
+        "CoalitionSp",
+        "Event",
+        "Event2",
+        "Event3",
+        "EventA",
+        "EventB",
+        "EventC",
+        "EventD",
+        "EventSp",
+        "GemsFarming",
+        "Main",
+        "Main2",
+        "Main3",
+        "OperationHandover",
+        "Raid",
+        "RaidDaily",
+        "RaidScuttle",
+        "ThreeOilLowCost",
+        "WarArchives"
+      ],
+      "usedByCount": 22
+    },
+    {
+      "group": "Emotion",
+      "fields": [
+        "Mode",
+        "IgnoreShipwreck",
+        "MinReserve",
+        "RecoveryWait",
+        "Fleet1Value",
+        "Fleet1Record",
+        "Fleet1RecoveryState",
+        "Fleet1Control",
+        "Fleet1Recover",
+        "Fleet1Oath",
+        "Fleet1Onsen",
+        "Fleet2Value",
+        "Fleet2Record",
+        "Fleet2RecoveryState",
+        "Fleet2Control",
+        "Fleet2Recover",
+        "Fleet2Oath",
+        "Fleet2Onsen"
+      ],
+      "fieldCount": 18,
+      "usedBy": [
+        "Ambush11",
+        "Coalition",
+        "CoalitionScuttle",
+        "CoalitionSp",
+        "Event",
+        "Event2",
+        "Event3",
+        "EventA",
+        "EventB",
+        "EventC",
+        "EventD",
+        "EventSp",
+        "GemsFarming",
+        "Hospital",
+        "Main",
+        "Main2",
+        "Main3",
+        "Raid",
+        "RaidDaily",
+        "RaidScuttle",
+        "ThreeOilLowCost",
+        "WarArchives"
+      ],
+      "usedByCount": 22
+    },
+    {
+      "group": "StopCondition",
+      "fields": [
+        "OilLimit",
+        "OilLimitHardFloor",
+        "CoinLimit",
+        "RunCount",
+        "MapAchievement",
+        "StageIncrease",
+        "GetNewShip",
+        "ReachLevel"
+      ],
+      "fieldCount": 8,
+      "usedBy": [
+        "Ambush11",
+        "Coalition",
+        "CoalitionScuttle",
+        "CoalitionSp",
+        "Event",
+        "Event2",
+        "Event3",
+        "EventA",
+        "EventB",
+        "EventC",
+        "EventD",
+        "EventSp",
+        "GemsFarming",
+        "Hospital",
+        "Main",
+        "Main2",
+        "Main3",
+        "Raid",
+        "RaidDaily",
+        "RaidScuttle",
+        "ThreeOilLowCost",
+        "WarArchives"
+      ],
+      "usedByCount": 22
+    },
+    {
+      "group": "Fleet",
+      "fields": [
+        "Fleet1",
+        "Fleet1Formation",
+        "Fleet1Mode",
+        "Fleet1Step",
+        "Fleet2",
+        "Fleet2Formation",
+        "Fleet2Mode",
+        "Fleet2Step",
+        "FleetOrder",
+        "SkipPreparation"
+      ],
+      "fieldCount": 10,
+      "usedBy": [
+        "Ambush11",
+        "Event",
+        "Event2",
+        "Event3",
+        "EventA",
+        "EventB",
+        "EventC",
+        "EventD",
+        "EventSp",
+        "GemsFarming",
+        "Main",
+        "Main2",
+        "Main3",
+        "RaidScuttle",
+        "ThreeOilLowCost",
+        "WarArchives"
+      ],
+      "usedByCount": 16
+    },
+    {
+      "group": "Submarine",
+      "fields": [
+        "Fleet",
+        "Mode",
+        "AutoSearchMode",
+        "DistanceToBoss",
+        "AdvancedConfig"
+      ],
+      "fieldCount": 5,
+      "usedBy": [
+        "Ambush11",
+        "Event",
+        "Event2",
+        "Event3",
+        "EventA",
+        "EventB",
+        "EventC",
+        "EventD",
+        "EventSp",
+        "GemsFarming",
+        "Main",
+        "Main2",
+        "Main3",
+        "RaidScuttle",
+        "ThreeOilLowCost",
+        "WarArchives"
+      ],
+      "usedByCount": 16
+    },
+    {
+      "group": "EnemyPriority",
+      "fields": [
+        "EnemyScaleBalanceWeight"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "Event",
+        "Event2",
+        "Event3",
+        "EventA",
+        "EventB",
+        "EventC",
+        "EventD",
+        "EventSp",
+        "GemsFarming",
+        "Main",
+        "Main2",
+        "Main3",
+        "ThreeOilLowCost",
+        "WarArchives"
+      ],
+      "usedByCount": 14
+    },
+    {
+      "group": "HpControl",
+      "fields": [
+        "UseHpBalance",
+        "UseEmergencyRepair",
+        "UseLowHpRetreat",
+        "HpBalanceThreshold",
+        "HpBalanceWeight",
+        "RepairUseSingleThreshold",
+        "RepairUseMultiThreshold",
+        "LowHpRetreatThreshold"
+      ],
+      "fieldCount": 8,
+      "usedBy": [
+        "Event",
+        "Event2",
+        "Event3",
+        "EventA",
+        "EventB",
+        "EventC",
+        "EventD",
+        "EventSp",
+        "Main",
+        "Main2",
+        "Main3",
+        "WarArchives"
+      ],
+      "usedByCount": 12
+    },
+    {
+      "group": "OpsiFleet",
+      "fields": [
+        "Fleet",
+        "Submarine"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "OpsiArchive",
+        "OpsiDaily",
+        "OpsiExplore",
+        "OpsiExploreCleanup",
+        "OpsiHazard1Leveling",
+        "OpsiMeowfficerFarming",
+        "OpsiObscure"
+      ],
+      "usedByCount": 7
+    },
+    {
+      "group": "EventDaily",
+      "fields": [
+        "StageFilter",
+        "LastStage"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "EventA",
+        "EventB",
+        "EventC",
+        "EventD"
+      ],
+      "usedByCount": 4
+    },
+    {
+      "group": "Coalition",
+      "fields": [
+        "Mode",
+        "Fleet"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "Coalition",
+        "CoalitionScuttle",
+        "CoalitionSp"
+      ],
+      "usedByCount": 3
+    },
+    {
+      "group": "GemsFarming",
+      "fields": [
+        "EventFallbackStage",
+        "ChangeFlagship",
+        "CommonCV",
+        "CommonCVFilter",
+        "ChangeVanguard",
+        "CommonDD",
+        "CommonDDFilter",
+        "EquipmentCode",
+        "UseEmotionFirst",
+        "IgnoreEmotionWarning",
+        "AllowHighFlagshipLevel",
+        "AllowLowVanguardLevel",
+        "DelayTaskIFNoFlagship",
+        "CommissionLimit",
+        "HighValueCommissionFilterCount",
+        "HighValueCommissionReserve",
+        "VanguardLevelMin",
+        "VanguardLevelMax"
+      ],
+      "fieldCount": 18,
+      "usedBy": [
+        "Ambush11",
+        "GemsFarming",
+        "ThreeOilLowCost"
+      ],
+      "usedByCount": 3
+    },
+    {
+      "group": "OpsiFleetFilter",
+      "fields": [
+        "Filter"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "OpsiAbyssal",
+        "OpsiMonthBoss",
+        "OpsiStronghold"
+      ],
+      "usedByCount": 3
+    },
+    {
+      "group": "OpsiSirenBug",
+      "fields": [
+        "SirenResearch_Enable",
+        "Siren_Mode",
+        "Siren_Fleet"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "OpsiHazard1Leveling",
+        "OpsiMeowfficerFarming"
+      ],
+      "usedByCount": 2
+    },
+    {
+      "group": "Raid",
+      "fields": [
+        "Mode",
+        "UseTicket"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "Raid",
+        "RaidScuttle"
+      ],
+      "usedByCount": 2
+    },
+    {
+      "group": "ActionPoint",
+      "fields": [
+        "Value",
+        "Total",
+        "Color",
+        "Record"
+      ],
+      "fieldCount": 4,
+      "usedBy": [
+        "Dashboard"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "AddNewStudent",
+      "fields": [
+        "Enable",
+        "Favorite",
+        "MinLevel",
+        "MaxLevel"
+      ],
+      "fieldCount": 4,
+      "usedBy": [
+        "Tactical"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "AutoEquip",
+      "fields": [
+        "ShipLimit",
+        "EnableSlot1",
+        "EnableSlot2",
+        "EnableSlot3",
+        "EnableSlot4",
+        "EnableSlot5"
+      ],
+      "fieldCount": 6,
+      "usedBy": [
+        "AutoEquip"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Awaken",
+      "fields": [
+        "LevelCap",
+        "Favourite"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "Awaken"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "AzurLaneUncensored",
+      "fields": [
+        "Repository"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "AzurLaneUncensored"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Backup",
+      "fields": [
+        "Enable",
+        "KeepDays"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "Alas"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "BattlePass",
+      "fields": [
+        "Collect"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "Freebies"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Benchmark",
+      "fields": [
+        "DeviceType",
+        "TestScene"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "Benchmark"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "BoxDisassemble",
+      "fields": [
+        "UsePurpleBox",
+        "PurpleBoxLimit",
+        "UseBlueBox",
+        "BlueBoxLimit",
+        "UseWhiteBox",
+        "WhiteBoxLimit"
+      ],
+      "fieldCount": 6,
+      "usedBy": [
+        "BoxDisassemble"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "BuyFurniture",
+      "fields": [
+        "Enable",
+        "BuyOption",
+        "LastRun"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "Dorm"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "CoalitionScuttle",
+      "fields": [
+        "Sacrifice"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "CoalitionScuttle"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Coin",
+      "fields": [
+        "Value",
+        "Limit",
+        "Color",
+        "Record"
+      ],
+      "fieldCount": 4,
+      "usedBy": [
+        "Dashboard"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Commission",
+      "fields": [
+        "PresetFilter",
+        "DynamicProgramming",
+        "TierValueRatio",
+        "DelayHalfLife",
+        "DeadlineFutureHorizon",
+        "FilterValueFloor",
+        "FilterValueHalfLife",
+        "CustomFilter",
+        "Blacklist",
+        "DoMajorCommission",
+        "CommissionNotifyReward",
+        "CommissionNotifyRewardStatistics",
+        "DetectShipDrop",
+        "GemNotify",
+        "GemStatistics",
+        "GemStatisticsPeriod",
+        "AutoPickShip",
+        "PickMinRarity",
+        "PickLevelOrder",
+        "NoFreeShipPolicy"
+      ],
+      "fieldCount": 20,
+      "usedBy": [
+        "Commission"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "ControlExpOverflow",
+      "fields": [
+        "Enable",
+        "T4Allow",
+        "T3Allow",
+        "T2Allow",
+        "T1Allow"
+      ],
+      "fieldCount": 5,
+      "usedBy": [
+        "Tactical"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Core",
+      "fields": [
+        "Value",
+        "Color",
+        "Record"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "Dashboard"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "CoreShop",
+      "fields": [
+        "Enable",
+        "Filter"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "ShopOnce"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Cube",
+      "fields": [
+        "Value",
+        "Color",
+        "Record"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "Dashboard"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Daemon",
+      "fields": [
+        "EnterMap"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "Daemon"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Daily",
+      "fields": [
+        "UseDailySkip",
+        "EscortMission",
+        "EscortMissionFleet",
+        "AdvanceMission",
+        "AdvanceMissionFleet",
+        "FierceAssault",
+        "FierceAssaultFleet",
+        "TacticalTraining",
+        "TacticalTrainingFleet",
+        "SupplyLineDisruption",
+        "ModuleDevelopment",
+        "ModuleDevelopmentFleet",
+        "EmergencyModuleDevelopment",
+        "EmergencyModuleDevelopmentFleet"
+      ],
+      "fieldCount": 14,
+      "usedBy": [
+        "Daily"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "DailySummary",
+      "fields": [
+        "Enable",
+        "TriggerTime"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "Alas"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "DataKey",
+      "fields": [
+        "Collect",
+        "ForceCollect"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "Freebies"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Device",
+      "fields": [
+        "EmulatorStartProgressInterval",
+        "EmulatorStartDialogCheckInterval",
+        "Mumu12StatePollInterval",
+        "Mumu12StopWaitTimeout",
+        "Mumu12DeepWaitTimeout"
+      ],
+      "fieldCount": 5,
+      "usedBy": [
+        "RunParams"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Dorm",
+      "fields": [
+        "Collect",
+        "Feed",
+        "FeedFilter",
+        "ReserveFood",
+        "FeedReserveState",
+        "BuyFood"
+      ],
+      "fieldCount": 6,
+      "usedBy": [
+        "Dorm"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "DropRecord",
+      "fields": [
+        "SaveFolder",
+        "RetentionDays",
+        "BackUpMethod",
+        "ZipMethod",
+        "AzurStatsID",
+        "API",
+        "ResearchRecord",
+        "CommissionRecord",
+        "CommissionIncomeScreenshot",
+        "CombatRecord",
+        "OpsiHazard1Leveling",
+        "OpsiMeowfficerFarming",
+        "OpsiDaily",
+        "OpsiObscure",
+        "OpsiAbyssal",
+        "OpsiStronghold",
+        "OpsiExplore",
+        "OpsiOther",
+        "MeowfficerBuy",
+        "MeowfficerTalent",
+        "TelemetryReport",
+        "BugReport"
+      ],
+      "fieldCount": 22,
+      "usedBy": [
+        "Alas"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "ElectronicProcessing",
+      "fields": [
+        "Positions"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "IslandManufacture"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Emulator",
+      "fields": [
+        "Serial",
+        "PackageName",
+        "ServerName",
+        "ScreenshotMethod",
+        "ControlMethod",
+        "GameSettings",
+        "ScreenshotDedithering",
+        "AdbRestart"
+      ],
+      "fieldCount": 8,
+      "usedBy": [
+        "Alas"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "EmulatorInfo",
+      "fields": [
+        "Emulator",
+        "name",
+        "path",
+        "EnableRemoteSSH",
+        "RemoteSSHHost",
+        "RemoteSSHPort",
+        "RemoteSSHUser",
+        "RemoteSSHPublicKey",
+        "RemoteStartCommand",
+        "RemoteStopCommand"
+      ],
+      "fieldCount": 10,
+      "usedBy": [
+        "Alas"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "EmulatorManagement",
+      "fields": [
+        "ScheduledEmulatorRestart",
+        "ForceScheduledRestart",
+        "RestartIntervalHours",
+        "DeepRestartAfterFailures"
+      ],
+      "fieldCount": 4,
+      "usedBy": [
+        "Alas"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "EmulatorManager",
+      "fields": [
+        "EnableRemoteSSH",
+        "RemoteSSHHost",
+        "RemoteSSHPort",
+        "RemoteSSHUser",
+        "RemoteSSHPublicKey",
+        "RemoteStartCommand",
+        "RemoteStopCommand"
+      ],
+      "fieldCount": 7,
+      "usedBy": [
+        "EmulatorManager"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Enhance",
+      "fields": [
+        "ShipToEnhance",
+        "Filter",
+        "CheckPerCategory",
+        "KeepCommonCV"
+      ],
+      "fieldCount": 4,
+      "usedBy": [
+        "General"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Error",
+      "fields": [
+        "HandleError",
+        "SaveError",
+        "StrictRestart",
+        "TaskRestartLimit",
+        "SaveErrorRetentionDays",
+        "SaveErrorBackUpMethod",
+        "SaveErrorZipMethod",
+        "OnePushConfig",
+        "LowPushMode",
+        "ScreenshotLength",
+        "GameStuckRestart",
+        "GameStuckThreshold",
+        "AdbOfflineRestart",
+        "AdbOfflineThreshold",
+        "WatchdogEnable",
+        "WatchdogTaskEnable",
+        "WatchdogTaskTimeout",
+        "RestartOperationTimeoutEnable",
+        "RestartOperationTimeout",
+        "LlmAnalysis",
+        "LlmApiKey",
+        "LlmApiBase",
+        "LlmModel"
+      ],
+      "fieldCount": 23,
+      "usedBy": [
+        "Alas"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "EventGeneral",
+      "fields": [
+        "PtLimit",
+        "TimeLimit"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "EventGeneral"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "EventShop",
+      "fields": [
+        "UnlockSSRShip",
+        "BuyURShip",
+        "PresetFilter",
+        "CustomFilter"
+      ],
+      "fieldCount": 4,
+      "usedBy": [
+        "EventShop"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "EventStory",
+      "fields": [
+        "SkipBattle"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "EventStory"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Exercise",
+      "fields": [
+        "DelayUntilHoursBeforeNextUpdate",
+        "OpponentChooseMode",
+        "OpponentTrial",
+        "ExerciseStrategy",
+        "LowHpThreshold",
+        "LowHpConfirmWait",
+        "OpponentRefreshValue",
+        "OpponentRefreshRecord"
+      ],
+      "fieldCount": 8,
+      "usedBy": [
+        "Exercise"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "FleetInfo",
+      "fields": [
+        "Result",
+        "Record"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "FleetInfo"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "FleetTech",
+      "fields": [
+        "MinLevel",
+        "MaxLevel",
+        "Record"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "FleetTechScan"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Gacha",
+      "fields": [
+        "Pool",
+        "Amount",
+        "UseTicket",
+        "TicketAmount",
+        "ClearTicket",
+        "ClearTicketTime",
+        "UseDrill"
+      ],
+      "fieldCount": 7,
+      "usedBy": [
+        "Gacha"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "GameManager",
+      "fields": [
+        "AutoRestart"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "GameManager"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Gem",
+      "fields": [
+        "Value",
+        "Color",
+        "Record"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "Dashboard"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "GeneralShop",
+      "fields": [
+        "Enable",
+        "UseGems",
+        "Refresh",
+        "BuySkinBox",
+        "ConsumeCoins",
+        "OverflowCoins",
+        "Filter"
+      ],
+      "fieldCount": 7,
+      "usedBy": [
+        "ShopFrequent"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "GuildCoin",
+      "fields": [
+        "Value",
+        "Color",
+        "Record"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "Dashboard"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "GuildLogistics",
+      "fields": [
+        "Enable",
+        "SelectNewMission",
+        "ExchangeFilter"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "Guild"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "GuildOperation",
+      "fields": [
+        "Enable",
+        "SelectNewOperation",
+        "NewOperationMaxDate",
+        "JoinThreshold",
+        "AttackBoss",
+        "BossFleetRecommend"
+      ],
+      "fieldCount": 6,
+      "usedBy": [
+        "Guild"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "GuildShop",
+      "fields": [
+        "Enable",
+        "Refresh",
+        "Filter",
+        "BOX_T3",
+        "BOX_T4",
+        "BOOK_T2",
+        "BOOK_T3",
+        "RETROFIT_T2",
+        "RETROFIT_T3",
+        "PLATE_T2",
+        "PLATE_T3",
+        "PLATE_T4",
+        "PR1",
+        "PR2",
+        "PR3"
+      ],
+      "fieldCount": 15,
+      "usedBy": [
+        "ShopOnce"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Handmade",
+      "fields": [
+        "Positions"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "IslandManufacture"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Handover",
+      "fields": [
+        "ConsumeRetryMinutes",
+        "MaintainLeadMinutes",
+        "MaintainCheckMinutes",
+        "ConflictRetryMinutes"
+      ],
+      "fieldCount": 4,
+      "usedBy": [
+        "RunParams"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Hard",
+      "fields": [
+        "HardStage",
+        "HardFleet"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "Hard"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Hospital",
+      "fields": [
+        "UseRecommendFleet"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "Hospital"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Industrial",
+      "fields": [
+        "Positions"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "IslandManufacture"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandAirDrop",
+      "fields": [
+        "LastSteal",
+        "VisitOtherIsland"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "IslandAirDrop"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandBusiness",
+      "fields": [
+        "BatchEnabled",
+        "Batch1Shops",
+        "Batch2Shops",
+        "SeasonalReplaceEnabled",
+        "SeasonalThreshold"
+      ],
+      "fieldCount": 5,
+      "usedBy": [
+        "IslandBusiness"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandBusinessShop1",
+      "fields": [
+        "Char1",
+        "Char2",
+        "Product1",
+        "Product2",
+        "Product3",
+        "Product4",
+        "Product5",
+        "SeasonalFallback",
+        "BoostReplaceFilter"
+      ],
+      "fieldCount": 9,
+      "usedBy": [
+        "IslandBusiness"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandBusinessShop2",
+      "fields": [
+        "Char1",
+        "Char2",
+        "Product1",
+        "Product2",
+        "Product3",
+        "Product4",
+        "Product5",
+        "SeasonalFallback",
+        "BoostReplaceFilter"
+      ],
+      "fieldCount": 9,
+      "usedBy": [
+        "IslandBusiness"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandBusinessShop3",
+      "fields": [
+        "Char1",
+        "Char2",
+        "Product1",
+        "Product2",
+        "Product3",
+        "Product4",
+        "Product5",
+        "BoostReplaceFilter"
+      ],
+      "fieldCount": 8,
+      "usedBy": [
+        "IslandBusiness"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandBusinessShop4",
+      "fields": [
+        "Char1",
+        "Char2",
+        "Product1",
+        "Product2",
+        "Product3",
+        "Product4",
+        "Product5",
+        "BoostReplaceFilter"
+      ],
+      "fieldCount": 8,
+      "usedBy": [
+        "IslandBusiness"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandBusinessShop5",
+      "fields": [
+        "Char1",
+        "Char2",
+        "Product1",
+        "Product2",
+        "Product3",
+        "Product4",
+        "Product5",
+        "BoostReplaceFilter"
+      ],
+      "fieldCount": 8,
+      "usedBy": [
+        "IslandBusiness"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandCargoPreparation",
+      "fields": [
+        "Blacklist"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "IslandCargoPreparation"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandDailyGather",
+      "fields": [
+        "WorkerFilter"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "IslandDailyGather"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandDailyInteract",
+      "fields": [
+        "WeeklyPhoto"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "IslandDailyInteract"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandDailyOrder",
+      "fields": [
+        "RejectCount",
+        "RejectFilter",
+        "UrgentDetectRefreshTime"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "IslandDailyOrder"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandFarm",
+      "fields": [
+        "Positions",
+        "WorkerFilter",
+        "MinFarm",
+        "PlantPotatoes"
+      ],
+      "fieldCount": 4,
+      "usedBy": [
+        "IslandFarm"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandFishery",
+      "fields": [
+        "Positions",
+        "MinBass",
+        "MinYellowfinTuna",
+        "MinShell",
+        "MinShrimp",
+        "MinCrayfish",
+        "MinCrab",
+        "MinSquid",
+        "MinSeaCucumber",
+        "PlantYellowfinTuna",
+        "RancherFilter"
+      ],
+      "fieldCount": 11,
+      "usedBy": [
+        "IslandRancher"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandForest",
+      "fields": [
+        "Positions",
+        "CutElegant",
+        "WorkerFilter",
+        "MinElegant",
+        "MinPractical",
+        "MinSelected"
+      ],
+      "fieldCount": 6,
+      "usedBy": [
+        "IslandMineForest"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandGrill",
+      "fields": [
+        "PostNumber",
+        "ChefFilter",
+        "Meal1",
+        "MealNumber1",
+        "Meal2",
+        "MealNumber2",
+        "Meal3",
+        "MealNumber3",
+        "Meal4",
+        "MealNumber4",
+        "Meal5",
+        "MealNumber5",
+        "Meal6",
+        "MealNumber6",
+        "Meal7",
+        "MealNumber7",
+        "Meal8",
+        "MealNumber8"
+      ],
+      "fieldCount": 18,
+      "usedBy": [
+        "IslandGrill"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandGrillNextTask",
+      "fields": [
+        "AwayCook"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "IslandGrill"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandJuuCoffee",
+      "fields": [
+        "PostNumber",
+        "ChefFilter",
+        "Friedrich",
+        "Meal1",
+        "MealNumber1",
+        "Meal2",
+        "MealNumber2",
+        "Meal3",
+        "MealNumber3",
+        "Meal4",
+        "MealNumber4",
+        "Meal5",
+        "MealNumber5",
+        "Meal6",
+        "MealNumber6",
+        "Meal7",
+        "MealNumber7",
+        "Meal8",
+        "MealNumber8"
+      ],
+      "fieldCount": 19,
+      "usedBy": [
+        "IslandJuuCoffee"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandJuuCoffeeNextTask",
+      "fields": [
+        "AwayCook"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "IslandJuuCoffee"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandJuuEatery",
+      "fields": [
+        "PostNumber",
+        "ChefFilter",
+        "Meal1",
+        "MealNumber1",
+        "Meal2",
+        "MealNumber2",
+        "Meal3",
+        "MealNumber3",
+        "Meal4",
+        "MealNumber4",
+        "Meal5",
+        "MealNumber5",
+        "Meal6",
+        "MealNumber6",
+        "Meal7",
+        "MealNumber7",
+        "Meal8",
+        "MealNumber8"
+      ],
+      "fieldCount": 18,
+      "usedBy": [
+        "IslandJuuEatery"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandJuuEateryNextTask",
+      "fields": [
+        "AwayCook"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "IslandJuuEatery"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandMine",
+      "fields": [
+        "Positions",
+        "MineSilver",
+        "WorkerFilter",
+        "MinCopper",
+        "MinAluminium",
+        "MinIron",
+        "MinSulphur",
+        "MinSilver"
+      ],
+      "fieldCount": 8,
+      "usedBy": [
+        "IslandMineForest"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandNursery",
+      "fields": [
+        "Positions",
+        "WorkerFilter",
+        "MinNursery",
+        "IgnorePineapple",
+        "PlantLavender"
+      ],
+      "fieldCount": 5,
+      "usedBy": [
+        "IslandFarm"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandOrchard",
+      "fields": [
+        "Positions",
+        "WorkerFilter",
+        "MinOrchard",
+        "IgnoreAvocado",
+        "PlantRubber",
+        "AmagiChanRubber"
+      ],
+      "fieldCount": 6,
+      "usedBy": [
+        "IslandFarm"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandPearlSell",
+      "fields": [
+        "BuyPrice",
+        "SellPrice",
+        "BuyNextRun",
+        "DailyPriceRefresh",
+        "NextPearlTradeTime"
+      ],
+      "fieldCount": 5,
+      "usedBy": [
+        "IslandPearlSell"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandPlan",
+      "fields": [
+        "Season"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "IslandPlan"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandRancher",
+      "fields": [
+        "MinChicken",
+        "ChickenFilter",
+        "MinPork",
+        "PigFilter",
+        "Milk",
+        "RancherFilter",
+        "Wool",
+        "WoolWorkerFilter"
+      ],
+      "fieldCount": 8,
+      "usedBy": [
+        "IslandRancher"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandRestaurant",
+      "fields": [
+        "PostNumber",
+        "ChefFilter",
+        "DoubleBambooShoots",
+        "Meal1",
+        "MealNumber1",
+        "Meal2",
+        "MealNumber2",
+        "Meal3",
+        "MealNumber3",
+        "Meal4",
+        "MealNumber4",
+        "Meal5",
+        "MealNumber5",
+        "Meal6",
+        "MealNumber6",
+        "Meal7",
+        "MealNumber7",
+        "Meal8",
+        "MealNumber8"
+      ],
+      "fieldCount": 19,
+      "usedBy": [
+        "IslandRestaurant"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandRestaurantNextTask",
+      "fields": [
+        "AwayCook"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "IslandRestaurant"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandTeahouse",
+      "fields": [
+        "PostNumber",
+        "ChefFilter",
+        "Seasonal",
+        "Meal1",
+        "MealNumber1",
+        "Meal2",
+        "MealNumber2",
+        "Meal3",
+        "MealNumber3",
+        "Meal4",
+        "MealNumber4",
+        "Meal5",
+        "MealNumber5",
+        "Meal6",
+        "MealNumber6",
+        "Meal7",
+        "MealNumber7",
+        "Meal8",
+        "MealNumber8"
+      ],
+      "fieldCount": 19,
+      "usedBy": [
+        "IslandTeahouse"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandTeahouseNextTask",
+      "fields": [
+        "AwayCook"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "IslandTeahouse"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandWalk",
+      "fields": [
+        "AirDrop",
+        "AirDropEnable",
+        "AirDropRetry",
+        "AirDropRetryEnable",
+        "AirDropSelf",
+        "AirDropSelfEnable",
+        "DailyLakeniya",
+        "DailyLakeniyaEnable",
+        "DailyLuxi",
+        "DailyLuxiEnable",
+        "DailyAobulaien",
+        "DailyAobulaienEnable",
+        "DailyQiaoan",
+        "DailyQiaoanEnable",
+        "DailyMorningdewFarm",
+        "DailyMorningdewFarmEnable",
+        "DailyHemo",
+        "DailyHemoEnable",
+        "DailyMeili",
+        "DailyMeiliEnable",
+        "DailyAolipike",
+        "DailyAolipikeEnable",
+        "DailyAmoma",
+        "DailyAmomaEnable",
+        "DailyPateli",
+        "DailyPateliEnable",
+        "DailyBulaimei",
+        "DailyBulaimeiEnable",
+        "DailyLisha",
+        "DailyLishaEnable",
+        "PearlAssembly",
+        "PearlAssemblyEnable",
+        "PearlPort",
+        "PearlPortEnable"
+      ],
+      "fieldCount": 34,
+      "usedBy": [
+        "IslandPlan"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "LimitChallenge",
+      "fields": [
+        "TargetLevel",
+        "Month",
+        "CompletedLevel",
+        "AttemptedLevel",
+        "Failed"
+      ],
+      "fieldCount": 5,
+      "usedBy": [
+        "LimitChallenge"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Log",
+      "fields": [
+        "LogKeepCount",
+        "LogBackUpMethod",
+        "ZipMethod"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "General"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Mail",
+      "fields": [
+        "ClaimMerit",
+        "ClaimMaintenance",
+        "ClaimTradeLicense",
+        "DeleteCollected"
+      ],
+      "fieldCount": 4,
+      "usedBy": [
+        "Freebies"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "MaritimeEscort",
+      "fields": [
+        "Enable"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "MaritimeEscort"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Medal",
+      "fields": [
+        "Value",
+        "Color",
+        "Record"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "Dashboard"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "MedalShop2",
+      "fields": [
+        "Enable",
+        "Filter",
+        "RETROFIT_T1",
+        "RETROFIT_T2",
+        "RETROFIT_T3",
+        "PLATE_T1",
+        "PLATE_T2",
+        "PLATE_T3"
+      ],
+      "fieldCount": 8,
+      "usedBy": [
+        "ShopOnce"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Meowfficer",
+      "fields": [
+        "BuyAmount",
+        "FortChoreMeowfficer"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "Meowfficer"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "MeowfficerScore",
+      "fields": [
+        "Source",
+        "Folder",
+        "MaxImages",
+        "ReportPath",
+        "DeviceShots",
+        "DeviceInterval",
+        "ScanLimit",
+        "ScanPasses"
+      ],
+      "fieldCount": 8,
+      "usedBy": [
+        "MeowfficerScore"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "MeowfficerTrain",
+      "fields": [
+        "Enable",
+        "Mode",
+        "RetainTalentedGold",
+        "RetainTalentedPurple",
+        "ScoreTalents",
+        "ScoreThreshold",
+        "EnhanceIndex",
+        "MaxFeedLevel"
+      ],
+      "fieldCount": 8,
+      "usedBy": [
+        "Meowfficer"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Merit",
+      "fields": [
+        "Value",
+        "Color",
+        "Record"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "Dashboard"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "MeritShop",
+      "fields": [
+        "Enable",
+        "Refresh",
+        "BuyUnobtainedShip",
+        "Filter"
+      ],
+      "fieldCount": 4,
+      "usedBy": [
+        "ShopOnce"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "MindCalculator",
+      "fields": [
+        "MinLevel",
+        "MaxLevel",
+        "Result",
+        "FleetTechRecord"
+      ],
+      "fieldCount": 4,
+      "usedBy": [
+        "MindCalculatorScan"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Oil",
+      "fields": [
+        "Value",
+        "Limit",
+        "Color",
+        "Record"
+      ],
+      "fieldCount": 4,
+      "usedBy": [
+        "Dashboard"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OilControl",
+      "fields": [
+        "Enable",
+        "Target"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "General"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OldRetire",
+      "fields": [
+        "N",
+        "R",
+        "SR",
+        "SSR",
+        "RetireAmount"
+      ],
+      "fieldCount": 5,
+      "usedBy": [
+        "General"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OneClickRetire",
+      "fields": [
+        "KeepLimitBreak"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "General"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OperationHandover",
+      "fields": [
+        "Count",
+        "AutoSupplementTime",
+        "UseHandoverBook",
+        "ConsumeAllBook",
+        "ConsumeAllBookWeekday",
+        "ConsumeAllBookTime",
+        "MaintainOverride",
+        "OilLimit",
+        "ConsumeAllBookRecord",
+        "CommissionEnd"
+      ],
+      "fieldCount": 10,
+      "usedBy": [
+        "OperationHandover"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiAbyssal",
+      "fields": [
+        "ForceRun"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "OpsiAbyssal"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiAshAssist",
+      "fields": [
+        "Tier"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "OpsiAshAssist"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiAshBeacon",
+      "fields": [
+        "AttackMode",
+        "AssistRequestLimit",
+        "AssistRequestState",
+        "DossierAutoAttackMode",
+        "RequestAssist",
+        "EnsureFullyCollected",
+        "AutoCollectShip"
+      ],
+      "fieldCount": 7,
+      "usedBy": [
+        "OpsiAshBeacon"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiCheckLeveling",
+      "fields": [
+        "TargetLevel",
+        "LastRun",
+        "CheckInterval",
+        "EnableCustomCheck",
+        "CustomCheckPositions",
+        "DelayAfterFull"
+      ],
+      "fieldCount": 6,
+      "usedBy": [
+        "OpsiHazard1Leveling"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiDaemon",
+      "fields": [
+        "RepairShip",
+        "SelectEnemy"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "OpsiDaemon"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiDaily",
+      "fields": [
+        "DoMission",
+        "UseTuningSample",
+        "SkipSirenResearchMission",
+        "KeepMissionZone",
+        "MissionZones",
+        "DeferredMissions",
+        "CollectTargetReward"
+      ],
+      "fieldCount": 7,
+      "usedBy": [
+        "OpsiDaily"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiExplore",
+      "fields": [
+        "SpecialRadar",
+        "ForceRun",
+        "LastZone",
+        "AllowHazard1Leveling",
+        "MeowfficerCleanup",
+        "MeowfficerCleanupState",
+        "ExploreProgress"
+      ],
+      "fieldCount": 7,
+      "usedBy": [
+        "OpsiExplore"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiExploreCleanup",
+      "fields": [
+        "Progress",
+        "State"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "OpsiExploreCleanup"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiFleetAutoChange",
+      "fields": [
+        "Enable",
+        "CooldownHours",
+        "LastRun"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "OpsiHazard1Leveling"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiGeneral",
+      "fields": [
+        "UseLogger",
+        "BuyActionPointLimit",
+        "OilLimit",
+        "RepairThreshold",
+        "UseRepairPack",
+        "RepairPackThreshold",
+        "RepairPackThresholdHazard1",
+        "DoRandomMapEvent",
+        "AkashiShopFilter",
+        "DebugClipRetentionDays",
+        "NotifyOpsiMail",
+        "LauncherPush",
+        "IndependentPush",
+        "OpsiOnePushConfig",
+        "AutoSearchTimeLimit"
+      ],
+      "fieldCount": 15,
+      "usedBy": [
+        "OpsiGeneral"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiHazard1Leveling",
+      "fields": [
+        "TargetZone",
+        "OperationCoinsPreserve",
+        "MinimumActionPointReserve",
+        "ExecuteFixedPatrolScan",
+        "SkipHpCheck",
+        "ActionPointCheckInterval",
+        "SkipStrategicSearchCheck",
+        "Cl1Filter",
+        "RecordNonCL1AP",
+        "RecordSeaMiles",
+        "SeaMilesLastRecord",
+        "PendingMapEvent",
+        "DebugClip"
+      ],
+      "fieldCount": 13,
+      "usedBy": [
+        "OpsiHazard1Leveling"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiMeowfficerFarming",
+      "fields": [
+        "ActionPointPreserve",
+        "HazardLevel",
+        "TargetZone",
+        "StayInZone",
+        "ExecuteFixedPatrolScan",
+        "DebugClip"
+      ],
+      "fieldCount": 6,
+      "usedBy": [
+        "OpsiMeowfficerFarming"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiMonthBoss",
+      "fields": [
+        "Mode",
+        "CheckAdaptability",
+        "ForceRun"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "OpsiMonthBoss"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiObscure",
+      "fields": [
+        "SkipHazard2Obscure",
+        "ForceRun"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "OpsiObscure"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiPreventActionPointOverflow",
+      "fields": [
+        "Task",
+        "ActionPointUpperbound",
+        "ActionPointLowerbound"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "OpsiPreventActionPointOverflow"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiScheduling",
+      "fields": [
+        "BuyActionPoint",
+        "UseSmartSchedulingOperationCoinsPreserve",
+        "OperationCoinsPreserve",
+        "ActionPointPreserve",
+        "OperationCoinsReturnThreshold",
+        "EnableMeowfficerFarming",
+        "EnableObscure",
+        "EnableAbyssal",
+        "EnableStronghold",
+        "TaskPriority",
+        "ObscureAbyssalCheckDelayDays",
+        "MonthEndActionPointCleanupEnable",
+        "MonthEndActionPointCleanupDays",
+        "MonthEndActionPointPreserve",
+        "MonthEndMeowTargetZone",
+        "MonthEndShopPurchase"
+      ],
+      "fieldCount": 16,
+      "usedBy": [
+        "OpsiScheduling"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiShop",
+      "fields": [
+        "PresetFilter",
+        "CustomFilter",
+        "DisableBeforeDate"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "OpsiShop"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiSimulatorParameters",
+      "fields": [
+        "Samples",
+        "Draw",
+        "TotalTime",
+        "TimeUseRatio",
+        "InitialAp",
+        "InitialCoin",
+        "MeowHazardLevel",
+        "CrossWeek",
+        "BuyAp",
+        "Cl1Coin",
+        "Meow3Coin",
+        "Meow5Coin",
+        "AkashiProbability",
+        "Cl1Time",
+        "Meow3Time",
+        "Meow5Time",
+        "Deterministic"
+      ],
+      "fieldCount": 17,
+      "usedBy": [
+        "OpsiSimulator"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiSmartExplore",
+      "fields": [
+        "Enable",
+        "EventCleanup",
+        "ForceRun",
+        "Progress"
+      ],
+      "fieldCount": 4,
+      "usedBy": [
+        "OpsiScheduling"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiStronghold",
+      "fields": [
+        "SubmarineEveryCombat",
+        "ForceRun",
+        "HasStronghold"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "OpsiStronghold"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiTarget",
+      "fields": [
+        "TargetFarming",
+        "TargetZone",
+        "LastRun"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "OpsiMeowfficerFarming"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "OpsiVoucher",
+      "fields": [
+        "Filter"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "OpsiVoucher"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Optimization",
+      "fields": [
+        "OcrDevice",
+        "OcrBackend",
+        "OcrWindowsMlVendorEp",
+        "OcrModelVersionEnglish",
+        "OcrModelVersionChinese",
+        "OcrModelVersionJapanese",
+        "OcrModelVersionTraditionalChinese",
+        "ScreenshotInterval",
+        "CombatScreenshotInterval",
+        "TaskHoardingDuration",
+        "CloseEmulatorDuringLongWait",
+        "WhenTaskQueueEmpty",
+        "WhenSchedulerStopped",
+        "WarmupEnable",
+        "WarmupMinutes"
+      ],
+      "fieldCount": 15,
+      "usedBy": [
+        "Alas"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "PrivateQuarters",
+      "fields": [],
+      "fieldCount": 0,
+      "usedBy": [
+        "PrivateQuarters"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Pt",
+      "fields": [
+        "Value",
+        "Color",
+        "Record"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "Dashboard"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "PublicEmotion",
+      "fields": [
+        "Enable",
+        "Tasks",
+        "FleetValue",
+        "FleetRecord",
+        "FleetRecoveryState",
+        "FleetControl",
+        "FleetRecover",
+        "FleetOath",
+        "FleetOnsen"
+      ],
+      "fieldCount": 9,
+      "usedBy": [
+        "General"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "PurpleCoin",
+      "fields": [
+        "Value",
+        "Color",
+        "Record"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "Dashboard"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "RaidDaily",
+      "fields": [
+        "StageFilter"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "RaidDaily"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Reboot",
+      "fields": [
+        "Tries",
+        "FirstTryWaitSeconds",
+        "SubsequentTryWaitSeconds",
+        "ObserveSeconds",
+        "ObserveInterval"
+      ],
+      "fieldCount": 5,
+      "usedBy": [
+        "RunParams"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Research",
+      "fields": [
+        "UseCube",
+        "UseCoin",
+        "UsePart",
+        "AllowDelay",
+        "AllowGenreT",
+        "RemainingCommissions",
+        "PresetFilter",
+        "CustomFilter"
+      ],
+      "fieldCount": 8,
+      "usedBy": [
+        "Research"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Restart",
+      "fields": [
+        "RandomDelay",
+        "ClearCache",
+        "LoginWaitTimeout",
+        "MoveChannelFloat"
+      ],
+      "fieldCount": 4,
+      "usedBy": [
+        "Restart"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Retirement",
+      "fields": [
+        "RetireMode"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "General"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Reward",
+      "fields": [
+        "CollectOil",
+        "CollectCoin",
+        "CollectExp",
+        "CollectMission",
+        "CollectWeeklyMission"
+      ],
+      "fieldCount": 5,
+      "usedBy": [
+        "Reward"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "ScreenRecord",
+      "fields": [
+        "StartTimeout",
+        "StopTimeout",
+        "PollInterval",
+        "TranscodeBaseTimeout",
+        "TranscodeMaxTimeout"
+      ],
+      "fieldCount": 5,
+      "usedBy": [
+        "RunParams"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Secretary",
+      "fields": [
+        "CustomFilter",
+        "LowFavorabilityPriority",
+        "FavouriteOnly",
+        "BackupEnable",
+        "CheckInterval",
+        "Notify",
+        "OnePushConfig"
+      ],
+      "fieldCount": 7,
+      "usedBy": [
+        "Secretary"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Shipyard",
+      "fields": [
+        "ResearchSeries",
+        "ShipIndex",
+        "BuyAmount",
+        "LastRun"
+      ],
+      "fieldCount": 4,
+      "usedBy": [
+        "Shipyard"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "ShipyardDr",
+      "fields": [
+        "ResearchSeries",
+        "ShipIndex",
+        "BuyAmount",
+        "LastRun"
+      ],
+      "fieldCount": 4,
+      "usedBy": [
+        "Shipyard"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "StorageStatistics",
+      "fields": [
+        "RunIntervalDays"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "StorageStatistics"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "SupplyPack",
+      "fields": [
+        "Collect",
+        "DayOfWeek"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "Freebies"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Tactical",
+      "fields": [
+        "TacticalFilter",
+        "RapidTrainingSlot",
+        "SkillAutoSwitch"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "Tactical"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "TaskBalancer",
+      "fields": [
+        "Enable",
+        "CoinLimit",
+        "TaskCall"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "EventGeneral"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "UiWait",
+      "fields": [
+        "IslandMapConfirmWait",
+        "IslandMapDestinationWait",
+        "IslandMapConfirmRetryWait",
+        "IslandCharacterConfirmRetryWait",
+        "IslandEntryRetryWait",
+        "PqInteractButtonTimeout",
+        "PqInteractClickWait",
+        "PqInteractStartTimeout",
+        "PqInteractEndTimeout",
+        "PqInteractExitTimeout",
+        "GachaPrepSubmitWait",
+        "GachaPrepTimeout",
+        "ChannelFloatHoldDuration",
+        "ChannelFloatMaxAttempts",
+        "GuildSupplyMaxRetry",
+        "GuildExchangeBugRetry",
+        "BuyFurnitureCheckIntervalDays",
+        "AutoEquipAfterEquipWait",
+        "CommissionSkipTimeout",
+        "CommissionRewardScreenshotKeep"
+      ],
+      "fieldCount": 20,
+      "usedBy": [
+        "RunParams"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "WarArchives",
+      "fields": [
+        "DailyRunCount",
+        "AutoClear",
+        "AutoSelectEvent",
+        "AutoClearTarget",
+        "AutoClearProgress",
+        "DailyRunCountRemain",
+        "DailyRunCountRecord",
+        "DailyRunCountLimit"
+      ],
+      "fieldCount": 8,
+      "usedBy": [
+        "WarArchives"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "Watchdog",
+      "fields": [
+        "CheckInterval",
+        "DailySummaryCheckInterval"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "RunParams"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "WoodProcessing",
+      "fields": [
+        "Positions"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "IslandManufacture"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "YellowCoin",
+      "fields": [
+        "Value",
+        "Color",
+        "Record"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "Dashboard"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "YukikazeTaskManager",
+      "fields": [
+        "TaskPriorityAdjustment"
+      ],
+      "fieldCount": 1,
+      "usedBy": [
+        "General"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "C11AffinityFarming",
+      "fields": [
+        "RunCount"
+      ],
+      "fieldCount": 1,
+      "usedBy": [],
+      "usedByCount": 0
+    },
+    {
+      "group": "C122MediumLeveling",
+      "fields": [
+        "LargeEnemyTolerance"
+      ],
+      "fieldCount": 1,
+      "usedBy": [],
+      "usedByCount": 0
+    },
+    {
+      "group": "C124LargeLeveling",
+      "fields": [
+        "NonLargeEnterTolerance",
+        "NonLargeRetreatTolerance",
+        "PickupAmmo"
+      ],
+      "fieldCount": 3,
+      "usedBy": [],
+      "usedByCount": 0
+    },
+    {
+      "group": "C72MysteryFarming",
+      "fields": [
+        "StepOnA3"
+      ],
+      "fieldCount": 1,
+      "usedBy": [],
+      "usedByCount": 0
+    },
+    {
+      "group": "HospitalEvent",
+      "fields": [
+        "Mode",
+        "Stage"
+      ],
+      "fieldCount": 2,
+      "usedBy": [],
+      "usedByCount": 0
+    },
+    {
+      "group": "Minigame",
+      "fields": [
+        "Collect"
+      ],
+      "fieldCount": 1,
+      "usedBy": [],
+      "usedByCount": 0
+    },
+    {
+      "group": "Sos",
+      "fields": [
+        "Chapter"
+      ],
+      "fieldCount": 1,
+      "usedBy": [],
+      "usedByCount": 0
+    }
+  ]
+}

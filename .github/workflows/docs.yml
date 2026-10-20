@@ -1,0 +1,79 @@
+name: Docs CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docs-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and verify
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Static build
+        run: npm run build
+
+      - name: Link / coverage checks
+        run: |
+          npm run check:links
+          npm run check:nav
+
+      - name: SEO checks on build output
+        run: npm run check:seo
+
+      - name: Install Playwright browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Browser checks
+        run: npx playwright test
+
+      - name: Responsive sweep and screenshots
+        run: npm run shots
+
+      - name: Upload screenshots on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-artifacts
+          path: |
+            test-results/
+            playwright-report/
+            .screenshots/
+          if-no-files-found: ignore
+
+      - name: Upload static site
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-dist
+          path: docs/.vitepress/dist
+          retention-days: 7
+
+      - name: Upload audit records
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-audit
+          path: |
+            docs-audit/
+            DESIGN.md
+          if-no-files-found: ignore

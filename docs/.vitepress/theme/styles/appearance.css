@@ -1,0 +1,58 @@
+/**
+ * 唯一的默认主题覆盖：把明暗切换的「胶囊开关」换成图标按钮。
+ *
+ * 只动 .VPSwitchAppearance（外观切换），不影响其它 VPSwitch 用法。
+ * 行为不变：点击逻辑仍由默认主题的 toggle-appearance 提供，视觉过渡由 Layout.vue 处理。
+ */
+.VPSwitch.VPSwitchAppearance {
+  width: 32px !important;
+  height: 32px !important;
+  padding: 0 !important;
+  border: 1px solid transparent !important;
+  border-radius: 6px !important;
+  background-color: transparent !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.VPSwitch.VPSwitchAppearance:hover {
+  background-color: var(--vp-c-default-soft) !important;
+  border-color: var(--vp-c-divider) !important;
+}
+
+/* 隐藏滑块 */
+.VPSwitchAppearance .check {
+  display: none !important;
+}
+
+/* 图标：用 mask 上色，跟随正文色，自动适配明暗 */
+.VPSwitchAppearance::before {
+  content: '';
+  width: 18px;
+  height: 18px;
+  background-color: var(--vp-c-text-2);
+  -webkit-mask: var(--ap-icon-sun) center / 18px 18px no-repeat;
+  mask: var(--ap-icon-sun) center / 18px 18px no-repeat;
+  transition: background-color 0.2s ease;
+}
+
+.VPSwitchAppearance:hover::before {
+  background-color: var(--vp-c-text-1);
+}
+
+html.dark .VPSwitchAppearance::before {
+  -webkit-mask-image: var(--ap-icon-moon);
+  mask-image: var(--ap-icon-moon);
+}
+
+:root {
+  --ap-icon-sun: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Cpath d='M12 2v2M12 20v2M2 12h2M20 12h2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M19.07 4.93l-1.41 1.41M6.34 17.66l-1.41 1.41'/%3E%3C/svg%3E");
+  --ap-icon-moon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23000'%3E%3Cpath d='M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z'/%3E%3C/svg%3E");
+}
+
+/* 移动端菜单里的同一开关：图标与文字并排 */
+.VPNavScreenAppearance .VPSwitch.VPSwitchAppearance {
+  margin-right: 8px;
+}

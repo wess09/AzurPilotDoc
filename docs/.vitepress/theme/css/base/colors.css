@@ -1,0 +1,33 @@
+/*!
+ * @file colors.css
+ * @brief 基础颜色变量定义（版式层移植自 nekro-agent-doc，配色改为 AzurPilot 的深海蓝）
+ */
+
+:root {
+  /* --- 主品牌色 --- */
+  --vp-c-brand: #3d6fd6;
+  --vp-c-brand-light: #6b9dfb;
+  --vp-c-brand-dark: #2f5bb8;
+  --vp-c-brand-darker: #274a96;
+
+  /* 选中背景、提示框底色 */
+  --vp-c-brand-soft: rgba(61, 111, 214, 0.12);
+
+  /* --- VitePress 标准映射 --- */
+  --vp-c-brand-1: var(--vp-c-brand);
+  --vp-c-brand-2: var(--vp-c-brand-dark);
+  --vp-c-brand-3: var(--vp-c-brand-darker);
+}
+
+.dark {
+  --vp-c-brand: #6b9dfb;
+  --vp-c-brand-light: #9dbcff;
+  --vp-c-brand-dark: #6b9dfb;
+  --vp-c-brand-darker: #3d6fd6;
+
+  --vp-c-brand-soft: rgba(107, 157, 251, 0.16);
+
+  --vp-c-brand-1: var(--vp-c-brand);
+  --vp-c-brand-2: var(--vp-c-brand-light);
+  --vp-c-brand-3: var(--vp-c-brand);
+}

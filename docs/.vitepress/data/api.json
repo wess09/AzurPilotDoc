@@ -1,0 +1,1567 @@
+{
+  "source": {
+    "repository": "https://github.com/wess09/AzurPilot",
+    "commit": "7de6bb914da5798e76ef34a85a75648a526d319f",
+    "audited": "2026-10-20",
+    "contractVersion": 1
+  },
+  "count": 72,
+  "methods": [
+    {
+      "name": "accounts.manage",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "enum": [
+            "create",
+            "unlock",
+            "lock",
+            "list",
+            "capture",
+            "select",
+            "enable",
+            "password",
+            "delete",
+            "bind_tpm",
+            "unbind_tpm",
+            "bind_local",
+            "unbind_local"
+          ],
+          "name": "action",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "default": "",
+          "name": "password",
+          "required": false
+        },
+        {
+          "type": "string",
+          "description": "",
+          "default": "",
+          "name": "new_password",
+          "required": false
+        },
+        {
+          "type": "string",
+          "description": "",
+          "default": "",
+          "name": "label",
+          "required": false
+        },
+        {
+          "type": "string",
+          "description": "",
+          "default": "",
+          "name": "profile",
+          "required": false
+        },
+        {
+          "type": "boolean",
+          "description": "",
+          "default": false,
+          "name": "enabled",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "accounts.status",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "announcement.get",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "boolean",
+          "description": "",
+          "default": false,
+          "name": "force",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "auth.login",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "default": "",
+          "name": "password",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "background.access",
+      "mutates": false,
+      "description": "",
+      "fields": []
+    },
+    {
+      "name": "background.gallery.add",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "url",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "default": "",
+          "name": "name",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "background.gallery.list",
+      "mutates": false,
+      "description": "",
+      "fields": []
+    },
+    {
+      "name": "background.gallery.open",
+      "mutates": true,
+      "description": "",
+      "fields": []
+    },
+    {
+      "name": "background.gallery.remove",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "background.resolve",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "url",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "config.export",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "config.get",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "config.patch",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "string | null",
+          "description": "",
+          "default": null,
+          "options": [
+            {
+              "type": "string",
+              "description": ""
+            },
+            {
+              "type": "null",
+              "description": ""
+            }
+          ],
+          "name": "revision",
+          "required": false
+        },
+        {
+          "type": "ConfigChange[]",
+          "description": "",
+          "item": {
+            "type": "ConfigChange",
+            "description": ""
+          },
+          "name": "changes",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "events.subscribe",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string | null",
+          "description": "",
+          "default": null,
+          "options": [
+            {
+              "type": "string",
+              "description": ""
+            },
+            {
+              "type": "null",
+              "description": ""
+            }
+          ],
+          "name": "instance",
+          "required": false
+        },
+        {
+          "type": "string[]",
+          "description": "",
+          "item": {
+            "type": "string",
+            "description": "",
+            "enum": [
+              "instances",
+              "overview",
+              "logs",
+              "preview",
+              "stock",
+              "notifications"
+            ]
+          },
+          "name": "topics",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "fleetTech.catalog",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "fleetTech.patch",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "revision",
+          "required": true
+        },
+        {
+          "type": "FleetTechChange[]",
+          "description": "",
+          "item": {
+            "type": "FleetTechChange",
+            "description": ""
+          },
+          "name": "changes",
+          "required": false
+        },
+        {
+          "type": "object",
+          "description": "",
+          "name": "nations",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "fleetTech.report",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "fleetTech.syncMind",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "instances.create",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "name",
+          "required": true
+        },
+        {
+          "type": "string | null",
+          "description": "",
+          "default": null,
+          "options": [
+            {
+              "type": "string",
+              "description": ""
+            },
+            {
+              "type": "null",
+              "description": ""
+            }
+          ],
+          "name": "source",
+          "required": false
+        },
+        {
+          "type": "string | null",
+          "description": "",
+          "default": null,
+          "options": [
+            {
+              "type": "string",
+              "description": ""
+            },
+            {
+              "type": "null",
+              "description": ""
+            }
+          ],
+          "name": "import_file",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "instances.delete",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "revision",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "instances.importConfig",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "name",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "content",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "instances.importable",
+      "mutates": false,
+      "description": "",
+      "fields": []
+    },
+    {
+      "name": "instances.list",
+      "mutates": false,
+      "description": "",
+      "fields": []
+    },
+    {
+      "name": "logs.get",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "integer",
+          "description": "",
+          "default": 0,
+          "name": "after",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "meowfficer.clearReport",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "meowfficer.scoreReport",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "integer",
+          "description": "",
+          "default": 100,
+          "name": "limit",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "mind.calculate",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "MindShip[]",
+          "description": "",
+          "item": {
+            "type": "MindShip",
+            "description": ""
+          },
+          "name": "ships",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "mind.catalog",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "mind.export",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "enum": [
+            "json",
+            "csv",
+            "xlsx"
+          ],
+          "default": "xlsx",
+          "name": "format",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "mind.import",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "filename",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "content",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "mind.recognize",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "filename",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "content",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "mind.report",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "mind.save",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "MindShip[]",
+          "description": "",
+          "item": {
+            "type": "MindShip",
+            "description": ""
+          },
+          "name": "ships",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "revision",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "opsi.simulator.figure",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "opsi.simulator.start",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "opsi.simulator.status",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "integer",
+          "description": "",
+          "default": 0,
+          "name": "after",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "opsi.simulator.stop",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "overview.get",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "preview.capture",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "remote.clients",
+      "mutates": false,
+      "description": "",
+      "fields": []
+    },
+    {
+      "name": "remote.pair.create",
+      "mutates": true,
+      "description": "",
+      "fields": []
+    },
+    {
+      "name": "remote.pair.status",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "remote.revoke",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "id",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "scheduler.program.apply",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "revision",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "enum": [
+            "native",
+            "enhance",
+            "takeover"
+          ],
+          "name": "mode",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "scheduler.program.catalog",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "scheduler.program.get",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "scheduler.program.save",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "ProgramDocument",
+          "description": "",
+          "name": "document",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "revision",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "scheduler.program.simulate",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "ProgramDocument",
+          "description": "",
+          "name": "document",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "enum": [
+            "native",
+            "enhance",
+            "takeover"
+          ],
+          "default": "takeover",
+          "name": "mode",
+          "required": false
+        },
+        {
+          "type": "object",
+          "description": "",
+          "name": "context",
+          "required": false
+        },
+        {
+          "type": "string[]",
+          "description": "",
+          "item": {
+            "type": "string",
+            "description": "",
+            "enum": [
+              "completed",
+              "yielded",
+              "recoverable",
+              "failed"
+            ]
+          },
+          "name": "outcomes",
+          "required": false
+        },
+        {
+          "type": "integer",
+          "description": "",
+          "default": 100,
+          "name": "steps",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "scheduler.program.state",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "scheduler.program.validate",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "ProgramDocument",
+          "description": "",
+          "name": "document",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "enum": [
+            "native",
+            "enhance",
+            "takeover"
+          ],
+          "default": "takeover",
+          "name": "mode",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "scheduler.start",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "scheduler.stop",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "schema.get",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "enum": [
+            "zh-CN",
+            "zh-MIAO",
+            "en-US",
+            "ja-JP",
+            "zh-TW"
+          ],
+          "default": "zh-CN",
+          "name": "language",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "search.content",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "query",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "settings.get",
+      "mutates": false,
+      "description": "",
+      "fields": []
+    },
+    {
+      "name": "settings.patch",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "object",
+          "description": "",
+          "name": "values",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "startup.get",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "startup.set",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "boolean | null",
+          "description": "",
+          "default": null,
+          "options": [
+            {
+              "type": "boolean",
+              "description": ""
+            },
+            {
+              "type": "null",
+              "description": ""
+            }
+          ],
+          "name": "enabled",
+          "required": false
+        },
+        {
+          "type": "boolean | null",
+          "description": "",
+          "default": null,
+          "options": [
+            {
+              "type": "boolean",
+              "description": ""
+            },
+            {
+              "type": "null",
+              "description": ""
+            }
+          ],
+          "name": "remember",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "statistics.refreshLoot",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "statistics.report",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "enum": [
+            "resources",
+            "action",
+            "opsi",
+            "commission",
+            "ships",
+            "loot",
+            "research",
+            "storage"
+          ],
+          "default": "resources",
+          "name": "category",
+          "required": false
+        },
+        {
+          "type": "string | null",
+          "description": "",
+          "default": null,
+          "options": [
+            {
+              "type": "string",
+              "description": ""
+            },
+            {
+              "type": "null",
+              "description": ""
+            }
+          ],
+          "name": "month",
+          "required": false
+        },
+        {
+          "type": "integer",
+          "description": "",
+          "default": 7,
+          "name": "days",
+          "required": false
+        },
+        {
+          "type": "string",
+          "description": "",
+          "enum": [
+            "day",
+            "week",
+            "month"
+          ],
+          "default": "month",
+          "name": "period",
+          "required": false
+        },
+        {
+          "type": "integer",
+          "description": "",
+          "default": 0,
+          "name": "series",
+          "required": false
+        },
+        {
+          "type": "string",
+          "description": "",
+          "enum": [
+            "series",
+            "consumable"
+          ],
+          "default": "series",
+          "name": "scope",
+          "required": false
+        },
+        {
+          "type": "string | null",
+          "description": "",
+          "default": null,
+          "options": [
+            {
+              "type": "string",
+              "description": ""
+            },
+            {
+              "type": "null",
+              "description": ""
+            }
+          ],
+          "name": "task",
+          "required": false
+        },
+        {
+          "type": "boolean",
+          "description": "",
+          "default": true,
+          "name": "include_series",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "statistics.resourceFlows",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "integer",
+          "description": "",
+          "default": 7,
+          "name": "days",
+          "required": false
+        },
+        {
+          "type": "string | null",
+          "description": "",
+          "default": null,
+          "options": [
+            {
+              "type": "string",
+              "description": ""
+            },
+            {
+              "type": "null",
+              "description": ""
+            }
+          ],
+          "name": "start",
+          "required": false
+        },
+        {
+          "type": "string | null",
+          "description": "",
+          "default": null,
+          "options": [
+            {
+              "type": "string",
+              "description": ""
+            },
+            {
+              "type": "null",
+              "description": ""
+            }
+          ],
+          "name": "end",
+          "required": false
+        },
+        {
+          "type": "string | null",
+          "description": "",
+          "default": null,
+          "options": [
+            {
+              "type": "string",
+              "description": ""
+            },
+            {
+              "type": "null",
+              "description": ""
+            }
+          ],
+          "name": "resource",
+          "required": false
+        },
+        {
+          "type": "string | null",
+          "description": "",
+          "default": null,
+          "options": [
+            {
+              "type": "string",
+              "description": ""
+            },
+            {
+              "type": "null",
+              "description": ""
+            }
+          ],
+          "name": "task",
+          "required": false
+        },
+        {
+          "type": "integer",
+          "description": "",
+          "default": 0,
+          "name": "offset",
+          "required": false
+        },
+        {
+          "type": "integer",
+          "description": "",
+          "default": 100,
+          "name": "limit",
+          "required": false
+        },
+        {
+          "type": "integer | null",
+          "description": "",
+          "default": null,
+          "options": [
+            {
+              "type": "integer",
+              "description": ""
+            },
+            {
+              "type": "null",
+              "description": ""
+            }
+          ],
+          "name": "through_id",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "statistics.resources",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "integer",
+          "description": "",
+          "default": 7,
+          "name": "days",
+          "required": false
+        },
+        {
+          "type": "string",
+          "description": "",
+          "enum": [
+            "Oil",
+            "Coin",
+            "Gem",
+            "Cube",
+            "Pt",
+            "ActionPoint",
+            "Core",
+            "Medal",
+            "Merit",
+            "GuildCoin",
+            "YellowCoin",
+            "PurpleCoin"
+          ],
+          "default": "Oil",
+          "name": "resource",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "stock.rebuild",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "boolean",
+          "description": "",
+          "default": false,
+          "name": "confirm",
+          "required": false
+        },
+        {
+          "type": "string",
+          "description": "",
+          "enum": [
+            "instance",
+            "all"
+          ],
+          "default": "instance",
+          "name": "scope",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "stock.request",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "path",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "enum": [
+            "GET",
+            "POST",
+            "DELETE"
+          ],
+          "default": "GET",
+          "name": "method",
+          "required": false
+        },
+        {
+          "type": "object | null",
+          "description": "",
+          "default": null,
+          "options": [
+            {
+              "type": "object",
+              "description": ""
+            },
+            {
+              "type": "null",
+              "description": ""
+            }
+          ],
+          "name": "body",
+          "required": false
+        },
+        {
+          "type": "string",
+          "description": "",
+          "default": "",
+          "name": "etag",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "stock.status",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "system.ping",
+      "mutates": false,
+      "description": "",
+      "fields": []
+    },
+    {
+      "name": "tasks.run",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "task",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "updater.apply",
+      "mutates": true,
+      "description": "",
+      "fields": []
+    },
+    {
+      "name": "updater.cancel",
+      "mutates": true,
+      "description": "",
+      "fields": []
+    },
+    {
+      "name": "updater.commits",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "integer",
+          "description": "",
+          "default": 0,
+          "name": "offset",
+          "required": false
+        },
+        {
+          "type": "integer",
+          "description": "",
+          "default": 50,
+          "name": "limit",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "updater.fetch",
+      "mutates": true,
+      "description": "",
+      "fields": []
+    },
+    {
+      "name": "updater.status",
+      "mutates": false,
+      "description": "",
+      "fields": []
+    }
+  ]
+}

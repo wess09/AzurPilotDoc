@@ -1,0 +1,77 @@
+/**
+ * 图示专用变量：直接映射 VitePress 默认主题 token。
+ * 只为自定义 SVG 图示提供取色，不覆盖任何 --vp-* 变量，因此不影响站点外观。
+ */
+:root {
+  --ap-paper: var(--vp-c-bg);
+  --ap-surface: var(--vp-c-bg-soft);
+  --ap-surface-2: var(--vp-c-bg-alt);
+  --ap-surface-3: var(--vp-c-default-soft);
+  --ap-ink: var(--vp-c-text-1);
+  --ap-ink-2: var(--vp-c-text-2);
+  --ap-muted: var(--vp-c-text-3);
+  --ap-line: var(--vp-c-divider);
+  --ap-line-strong: var(--vp-c-border);
+  --ap-accent: var(--vp-c-brand-1);
+  --ap-accent-strong: var(--vp-c-brand-2);
+  --ap-font-sans: var(--vp-font-family-base);
+  --ap-font-mono: var(--vp-font-family-mono);
+  --ap-dur-fast: 150ms;
+  --ap-ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/**
+ * 分层架构色带：每层一个低饱和色相，浅色/深色各一套。
+ * 只用于 .dg-band 系列，不参与正文。
+ */
+.dg-band--slate {
+  --band-fill: rgba(100, 116, 139, 0.07);
+  --band-line: rgba(100, 116, 139, 0.34);
+  --node-line: rgba(100, 116, 139, 0.26);
+}
+.dg-band--blue {
+  --band-fill: rgba(37, 99, 235, 0.06);
+  --band-line: rgba(37, 99, 235, 0.32);
+  --node-line: rgba(37, 99, 235, 0.24);
+}
+.dg-band--indigo {
+  --band-fill: rgba(79, 70, 229, 0.08);
+  --band-line: rgba(79, 70, 229, 0.42);
+  --node-line: rgba(79, 70, 229, 0.3);
+}
+.dg-band--teal {
+  --band-fill: rgba(13, 148, 136, 0.07);
+  --band-line: rgba(13, 148, 136, 0.32);
+  --node-line: rgba(13, 148, 136, 0.24);
+}
+.dg-band--amber {
+  --band-fill: rgba(180, 120, 20, 0.07);
+  --band-line: rgba(180, 120, 20, 0.32);
+  --node-line: rgba(180, 120, 20, 0.24);
+}
+
+.dark .dg-band--slate {
+  --band-fill: rgba(148, 163, 184, 0.13);
+  --band-line: rgba(148, 163, 184, 0.5);
+  --node-line: rgba(148, 163, 184, 0.34);
+}
+.dark .dg-band--blue {
+  --band-fill: rgba(96, 165, 250, 0.13);
+  --band-line: rgba(96, 165, 250, 0.48);
+  --node-line: rgba(96, 165, 250, 0.32);
+}
+.dark .dg-band--indigo {
+  --band-fill: rgba(129, 140, 248, 0.16);
+  --band-line: rgba(129, 140, 248, 0.55);
+  --node-line: rgba(129, 140, 248, 0.36);
+}
+.dark .dg-band--teal {
+  --band-fill: rgba(45, 212, 191, 0.12);
+  --band-line: rgba(45, 212, 191, 0.46);
+  --node-line: rgba(45, 212, 191, 0.3);
+}
+.dark .dg-band--amber {
+  --band-fill: rgba(251, 191, 36, 0.11);
+  --band-line: rgba(251, 191, 36, 0.42);
+  --node-line: rgba(251, 191, 36, 0.28);
+}

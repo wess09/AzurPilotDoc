@@ -1,0 +1,176 @@
+/* 图表统一语言：细线、等宽标签、低饱和填充 */
+.dg {
+  width: 100%;
+  height: auto;
+  display: block;
+  font-family: var(--ap-font-sans);
+}
+.dg text {
+  fill: var(--ap-ink);
+}
+.dg-box {
+  fill: var(--ap-surface);
+  stroke: var(--ap-line-strong);
+  stroke-width: 1;
+}
+.dg-box--fill {
+  fill: var(--ap-surface-2);
+}
+.dg-box--accent {
+  stroke: var(--ap-accent);
+}
+.dg-box--ink {
+  fill: var(--ap-ink);
+  stroke: var(--ap-ink);
+}
+.dg-title {
+  font-family: var(--ap-font-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+}
+.dg-title--inv {
+  fill: var(--ap-paper) !important;
+}
+.dg-title--lg {
+  font-size: 13px;
+  letter-spacing: 0.1em;
+}
+.dg-sub {
+  font-size: 10px;
+  fill: var(--ap-muted) !important;
+}
+.dg-sub--inv {
+  fill: color-mix(in srgb, var(--ap-paper) 72%, transparent) !important;
+}
+.dg-label {
+  font-family: var(--ap-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  fill: var(--ap-muted) !important;
+  text-transform: uppercase;
+}
+.dg-num {
+  font-family: var(--ap-font-mono);
+  font-size: 9px;
+  fill: var(--ap-accent) !important;
+  letter-spacing: 0.1em;
+}
+.dg-edge {
+  fill: none;
+  stroke: var(--ap-line-strong);
+  stroke-width: 1;
+}
+.dg-edge--dash {
+  stroke-dasharray: 3 4;
+}
+.dg-edge--accent {
+  stroke: var(--ap-accent);
+}
+.dg-edge--soft {
+  stroke: var(--ap-line);
+}
+.dg-tick {
+  stroke: var(--ap-line-strong);
+  stroke-width: 1;
+}
+.dg-dot {
+  fill: var(--ap-accent);
+}
+.dg-grid {
+  stroke: var(--ap-line);
+  stroke-width: 1;
+  opacity: 0.55;
+}
+
+/* 防止 SVG 的固有宽度撑破响应式网格 */
+.dg {
+  max-width: 100%;
+}
+
+/* 图示容器：窄屏内横向滚动，不撑破正文栏 */
+.dg-wrap {
+  margin: 1.25rem 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+@media (max-width: 760px) {
+  .dg-wrap > .dg {
+    min-width: 600px;
+  }
+}
+
+
+/* ---------------------------------------------------------------
+   分层色带（架构图）
+   一层一条横向色带，左侧放层名，右侧放该层的组件。
+   --------------------------------------------------------------- */
+.dg-band {
+  fill: var(--band-fill, transparent);
+  stroke: var(--band-line, var(--ap-line));
+  stroke-width: 1;
+}
+.dg-band__fx {
+  font-size: 13px;
+  font-weight: 600;
+  fill: var(--ap-ink);
+}
+.dg-band__fk {
+  font-family: var(--ap-font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.12em;
+  fill: var(--ap-muted);
+  text-transform: uppercase;
+}
+.dg-node {
+  rx: 7px;
+  fill: var(--ap-paper);
+  stroke: var(--node-line, var(--ap-line));
+  stroke-width: 1;
+}
+.dg-node--accent {
+  stroke: var(--ap-accent);
+}
+.dark .dg-node {
+  fill: rgba(255, 255, 255, 0.045);
+}
+.dg-node__t {
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--ap-ink);
+}
+.dg-node__s {
+  font-size: 9px;
+  fill: var(--ap-muted);
+}
+.dg-node__t--lg {
+  font-size: 13px;
+  letter-spacing: 0.1em;
+}
+/* 层内分组框：比色带再深一档，用来圈同属一类的组件 */
+.dg-slab {
+  fill: var(--ap-paper);
+  stroke: var(--band-line, var(--ap-line));
+  stroke-width: 1;
+}
+.dark .dg-slab {
+  fill: rgba(255, 255, 255, 0.03);
+}
+.dg-slab__t {
+  font-family: var(--ap-font-mono);
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  fill: var(--ap-muted);
+  text-transform: uppercase;
+}
+/* 层间连接：短竖线 + 箭头，克制到几乎只是一条引导 */
+.dg-hop {
+  stroke: var(--ap-line-strong);
+  stroke-width: 1;
+  stroke-dasharray: 2 3;
+  fill: none;
+}
+.dg-hop-head {
+  fill: var(--ap-line-strong);
+}
+
