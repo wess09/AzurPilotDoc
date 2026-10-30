@@ -39,6 +39,10 @@ Android Runtime 新增 `rootfs/overlays/android_ntp.py`，通过仅在 `AZURPILO
 该兼容层不修改系统时间，不代表 NTP 校时已成功，也不保证设备本机时钟准确。APK 资产与 Runtime 均可携带覆盖层；已实现同等异步能力的上游核心不会重复覆盖。DNS 另由 `ContainerDns.kt` 提供 DoH 与 AliDNS 回退。更多检查方式见[Android 更新与排障](/android/user/maintenance)和[上游技术说明](https://github.com/wess09/AzurPilot-for-Android/blob/main/doc/android-background-ntp.md)。
 
 
+### Android 装备码桥接
+
+使用 `azurpilot_android` 控制方式时，Runtime 的 `rootfs/overlays/android_equipment.py` 将装备码**输入与读取**交给宿主特权桥，并通过 `ping.capabilities.equipmentCode` 判断设备是否支持。宿主未提供此能力时不会尝试高权限输入，也不会静默回退到主屏的 uiautomator2；应更新 APK 并重新启动。此能力影响[演习与 META 的装备方案](/azurpilot/user/tasks/daily)，不保证游戏内装备操作在中断后自动恢复。
+
 ## <DocIcon name="settings" /> 部署状态机
 
 `ProvisionState`：

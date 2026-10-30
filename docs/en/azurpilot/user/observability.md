@@ -1,7 +1,7 @@
 ---
 title: Notifications, Logs & Metrics
 description: Log file organization, crash dump locations, OnePush notifications, LLM error diagnostics, daily summaries, and metrics.
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # Notifications, Logs & Metrics
@@ -101,6 +101,10 @@ The Resource Management view renders Sankey diagrams tracking resource inflows a
 ::: tip Statistics Depend on Active Runs
 Resource levels are captured when tasks run and complete battles, rather than through polling loops. If an instance idles, statistics graphs will plateau.
 :::
+
+### Screenshot upload v2 and legacy queue migration
+
+The optional screenshot pipeline in `module/statistics/cloud_upload.py` uses `/api/v2/uploads/init` to obtain upload parameters and uploads **directly to 123 cloud storage** via presigned HTTPS URLs, without proxying complete screenshots through the intermediate API. Each job stores an upload ID, MD5 and SHA-256. Temporary files are deleted only after the final acknowledgment; legacy queued jobs migrate to v2 before transmission. Rate limiting and network errors retain the bounded local queue. This pipeline differs from the structured v3 statistics and unknown-icon service described above.
 
 ## <DocIcon name="plug" /> External Monitoring Integrations
 

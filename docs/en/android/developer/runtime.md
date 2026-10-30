@@ -39,6 +39,10 @@ The Android-only `rootfs/overlays/android_ntp.py` is activated through `sitecust
 The overlay does not change system time or guarantee successful NTP connectivity. Existing upstream asynchronous implementations are left alone. `ContainerDns.kt` separately supplies DoH with an AliDNS fallback. See [Maintenance](/en/android/user/maintenance) and the [Android NTP notes](https://github.com/wess09/AzurPilot-for-Android/blob/main/doc/android-background-ntp.md).
 
 
+### Android equipment-code bridge
+
+With the `azurpilot_android` control backend, `rootfs/overlays/android_equipment.py` forwards equipment-code input/export through the privileged host. It first checks `ping.capabilities.equipmentCode`. Without support, it does not silently fall back to on-screen uiautomator2 input; update the APK and restart. This enables [Exercise and META equipment plans](/en/azurpilot/user/tasks/daily), but cannot guarantee restoration after an interrupted operation.
+
 ## <DocIcon name="settings" /> Provisioning State Machine
 
 `ProvisionState`:

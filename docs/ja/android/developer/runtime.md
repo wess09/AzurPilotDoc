@@ -39,6 +39,10 @@ Android 専用 `rootfs/overlays/android_ntp.py` は `AZURPILOT_ANDROID=1` 時に
 この処理は端末のシステム時刻を変更せず、NTP 成功を保証するものでもありません。別途 `ContainerDns.kt` で DoH と AliDNS フォールバックを提供します。[更新と修復](/ja/android/user/maintenance)と[技術資料](https://github.com/wess09/AzurPilot-for-Android/blob/main/doc/android-background-ntp.md)を参照してください。
 
 
+### Android 装備コードの橋渡し
+
+`azurpilot_android` 制御方式では、`rootfs/overlays/android_equipment.py` が装備コードの入力と取得を宿主特権ブリッジに委ねます。`ping.capabilities.equipmentCode` で対応を確認し、未対応なら uiautomator2 に黙って切り替えません。APK 更新とアプリ再起動が必要になる場合があります。[演習と META の装備プラン](/ja/azurpilot/user/tasks/daily)にも関係しますが、中断後の復元は保証されません。
+
 ## <DocIcon name="settings" /> デプロイ状態マシン
 
 `ProvisionState` の状態遷移：

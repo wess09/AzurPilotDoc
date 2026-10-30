@@ -1,7 +1,7 @@
 ---
 title: Install Launcher
 description: Download, extraction, permissions, and runtime setup for Windows, macOS, and Linux desktop launcher installations.
-updated: 2026-10-30
+updated: 2026-10-31
 ---
 
 # Install Launcher
@@ -47,9 +47,9 @@ The launcher stores repositories, `.venv`, settings, and logs within its root di
 ## <DocIcon name="monitor" /> Windows
 
 <Steps>
-<Step title="Extract archive">
+<Step title="Install or extract">
 
-Extract using 7-Zip or Windows Explorer. Do not run the executable from inside the compressed zip view.
+Run `AzurPilot_Setup_*.exe` using the installer wizard, or extract a portable archive with 7-Zip/Explorer into a separate writable directory. Do not execute files inside the archive viewer.
 
 </Step>
 <Step title="Grant Administrator privileges">
@@ -130,7 +130,7 @@ Initial startup executes a complete environment bootstrap. Verify successful com
 
 ## <DocIcon name="circle-off" /> Uninstallation
 
-Delete the installation directory. The launcher writes no registry entries (except optional autostart) and leaves no system library artifacts.
+For portable builds, exit and delete the application directory. If you used the Windows installer, uninstall through **Installed apps**; the installer registers an uninstall entry. Back up configuration and statistics first.
 
 **Backup `config/` before deletion** to prevent permanent loss of instance settings, statistics, and vault keys:
 

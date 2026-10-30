@@ -1,7 +1,7 @@
 ---
 title: 安裝啟動器
 description: Windows、macOS、Linux 的下載、解壓縮、權限與運行步驟，以及 WebView 依賴和首次啟動檢查。
-updated: 2026-10-30
+updated: 2026-10-31
 ---
 
 # 安裝啟動器
@@ -47,9 +47,9 @@ Windows 提供安裝程式（例如 `AzurPilot_Setup_3.0.4.exe`）及便攜壓�
 ## <DocIcon name="monitor" /> Windows
 
 <Steps>
-<Step title="解壓縮">
+<Step title="安裝或解壓縮">
 
-用 7-Zip 或系統自帶解壓縮。不要直接在壓縮包裏雙擊運行。
+使用 `AzurPilot_Setup_*.exe` 時按安裝嚮導操作；便攜壓縮包須先解壓到可寫入的獨立目錄，不要直接在壓縮包內執行。
 
 </Step>
 <Step title="允許管理員權限">
@@ -130,7 +130,7 @@ sudo apt install libwebkit2gtk-4.1-0 libgtk-3-0
 
 ## <DocIcon name="circle-off" /> 移除
 
-刪除整個目錄即可。啟動器不寫註冊表（除開機自啟項），也不在系統目錄留下運行庫。
+便攜版可退出後刪除程式目錄；Windows 安裝程式版應透過系統「已安裝的應用程式」移除（安裝程式會登記解除安裝資訊）。事前請備份配置及統計。
 
 **刪除前先備份 `config/`**，否則實例配置、統計與帳號保險庫全部丟失。
 

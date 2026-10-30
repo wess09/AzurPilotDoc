@@ -39,6 +39,10 @@ Android 專用 `rootfs/overlays/android_ntp.py` 只在 `AZURPILOT_ANDROID=1` 時
 此機制**不會修改手機系統時間，也不代表 NTP 一定成功**。另外 `ContainerDns.kt` 提供 DoH 及 AliDNS 回退。詳見[更新與排障](/zh-HK/android/user/maintenance)及[技術說明](https://github.com/wess09/AzurPilot-for-Android/blob/main/doc/android-background-ntp.md)。
 
 
+### Android 裝備碼特權橋
+
+使用 `azurpilot_android` 控制方式時，`rootfs/overlays/android_equipment.py` 透過宿主特權橋讀取及輸入裝備碼，先檢查 `ping.capabilities.equipmentCode`。若宿主不支援，不會偷偷回退到 uiautomator2；請更新 APK 並重啟。此功能可支援[演習及 META 裝備方案](/zh-HK/azurpilot/user/tasks/daily)，但無法保證中斷後恢復原裝備。
+
 ## <DocIcon name="settings" /> 部署狀態機
 
 `ProvisionState`：

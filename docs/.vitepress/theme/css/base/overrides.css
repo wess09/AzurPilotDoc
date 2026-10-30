@@ -12,8 +12,8 @@
   --vp-font-family-mono: 'JetBrainsMono', "Menlo", "Monaco", Consolas, "Courier New", monospace;
 
   /* --- 1. 核心品牌色定义 (Coral Red) --- */
-  --vp-c-brand-1: #3d6fd6;
-  --vp-c-brand-2: #2f5bb8;
+  --vp-c-brand-1: #2f5bb8;
+  --vp-c-brand-2: #2752a5;
   /* Hover 稍深 */
   --vp-c-brand-3: #274a96;
   /* Active 更深 */
@@ -27,12 +27,13 @@
 
   /* --- 2. 语义色 (Apple Human Interface Colors) --- */
   /* Tip 使用蓝色，避免满屏红色导致视觉疲劳或误报 */
-  --vp-c-tip-1: #007AFF;
+  --vp-c-tip-1: #0054b8;
   --vp-c-tip-soft: rgba(0, 122, 255, 0.12);
 
   /* --- 3. 自定义块颜色 (Admonitions) --- */
   /* Tip 块：使用蓝色体系，看起来更像 iOS 的提示弹窗 */
   --vp-custom-block-tip-border: transparent;
+  --vp-c-danger-1: #9e1d23;
   --vp-custom-block-tip-text: #0c4a6e;
   /* 深蓝字，保证对比度 */
   --vp-custom-block-tip-bg: var(--vp-c-tip-soft);
@@ -239,4 +240,14 @@ summary .doc-icon,
 .float-button:hover {
   background-color: var(--vp-c-brand-2) !important;
   transform: translateY(-2px);
+}
+
+/* WCAG AA: ensure small text is readable on tinted backgrounds.
+   The selectors are limited to source-code labels and syntax comments in light mode;
+   dark-mode syntax highlighting retains its existing palette. */
+html:not(.dark) .vp-doc div[class*="language-"] > span.lang {
+  color: #555760;
+}
+html:not(.dark) .vp-doc div[class*="language-"] span[style*="--shiki-light:#6A737D"] {
+  --shiki-light: #55606b !important;
 }
