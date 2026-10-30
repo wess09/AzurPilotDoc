@@ -1096,7 +1096,7 @@ export default withMermaid(
           linkText: '回到首頁',
         },
         editLink: {
-          pattern: `https://github.com/wess09/AzurPilotDoc/edit/${process.env.DOCS_EDIT_BRANCH || 'main'}/docs/:path`,
+          pattern: `https://github.com/wess09/AzurPilotDoc/edit/${process.env.DOCS_EDIT_BRANCH || 'master'}/docs/:path`,
           text: '在 GitHub 上編輯此頁',
         },
         footer: {
@@ -1158,7 +1158,7 @@ export default withMermaid(
           linkText: '回到首頁',
         },
         editLink: {
-          pattern: `https://github.com/wess09/AzurPilotDoc/edit/${process.env.DOCS_EDIT_BRANCH || 'main'}/docs/:path`,
+          pattern: `https://github.com/wess09/AzurPilotDoc/edit/${process.env.DOCS_EDIT_BRANCH || 'master'}/docs/:path`,
           text: '在 GitHub 上編輯此頁',
         },
         footer: {
@@ -1219,7 +1219,7 @@ export default withMermaid(
           linkText: 'Take me there',
         },
         editLink: {
-          pattern: `https://github.com/wess09/AzurPilotDoc/edit/${process.env.DOCS_EDIT_BRANCH || 'main'}/docs/:path`,
+          pattern: `https://github.com/wess09/AzurPilotDoc/edit/${process.env.DOCS_EDIT_BRANCH || 'master'}/docs/:path`,
           text: 'Edit this page on GitHub',
         },
         footer: {
@@ -1266,7 +1266,7 @@ export default withMermaid(
           linkText: 'トップページに戻る',
         },
         editLink: {
-          pattern: `https://github.com/wess09/AzurPilotDoc/edit/${process.env.DOCS_EDIT_BRANCH || 'main'}/docs/:path`,
+          pattern: `https://github.com/wess09/AzurPilotDoc/edit/${process.env.DOCS_EDIT_BRANCH || 'master'}/docs/:path`,
           text: 'GitHub でこのページを編集',
         },
         footer: {
@@ -1389,8 +1389,8 @@ export default withMermaid(
     docFooter: { prev: '上一篇', next: '下一篇' },
     lastUpdated: { text: '最后更新', formatOptions: { dateStyle: 'medium' } },
     editLink: {
-      // 仓库默认分支不确定时用 DOCS_EDIT_BRANCH 覆盖，避免「编辑此页」404。
-      pattern: `https://github.com/wess09/AzurPilotDoc/edit/${process.env.DOCS_EDIT_BRANCH || 'main'}/docs/:path`,
+      // 文档仓库默认分支是 master；部署到其他分支时可用 DOCS_EDIT_BRANCH 覆盖。
+      pattern: `https://github.com/wess09/AzurPilotDoc/edit/${process.env.DOCS_EDIT_BRANCH || 'master'}/docs/:path`,
       text: '在 GitHub 上编辑此页',
     },
     footer: {

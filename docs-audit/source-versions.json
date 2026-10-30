@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "audit_date": "2026-10-31",
+  "audit_type": "incremental verification against the last documented source heads",
+  "source_branches": {
+    "wess09/AzurPilot": {
+      "branch": "master",
+      "head": "2eba570571ec9b7afd8c9b8ce52c7ccb2705a747",
+      "previous_audited_head": "2eba570571ec9b7afd8c9b8ce52c7ccb2705a747",
+      "new_commits": 0
+    },
+    "wess09/AzurPilotLauncher": {
+      "branch": "main",
+      "head": "e3e269054cb627c1484b58bb055b26f4b113ad40",
+      "previous_audited_head": "e3e269054cb627c1484b58bb055b26f4b113ad40",
+      "new_commits": 0
+    },
+    "wess09/AzurPilot-for-Android": {
+      "branch": "main",
+      "head": "5b4458557b8ef670edd4191c7b2e097c70cc3021",
+      "previous_audited_head": "5b4458557b8ef670edd4191c7b2e097c70cc3021",
+      "new_commits": 0
+    }
+  },
+  "docs_repository": {
+    "repository": "wess09/AzurPilotDoc",
+    "branch": "master",
+    "head_before_this_audit": "f95a8eb6dce2e7a8a41322029ea16f58f5a03279"
+  },
+  "source_indexes": {
+    "from_repository": "wess09/AzurPilot",
+    "from_commit": "2eba570571ec9b7afd8c9b8ce52c7ccb2705a747",
+    "task_commands": 101,
+    "config_groups": 173,
+    "websocket_methods": 80
+  },
+  "releases_checked": {
+    "wess09/AzurPilot": {
+      "latest_published_tag": "v1.0.4",
+      "published_at": "2026-09-21T06:43:11Z"
+    },
+    "wess09/AzurPilotLauncher": {
+      "latest_stable_tag": "3.0.4",
+      "published_at": "2026-10-27T07:04:25Z",
+      "also_has_prerelease_channels": [
+        "canary",
+        "runtime"
+      ]
+    },
+    "wess09/AzurPilot-for-Android": {
+      "latest_release_tag": "azurpilot-android-latest",
+      "published_at": "2026-09-25T17:35:05Z"
+    }
+  },
+  "prior_docs_ci": {
+    "run_id": 41091791942,
+    "commit": "f95a8eb6dce2e7a8a41322029ea16f58f5a03279",
+    "conclusion": "success"
+  },
+  "verification_notes": [
+    "No new commits on the three audited source branches since the preceding documentation pass.",
+    "A published Release is not equivalent to the latest branch HEAD.",
+    "The Android upstream-check commits with [skip ci] are not, by themselves, feature releases.",
+    "The docs CI success applies to the prior documentation commit; a documentation change requires its own CI result."
+  ]
+}

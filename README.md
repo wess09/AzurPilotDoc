@@ -68,7 +68,7 @@ npm run build
 - GitHub Pages：同样输出目录；若部署在子路径，需设置 `base`
 - Nginx：`root /path/to/dist; try_files $uri $uri/ $uri.html =404;`
 - 站点域名：构建时用 `DOCS_SITE_URL` 覆盖 canonical / sitemap 的 hostname
-- 编辑链接分支：默认 `main`，仓库默认分支不同时用 `DOCS_EDIT_BRANCH` 覆盖
+- 编辑链接分支：默认 `master`（与文档仓库实际默认分支一致）；部署到其他分支时用 `DOCS_EDIT_BRANCH` 覆盖
 
 **未在未经确认的情况下部署到 `azurpilot.com` 或任何现有生产域名。**
 
