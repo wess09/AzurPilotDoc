@@ -1,6 +1,6 @@
 ---
 title: First Run & Runtime Setup
-description: Launcher 3.x two-stage deployment and startup: component downloads, Python bootstrap, core synchronization and WebUI login.
+description: "Launcher 3.x two-stage deployment and startup: component downloads, Python bootstrap, core synchronization and WebUI login."
 updated: 2026-10-31
 ---
 
