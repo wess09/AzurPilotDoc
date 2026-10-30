@@ -1,7 +1,7 @@
 ---
 title: Runtime & PRoot
 description: Immutable rootfs artifacts, PRoot session contracts, provisioning state machines, and transactional script hot updates.
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # Runtime & PRoot
@@ -31,6 +31,13 @@ App Shell (Parent) ──stdin pipe──▶ proot wrapper ──▶ Runtime Pro
 ::: danger Never Spawn via Background Daemon Wrappers
 Spawning processes via background wrappers like `nohup` breaks the parent-child relationship. Orphaned runtimes will continue running in the background, conflicting over configurations and SQLite database locks on subsequent boots.
 :::
+
+## Background NTP and DNS compatibility
+
+The Android-only `rootfs/overlays/android_ntp.py` is activated through `sitecustomize` when `AZURPILOT_ANDROID=1`. Initial time reads return device time immediately. Network synchronization runs in one daemon worker per source, updating a monotonic-clock-backed cache. DNS/NTP delays no longer block screenshots or scheduling. Failed synchronization retains the last calibration, or uses device time before the first success; `refresh(force=True)` schedules a refresh without awaiting the network.
+
+The overlay does not change system time or guarantee successful NTP connectivity. Existing upstream asynchronous implementations are left alone. `ContainerDns.kt` separately supplies DoH with an AliDNS fallback. See [Maintenance](/en/android/user/maintenance) and the [Android NTP notes](https://github.com/wess09/AzurPilot-for-Android/blob/main/doc/android-background-ntp.md).
+
 
 ## <DocIcon name="settings" /> Provisioning State Machine
 

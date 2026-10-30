@@ -1,7 +1,7 @@
 ---
 title: 接口总览
 description: AzurPilot 对外暴露的三类接口：WebSocket RPC、Android 薄接口与 MCP 服务，以及鉴权与稳定性边界。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 接口总览
@@ -82,6 +82,13 @@ MCP：
   }
 }
 ```
+
+## 云端统计与模板服务（与本机 WebSocket 不同）
+
+委托、科研统计的新版云端协议在客户端完成奖励解析：主服务 `https://api.azurpilot.com` 的 `POST /api/v3/post/drops` 收取结构化掉落；未知物品的 **49×49 图标**提交到独立 `https://templates-api.azurpilot.com/api/v3/post/templates/unknown`。客户端从 `https://templates.azurpilot.com/latest.json` 获取签名模板指针、校验清单和图片哈希；不会把完整截图作为主统计 API 的请求载荷。
+
+云端提交须启用对应记录方式；失败数据进入本地持久化队列，限流、断网和进程重启后可继续处理。`record_id` 用于幂等，服务端回执分别处理成功、重复、拒绝和重试。此协议**不是**浏览器的 `/api/v1/ws` 或启动器专用 `/api/v2/launcher/ws`。详细数据结构、端点及安全约束见[核心仓库云 API 文档](https://github.com/wess09/AzurPilot/blob/master/docs/modules/cloud-api.md)，本地统计见[通知、日志与统计](/azurpilot/user/observability)。
+
 
 ## <DocIcon name="map" /> 继续阅读
 

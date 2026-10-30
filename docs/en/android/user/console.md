@@ -1,7 +1,7 @@
 ---
 title: Console, Floating Window & Screensaver
 description: View structure, global floating overlay controls, OLED burn-in prevention screensaver, widgets, and log export.
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # Console, Floating Window & Screensaver
@@ -98,6 +98,13 @@ Features:
 ::: danger Verify Credentials Before Sharing Archives
 Ensure logs do not contain `config/deploy.yaml`, `password.txt`, or `remote-access.json`. These credential files reside under the Runtime's `config/` directory and are excluded from standard log exports.
 :::
+
+## Submit a device compatibility report
+
+Go to **Settings → Submit your device**, review locally collected hardware and OS details, explicitly select **Working** or **Not working**, and consent to GitHub publication before submitting. A comment is added to [Android device support issue #1](https://github.com/wess09/AzurPilot-for-Android/issues/1); duplicates link to the existing comment. A result is never preselected.
+
+The report does not collect IMEI, serial numbers, Android ID, MAC addresses, logs or screenshots; review the displayed information yourself. The release build needs valid reporting credentials and an available backend; local builds without credentials may disable submissions. See the [reporting protocol](https://github.com/wess09/AzurPilot-for-Android/blob/main/doc/device-reporting.md) and [Runtime internals](/en/android/developer/runtime).
+
 
 ## <DocIcon name="settings" /> Settings Reference
 

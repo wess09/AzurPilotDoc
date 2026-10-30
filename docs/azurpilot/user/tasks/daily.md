@@ -1,7 +1,7 @@
 ---
 title: 日常与资源
 description: 委托、科研、后宅、指挥喵、大舰队、每日任务、演习、商店与研发船坞的配置要点与奖励领取逻辑。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 日常与资源
@@ -172,6 +172,13 @@ updated: 2026-10-20
 | `LowHpThreshold` | 低血量判定 |
 
 演习失败也会消耗次数，策略保守一点更稳。
+
+### 演习战前／战后装备方案
+
+演习任务新增 `Equipment.Enable`、`Equipment.ClearBeforeApply` 与 YAML 文本 `Equipment.Config`，可按 `flagship`、`up`、`down`、`head`、`middle`、`tail` 六个站位分别配置 `before`（首次出击前）和 `after`（任务结束后）的装备码。默认**关闭**；仅支持可输入装备码的控制方式。
+
+`ClearBeforeApply` 开启时会先卸下目标舰船装备再应用配装码。**设置了 `before` 但 `after` 留空的站位，任务结束时会被卸装，而不是自动恢复原装备**。如果换装失败、恢复入口不可用或进程中断，仍可能需要人工恢复；建议先用非关键编队验证。此功能不适用于 META 档案的独立编队，META 信标和支援的处理见[大型作战](/azurpilot/user/tasks/opsi)。
+
 
 ## <DocIcon name="trophy" /> 限界挑战（`LimitChallenge`）
 

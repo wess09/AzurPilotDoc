@@ -1,130 +1,35 @@
 ---
 title: 更新链路与镜像
-description: 核心仓库的 git 更新、uv 依赖同步、启动器 mTLS 自更新、镜像与回退策略。
-updated: 2026-10-30
+description: Launcher 3.x 的组件部署、核心源码更新、Stable／Canary 清单、mTLS 载荷、下载源与失败回退。
+updated: 2026-10-31
 ---
 
 # 更新链路与镜像
 
-启动器有两条更新线，走完全不同的协议：核心代码用 git，启动器自身用 mTLS + 静态清单。
+Launcher 3.x 有**三个不同环节**：下载运行引导组件、部署／更新核心程序、更新启动器自身。它们不使用同一套清单字段，也不能把所有操作都描述为 `git pull && uv sync --frozen`。
 
-## <DocIcon name="refresh" /> 核心仓库更新
+## 运行引导组件
 
-```text
-git pull
-  ├── 成功 → uv sync --frozen
-  └── 失败 → 指数退避重试（至多 20 次）
-```
+启动器从公开 `stable.json` 的 `runtime`（schema 2）读取每平台 Git、ADB ZIP 的 SHA-256、大小与下载地址，并补齐 `deploy/**` 以及系统对应的 `deploy.template*.yaml`。组件位于 `.azurpilot/tools/`，正常部署使用缓存、显式环境修复强制重新下载并校验。组件下载和 Python 安装是两个阶段。
 
-重试 20 次不是为了「等网络恢复」，而是为了扛住国内访问 GitHub 的间歇性失败。超过次数后进入错误页，不会带着半更新的代码启动。
+下载源偏好 `downloadSource` 有自动、CNB、GitHub；自动优先级按系统原始简体中文语言和北京时间共同判断，网络失败回退另一源。Python 与 PyPI 镜像还有独立设置；`config/deploy.yaml` 中用户明确指定的 PyPI 镜像保持优先。
 
-### 部署配置
+## 核心程序和 WebUI
 
-`deploy.<platform>[-cn].yaml` 控制更新行为：
+点击首页「启动」后，内嵌 uv 安装 Python 3.14.x、初始化 `.venv`，并通过 deploy 脚本更新仓库、同步依赖与构建前端。部署脚本使用的依赖同步方式是 `uv sync --no-dev --no-install-project`，失败可按镜像回退／重新解析锁定。**不能将该过程写成始终执行 `uv sync --frozen`**。
 
-| 字段 | 说明 |
-| --- | --- |
-| `Git.Repository` | 仓库地址 |
-| `Git.Branch` | 默认 `master` |
-| `Git.GitExecutable` | `.venv` 内 git 的路径 |
-| `Git.GitProxy` | HTTP / SOCKS5 代理 |
-| `Git.SSLVerify` | 是否校验证书 |
-| `Python.PypiMirror` | PyPI 镜像 |
+此过程不依赖此前已撤回的六组件预构建协议。只安装 Git、ADB 等引导组件，不会从 CI 下载完整的 Python 环境或核心源码镜像。详见[首次启动](/launcher/user/first-run)。
 
-六个变体：
+## 启动器正式版与 Canary
 
-| 平台 | 国际 | 国内 |
-| --- | --- | --- |
-| Windows | `deploy.windows.yaml` | `deploy.windows-cn.yaml` |
-| macOS | `deploy.mac.yaml` | `deploy.mac-cn.yaml` |
-| Linux / Unix | `deploy.unix.yaml` | `deploy.unix-cn.yaml` |
+启动器更新清单由构建期 `LAUNCHER_UPDATE_URL` 指定，失败后回退 `https://ap.launcher-update.nanoda.work/updata/stable.json`。**清单本身公开获取，不要求 mTLS**；在非 GitHub 下载源取得更新载荷时才使用编译期提供的 mTLS 身份（如果配置），随后核验 SHA-256。
 
-CN 版把仓库地址换成 `git://git.pull/AzurPilot`，并优先国内 PyPI。
+`updateChannel` 可选 `stable`（默认）或 `canary`。同一份清单的顶层字段描述正式版，`canary` 字段描述对应测试构建；没有可用 Canary 条目时不提示更新。更新选择依照通道判断版本，避免同号正式版与 Canary 相互误判。
 
-### 依赖同步
+`updateSource` 可选 `auto`（默认）、`official`、`github`、`cloudflare`，**只调整载荷 URL 优先级，不影响清单地址**。自动模式在简体中文＋北京时间环境优先官方源，否则优先 GitHub、Cloudflare、官方源。所有可用候选源均需遵守完整性校验，遇到 HTTP 429 可降低并发、按 Retry-After 退避并继续未完成分片；用户可以取消。
 
-```bash
-uv sync --frozen
-```
+## 通知、发布与回滚
 
-- 严格按 `uv.lock`，不重新解析版本。
-- 依赖安装失败 → 错误页，不启动后端。
-- `.venv` 是可重定位的，整个目录随项目移动。
+启动器会定期（约每 10 分钟）在后台检查可用更新，发现新版本时在首页显示更新入口，并针对同一版本避免重复通知。应用期间若下载失败或验证失败，保留当前启动器和用户数据，不应将失败的载荷当作成功。
 
-### Python 下载源
-
-`setup.rs` 按顺序尝试：
-
-```text
-1. registry.npmmirror.com/-/binary/python-build-standalone/
-2. mirror.nju.edu.cn/github-release/astral-sh/python-build-standalone/
-3. python-standalone.org/mirror/astral-sh/python-build-standalone/
-4. github.com/astral-sh/python-build-standalone/releases/download/
-```
-
-PyPI 依次使用阿里云、腾讯云、CERNET，最后官方源。
-
-## <DocIcon name="medal" /> 启动器自更新
-
-| 项 | 值 |
-| --- | --- |
-| 默认清单 | `https://launcher-api.azurpilot.com/updata/stable.json` |
-| 覆盖变量 | `LAUNCHER_UPDATE_URL` |
-| 传输 | mTLS（客户端证书由 CI 注入） |
-| 载荷 | R2 + CNB Release |
-| 清单托管 | Cloudflare 静态资源（无自定义 Worker 脚本） |
-| 下载入口 | `launcher-download.azurpilot.com` 做 302 |
-
-::: tip 为什么用静态资源而不是 Worker
-Cloudflare Worker 按请求计费，也会引入「每次请求都执行」的运行时依赖。清单是静态 JSON，放在静态资源上即可，不消耗 Workers 配额。
-:::
-
-### 校验
-
-1. 通过 mTLS 建立连接，确认服务端身份。
-2. 拉取 `stable.json`，比较版本。
-3. 下载载荷，校验大小与摘要。
-4. 替换可执行文件并重启。
-
-失败时回退到下一个镜像；全部失败则保留当前版本，不阻断使用。
-
-### 正式版、Canary 与下载源
-
-从 3.0.3 起，更新清单同时支持正式版与 Canary：`updateChannel=stable`（默认）读取正式版，`canary` 读取清单内的 Canary 项；若尚无 Canary 构建，则不会提供 Canary 更新。
-
-`updateSource` 支持 `auto`（默认）、`official`、`github`、`cloudflare`。该选项改变**安装载荷**的优先下载顺序，失败时仍会回退到其他有效源：自动模式在简体中文且北京时间环境优先官方源，其他环境依次优先 GitHub、Cloudflare、官方源。正式版和 Canary 使用各自的版本与载荷信息，下载后校验 SHA-256。
-
-更新清单地址由构建时的 `LAUNCHER_UPDATE_URL` 指定；请求失败可回退到 `https://ap.launcher-update.nanoda.work/updata/stable.json`。改变载荷下载源不会改变清单地址。
-
-## <DocIcon name="handshake" /> 两条线的交互
-
-| 事件 | 核心 | 启动器 |
-| --- | --- | --- |
-| 更新核心 | 代码与依赖变化 | 不变 |
-| 更新启动器 | 不变 | 二进制变化 |
-| 启动器要求新 Python | 不变 | 重建 `.venv` |
-| 核心要求新依赖 | `uv sync` 处理 | 不变 |
-
-::: warning 不要同时更新两者
-先更新启动器到能支持新核心的版本，再更新核心；或者反过来确认新启动器兼容当前核心。同时更新出问题时，很难判断是哪一边导致的。
-:::
-
-## <DocIcon name="cloud" /> 代理与直连
-
-启动器在以下场景**绕过系统代理**：
-
-- 更新代码、内置 Python、uv 与依赖安装。
-- WebView 连接本地 WebUI（`--no-proxy-server`）。
-
-原因：本地回环不该走代理；下载链路已有自己的镜像与重试策略，系统代理反而增加失败点。
-
-需要代理时，写在 `deploy.yaml` 的 `Git.GitProxy`，不要让系统代理介入全部流量。
-
-## <DocIcon name="settings" /> 私有部署
-
-| 需求 | 做法 |
-| --- | --- |
-| 用自己的核心 fork | 改 `Git.Repository` 与 `Branch` |
-| 用自己的更新源 | 构建时设 `LAUNCHER_UPDATE_URL` |
-| 内网镜像 | 部署 `stable.json` 与载荷，保持字段结构一致 |
-| 离线环境 | 首次在有网环境完成自举，之后 `--skip-update` 启动 |
+发布流程由 `.github/workflows/package.yml` 管理；运行组件清单的 `runtime` 字段与启动器更新载荷字段独立更新，Canary 不覆盖 Stable。更多信息见[构建与发布](/launcher/developer/build-release)与[维护指南](/launcher/user/maintenance)。

@@ -1,7 +1,7 @@
 ---
 title: Runtime と PRoot
 description: rootfs アーティファクト、PRoot セッション規約、デプロイ状態マシン、展開パイプライン、トランザクション保護下のホット更新。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # Runtime と PRoot
@@ -31,6 +31,13 @@ App（親プロセス） ──stdin パイプ──▶ proot wrapper ──▶ 
 ::: danger バックグラウンド起動への変更は厳禁です
 `nohup` 等を用いて親子関係を切り離すと、親プロセスの死亡検知プロトコルが失われます。親プロセス終了後も Runtime が動作し続けるため、次回起動時に同一の設定ファイルや SQLite データベースに対して競合が発生し、データ破壊の原因になります。
 :::
+
+## 非同期 NTP と DNS の互換処理
+
+Android 専用 `rootfs/overlays/android_ntp.py` は `AZURPILOT_ANDROID=1` 時に `sitecustomize` 経由で動きます。最初の時刻読み取りは端末時刻を即座に返し、NTP 通信はバックグラウンドで進めます。成功した校正値と単調時計を使用し、DNS／NTP 遅延によってスクリーンショットやタスク実行が停止することを避けます。`refresh(force=True)` は同期完了を待ちません。
+
+この処理は端末のシステム時刻を変更せず、NTP 成功を保証するものでもありません。別途 `ContainerDns.kt` で DoH と AliDNS フォールバックを提供します。[更新と修復](/ja/android/user/maintenance)と[技術資料](https://github.com/wess09/AzurPilot-for-Android/blob/main/doc/android-background-ntp.md)を参照してください。
+
 
 ## <DocIcon name="settings" /> デプロイ状態マシン
 

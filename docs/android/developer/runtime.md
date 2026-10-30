@@ -1,7 +1,7 @@
 ---
 title: Runtime 与 PRoot
 description: rootfs 工件、PRoot 会话契约、部署状态机、解压流水线与事务式热更新。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # Runtime 与 PRoot
@@ -31,6 +31,13 @@ App（父） ──stdin 管道──▶ proot wrapper ──▶ Runtime 进程�
 ::: danger 不要改成「后台启动」
 `nohup` 式启动会切断父子关系，父进程死亡后 Runtime 继续跑，下次启动会争抢同一份配置与数据库。
 :::
+
+## Android 后台 NTP 与 DNS 兼容层
+
+Android Runtime 新增 `rootfs/overlays/android_ntp.py`，通过仅在 `AZURPILOT_ANDROID=1` 时生效的 `sitecustomize` 延迟加载。首次时间读取立即返回设备本机时间；网络同步在后台线程完成，成功后通过缓存与单调时钟推进。DNS 或 NTP 超时不会长时间阻塞截图和调度，失败保留已校准结果或回退本机时间；`refresh(force=True)` 请求后台刷新而不等待本轮网络返回。
+
+该兼容层不修改系统时间，不代表 NTP 校时已成功，也不保证设备本机时钟准确。APK 资产与 Runtime 均可携带覆盖层；已实现同等异步能力的上游核心不会重复覆盖。DNS 另由 `ContainerDns.kt` 提供 DoH 与 AliDNS 回退。更多检查方式见[Android 更新与排障](/android/user/maintenance)和[上游技术说明](https://github.com/wess09/AzurPilot-for-Android/blob/main/doc/android-background-ntp.md)。
+
 
 ## <DocIcon name="settings" /> 部署状态机
 

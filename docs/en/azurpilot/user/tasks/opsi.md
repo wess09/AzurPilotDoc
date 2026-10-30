@@ -1,7 +1,7 @@
 ---
 title: Operation Siren
 description: "19 Operation Siren tasks: Action Point mechanics, intelligent scheduler decision trees, exploration, and monthly resets."
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # Operation Siren
@@ -96,6 +96,11 @@ Progress checkpoints save per sector; once completed for the month, the task idl
 | `OpsiAshAssist` | Assists friends and guild members with META Showdown battles |
 
 Configure shop purchase priorities inside `Filter`. Purple Coins are scarce; prioritize classified research materials.
+
+### META beacons and equipment restoration
+
+`OpsiAshBeacon` and `OpsiAshAssist` support the same optional `Equipment.Config` pre-/post-battle plans. After a beacon ends, the simulation-battle preparation screen can be used to restore the post-battle loadout. **META Dossier uses a separate fleet and is excluded.** A crash or unavailable entry screen may prevent automatic restoration; inspect equipment manually. See [Exercise Equipment](/en/azurpilot/user/tasks/daily).
+
 
 ## <DocIcon name="target" /> Obscure, Abyssal & Stronghold Sectors
 

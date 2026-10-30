@@ -1,7 +1,7 @@
 ---
 title: Runtime 與 PRoot
 description: rootfs 工件、PRoot 會話契約、部署狀態機、解壓縮流水線與事務式熱更新。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # Runtime 與 PRoot
@@ -31,6 +31,13 @@ App（父） ──stdin 管道──▶ proot wrapper ──▶ Runtime 进程�
 ::: danger 不要改成「後臺啟動」
 `nohup` 式啟動會切斷父子關係，父處理程序死亡後 Runtime 繼續跑，下次啟動會爭搶同一份配置與資料庫。
 :::
+
+## 後台 NTP 校時與 DNS 回退
+
+Android 專用 `rootfs/overlays/android_ntp.py` 只在 `AZURPILOT_ANDROID=1` 時由 `sitecustomize` 啟用。首次讀取時間直接返回裝置時鐘，NTP 在背景同步，成功後利用校時快取及單調時鐘推進。DNS／NTP 網絡延遲不再阻塞截圖和調度，`refresh(force=True)` 亦不等待這次連線完成。
+
+此機制**不會修改手機系統時間，也不代表 NTP 一定成功**。另外 `ContainerDns.kt` 提供 DoH 及 AliDNS 回退。詳見[更新與排障](/zh-TW/android/user/maintenance)及[技術說明](https://github.com/wess09/AzurPilot-for-Android/blob/main/doc/android-background-ntp.md)。
+
 
 ## <DocIcon name="settings" /> 部署狀態機
 

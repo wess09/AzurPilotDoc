@@ -1,7 +1,7 @@
 ---
 title: WebSocket API v1 Reference
-description: "WebSocket API v1 specification: protocol envelopes, session handshake, topic subscriptions, error codes, and 72 methods."
-updated: 2026-10-20
+description: "WebSocket API v1 specification: protocol envelopes, session handshake, topic subscriptions, error codes, and 80 methods."
+updated: 2026-10-31
 ---
 
 # WebSocket API v1
@@ -172,6 +172,13 @@ Validation errors report property paths and expected types only, scrubbing input
 ```json
 {"v":1,"type":"request","id":"7","method":"logs.get","params":{"instance":"ap","after":128}}
 ```
+
+### Business WebSocket vs launcher WebSocket
+
+This page documents the `/api/v1/ws` business protocol with `v:1` messages. The launcher also has a **separate** authenticated `/api/v2/launcher/ws` channel; do not send v1 envelopes to it. Its `login.issue` method creates a one-time, 60-second ticket, which the embedded WebUI consumes through the v1 method `auth.launcher({ticket})` without exposing the WebUI password.
+
+The current business contract also includes `launcher.status`, `launcher.autostart.set`, `launcher.command.get`, `fleetTraining.reset`, and `auth.launcher`. See the updated method table below and [Launcher Architecture](/en/launcher/developer/architecture).
+
 
 ## <DocIcon name="clipboard" /> Method Catalog
 

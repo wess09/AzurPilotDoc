@@ -1,130 +1,25 @@
 ---
 title: Update Pipelines & Mirrors
-description: Core repository Git updates, uv dependency synchronization, launcher mTLS self-updates, and mirror failover strategies.
-updated: 2026-10-30
+description: Launcher 3.x component bootstrap, core deploy scripts, Stable/Canary updates, mTLS payloads and mirror failover.
+updated: 2026-10-31
 ---
 
 # Update Pipelines & Mirrors
 
-The launcher employs two separate update pipelines operating over distinct protocols: the core program updates via Git, while the launcher binary updates over mTLS using static manifests.
+There are **three distinct processes**: deploying Git/ADB bootstrap components, updating the AzurPilot core, and updating the launcher itself.
 
-## <DocIcon name="refresh" /> Core Repository Updates
+## Components and core
 
-```text
-git pull
-  ├── Success → uv sync --frozen
-  └── Failure → Exponential backoff retry (up to 20 attempts)
-```
+The public `stable.json` manifest includes `runtime` schema 2 with Git/ADB component metadata and `deploy/**` bootstrap files. Components live under `.azurpilot/tools/`. **Deploy** only installs these bootstrap files.
 
-The 20-retry loop accommodates transient network latency when reaching GitHub from restrictive networks. Exceeding the retry limit directs users to the diagnostic error view rather than booting partially updated code.
+**Start** uses embedded uv for Python 3.14.x, then deploy scripts to update the core, synchronize Python dependencies and build the WebUI. The deploy implementation uses `uv sync --no-dev --no-install-project` with mirror fallbacks; the old claim that it always runs `uv sync --frozen` is incorrect. Explicit **Repair** redownloads tools and rebuilds `.venv` while retaining user configuration.
 
-### Deployment Configurations
+## Stable, Canary and mirrors
 
-The `deploy.<platform>[-cn].yaml` files govern update operations:
+The build-time `LAUNCHER_UPDATE_URL` selects the public manifest URL; `https://ap.launcher-update.nanoda.work/updata/stable.json` is a fallback. **The manifest does not require mTLS.** Non-GitHub payload downloads may present an embedded client identity and are checked with SHA-256.
 
-| Property | Description |
-| --- | --- |
-| `Git.Repository` | Remote Git repository URL |
-| `Git.Branch` | Target branch (defaults to `master`) |
-| `Git.GitExecutable` | Path to Git binary within `.venv` |
-| `Git.GitProxy` | HTTP / SOCKS5 proxy URL |
-| `Git.SSLVerify` | Toggle SSL certificate verification |
-| `Python.PypiMirror` | Configured PyPI mirror index |
+`updateChannel` is `stable` (default) or `canary`. `updateSource` is `auto`, `official`, `github`, or `cloudflare`, and changes payload priority only. Auto prefers the official source when the original system language is Simplified Chinese and the time zone is Beijing; otherwise it prefers GitHub, Cloudflare, then official. HTTP 429 can trigger reduced concurrency and Retry-After backoff; partial transfers can resume.
 
-Six configuration variants:
+Launcher checks for new versions periodically (roughly every 10 minutes). The manifest's runtime, stable launcher and Canary fields are independently updated.
 
-| Platform | Global Profile | Mainland China Profile |
-| --- | --- | --- |
-| Windows | `deploy.windows.yaml` | `deploy.windows-cn.yaml` |
-| macOS | `deploy.mac.yaml` | `deploy.mac-cn.yaml` |
-| Linux / Unix | `deploy.unix.yaml` | `deploy.unix-cn.yaml` |
-
-The CN configuration switches the repository URL to `git://git.pull/AzurPilot` and prioritizes regional PyPI mirrors.
-
-### Dependency Synchronization
-
-```bash
-uv sync --frozen
-```
-
-- Locks strictly to `uv.lock` without recalculating versions.
-- If dependency synchronization fails, the launcher halts at the error screen.
-- `.venv` is fully relocatable, enabling folder migration across paths.
-
-### Python Binary Mirrors
-
-`setup.rs` iterates through download mirrors sequentially:
-
-```text
-1. registry.npmmirror.com/-/binary/python-build-standalone/
-2. mirror.nju.edu.cn/github-release/astral-sh/python-build-standalone/
-3. python-standalone.org/mirror/astral-sh/python-build-standalone/
-4. github.com/astral-sh/python-build-standalone/releases/download/
-```
-
-PyPI packages query Aliyun, Tencent Cloud, and CERNET before trying upstream indexes.
-
-## <DocIcon name="medal" /> Launcher Self-Updates
-
-| Property | Value |
-| --- | --- |
-| Default Manifest | `https://launcher-api.azurpilot.com/updata/stable.json` |
-| Override Variable | `LAUNCHER_UPDATE_URL` |
-| Transport Protocol | mTLS (client certificates injected by CI) |
-| Binary Storage | Cloudflare R2 + CNB Releases |
-| Manifest Hosting | Cloudflare Pages / Static Assets (no Worker overhead) |
-| Download Redirection | `launcher-download.azurpilot.com` via HTTP 302 |
-
-::: tip Why Static Assets Instead of Cloudflare Workers
-Cloudflare Workers incur per-request billing and introduce runtime dependencies. Because update manifests are static JSON files, hosting them as static assets costs zero worker quota.
-:::
-
-### Integrity Validation Flow
-
-1. Establishes an mTLS connection, validating server identity.
-2. Fetches `stable.json` and evaluates version semver strings.
-3. Downloads the release payload, validating byte size and SHA-256 hashes.
-4. Replaces the active executable binary and restarts the process.
-
-If downloads fail, the updater fails over to secondary mirrors; if all fail, it retains the existing binary without interrupting operation.
-
-### Stable, Canary, and Download Sources
-
-Since 3.0.3, one update manifest can describe both channels: `updateChannel=stable` (default) selects the stable release; `canary` selects the Canary entry. If no Canary build is listed, no Canary update is offered.
-
-`updateSource` is `auto` (default), `official`, `github`, or `cloudflare`. It sets **payload download priority**, with fallback to other available URLs. In auto mode, Simplified Chinese with Beijing time prefers the official source; other environments prefer GitHub, then Cloudflare, then the official source. Payloads are verified using SHA-256.
-
-The update-manifest URL is set at build time by `LAUNCHER_UPDATE_URL`, with `https://ap.launcher-update.nanoda.work/updata/stable.json` as a fallback. Selecting a payload source does not change the manifest URL.
-
-## <DocIcon name="handshake" /> Cross-Track Interactions
-
-| Event | Core Program | Desktop Launcher |
-| --- | --- | --- |
-| Update Core Program | Source and dependencies change | Binary remains unchanged |
-| Update Launcher | Unchanged | Binary executable is replaced |
-| Launcher requires newer Python | Unchanged | Rebuilds `.venv` automatically |
-| Core requires updated packages | Handled via `uv sync` | Unchanged |
-
-::: warning Avoid Updating Both Simultaneously
-Update the launcher first to confirm compatibility with newer core architectures, then update the core program. Updating both at the same time makes it difficult to diagnose regressions.
-:::
-
-## <DocIcon name="cloud" /> Proxy Bypass Policies
-
-The launcher explicitly **bypasses system proxies** during these operations:
-
-- Updating source repositories, downloading embedded Python, uv, and dependencies.
-- Connecting the WebView to the local WebUI (`--no-proxy-server`).
-
-Local loopback connections must never traverse proxies, and download pipelines already embed dedicated mirrors and retry logic. System proxies add unnecessary points of failure.
-
-If a proxy is strictly required, configure it inside `Git.GitProxy` in `deploy.yaml` rather than routing global system traffic.
-
-## <DocIcon name="settings" /> Private Deployments
-
-| Requirement | Approach |
-| --- | --- |
-| Use custom core fork | Update `Git.Repository` and `Git.Branch` in `deploy.yaml` |
-| Use custom launcher updates | Compile launcher with custom `LAUNCHER_UPDATE_URL` |
-| Internal network mirror | Host `stable.json` and binaries matching standard schema |
-| Air-gapped environments | Complete bootstrap once online, then launch with `--skip-update` |
+See [First Run](/en/launcher/user/first-run) and [Build & Release](/en/launcher/developer/build-release).

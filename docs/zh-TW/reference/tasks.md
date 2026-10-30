@@ -1,14 +1,14 @@
 ---
 title: 任務命令總表
-description: 102 個任務命令的中文名、菜單分組、參陣列與手冊連結，由倉庫配置在構建期生成。
-updated: 2026-10-20
+description: 101 個任務命令的中文名、菜單分組、參陣列與手冊連結，由倉庫配置在構建期生成。
+updated: 2026-10-31
 ---
 
 # 任務命令總表
 
 下表覆蓋 `args.json` 中的全部任務鍵（不含 Dashboard 資源定義）。**命令**是 `alas.py` 的方法名（駝峰轉下劃線），也是配置裡 `Scheduler.Command` 的值。
 
-共 102 個任務。數據來源：`https://github.com/wess09/AzurPilot` @ `7de6bb9`。
+共 101 個任務。數據來源：`https://github.com/wess09/AzurPilot` @ `2eba570`。
 
 ## <DocIcon name="settings" /> 系統（`Alas`）
 

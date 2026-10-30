@@ -1,7 +1,7 @@
 ---
 title: 配置参考
-description: AzurPilot 配置的路径语义、调度字段、常用选项组与全部 167 个参数组的字段索引。
-updated: 2026-10-20
+description: AzurPilot 配置的路径语义、调度字段、常用选项组与全部 173 个参数组的字段索引。
+updated: 2026-10-31
 ---
 
 # 配置参考
@@ -16,7 +16,7 @@ updated: 2026-10-20
 
 运行时绑定后，业务代码用下划线属性访问：`self.config.Research_UseCube`。
 
-当前版本共 **167 个选项组**、**102 个任务**。数据来源：`https://github.com/wess09/AzurPilot` @ `7de6bb9`。
+当前版本共 **173 个选项组**、**101 个任务**。数据来源：`https://github.com/wess09/AzurPilot` @ `2eba570`。
 
 ::: tip 完整字段以 WebUI 为准
 下表列出字段名与数量，但**不复制每个字段的默认值、取值范围与帮助文案**——那些由 `argument.yaml` 与 `i18n/*.json` 在运行时分发，手抄会过期。需要精确值时看 WebUI 的字段提示，或直接读源码。
@@ -59,7 +59,7 @@ updated: 2026-10-20
 
 ## <DocIcon name="clipboard" /> 全部选项组
 
-展开查看 167 个组的字段索引。
+展开查看 173 个组的字段索引。
 
 ::: details 全部选项组
 

@@ -1,7 +1,7 @@
 ---
 title: 日常與資源
 description: 委託、科研、後宅、指揮喵、大艦隊、每日任務、演習、商店與研發船塢的配置要點與獎勵領取邏輯。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 日常與資源
@@ -172,6 +172,13 @@ updated: 2026-10-20
 | `LowHpThreshold` | 低血量判定 |
 
 演習失敗也會消耗次數，策略保守一點更穩。
+
+### 演習戰前與戰後裝備方案
+
+演習可選用 `Equipment.Enable`（預設關閉）、`Equipment.ClearBeforeApply` 及 YAML `Equipment.Config`，為 `flagship`、`up`、`down`、`head`、`middle`、`tail` 六個站位設定戰前 `before` 和戰後 `after` 裝備碼。控制方式必須支援輸入裝備碼。
+
+**如果設定了 `before`，卻將 `after` 留空，收尾時會卸下該站位裝備，而不是恢復原裝備。** 中斷程序亦無法保證自動恢復，請手動核對。[大型作戰](/zh-TW/azurpilot/user/tasks/opsi)另有 META 相關限制。
+
 
 ## <DocIcon name="trophy" /> 限界挑戰（`LimitChallenge`）
 

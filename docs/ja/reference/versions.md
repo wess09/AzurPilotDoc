@@ -1,7 +1,7 @@
 ---
 title: ソースコードバージョン索引
 description: ドキュメント監査が準拠するリポジトリ・ブランチ・コミットハッシュ、監査範囲、未検証事項、素材の権利情報。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # ソースコードバージョン索引
@@ -20,6 +20,9 @@ updated: 2026-10-20
 コアプログラムは `master` を使用し、他の2リポジトリは `main` を使用しています。古い記事等の `/blob/main/` リンクをコアリポジトリに適用すると 404 エラーとなります。
 :::
 
+
+**2026 年 10 月 30 日の増分確認：** コア `master` は `2eba570571`、Launcher `main` は `e3e269054c`（正式版 3.0.4）、Android `main` は `5b4458557b` です。現在のコアに基づき、索引を **101 タスク、173 オプショングループ、80 WebSocket メソッド**に再生成しました。上記表の古いコミットは 10 月 20 日の監査基準です。
+
 ## <DocIcon name="search" /> 監査方法
 
 - 3つのリポジトリを `--depth 1` でクローンし、HEAD コミットを記録。
@@ -28,15 +31,15 @@ updated: 2026-10-20
 - `docs/modules/`（モジュールドキュメント54編）、`doc/`（Android 31編、ランチャー 1編）を参照。
 - `task.yaml`、`argument.yaml`、`args.json`、`i18n/*.json`、`contract.json` をパース。
 - `.github/workflows/` および `.cnb/` の CI パイプライン設定を検証。
-- タスク表（102件）および API 表（72件）をスクリプトにより機械抽出し、手作業による転記ミスを排除。
+- タスク表（101件）および API 表（80件）をスクリプトにより機械抽出し、手作業による転記ミスを排除。
 
 ## <DocIcon name="badge-dollar" /> カバレッジ統計
 
 | 対象項目 | 数量 | データソース |
 | --- | --- | --- |
-| タスクコマンド | 102 | `args.json` |
-| オプショングループ | 167 | `argument.yaml` |
-| WebSocket メソッド | 72 | `frontend/src/api/contract.json` |
+| タスクコマンド | 101 | `args.json` |
+| オプショングループ | 173 | `argument.yaml` |
+| WebSocket メソッド | 80 | `frontend/src/api/contract.json` |
 | MCP ツール | 18 | `mcp_server_sse.py` |
 | コアモジュールドキュメント | 54 篇 | `docs/modules/` |
 | Python テストファイル | 209 | `tests/` |

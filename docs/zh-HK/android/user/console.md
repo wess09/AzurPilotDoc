@@ -1,7 +1,7 @@
 ---
 title: 控制台、懸浮窗與熒幕保護
 description: Android 宿主的頁面結構、全局懸浮面板、防燒屏熒幕保護、桌面小組件、保活策略與日誌匯出。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 控制台、懸浮窗與熒幕保護
@@ -96,6 +96,13 @@ Android 宿主把「控制」和「顯示」分開了：控制台負責配置，
 - 一鍵打包匯出為 zip。
 
 匯出前確認壓縮包裏沒有 `config/deploy.yaml`、`password.txt`、`remote-access.json`。這些檔案在 Runtime 的 `config/` 下，匯出日誌時不會自動包含，但手動打包整個目錄時會。
+
+## 提交機型相容性報告
+
+在「設定 → 提交你的機型」檢查自動偵測的裝置、系統與使用模式，**明確選擇「可正常使用」或「無法正常使用」**，並同意公開到 GitHub 後再提交。資料會作為留言加到 [Android 機型支援 Issue #1](https://github.com/wess09/AzurPilot-for-Android/issues/1)；重複上報會顯示既有留言，而不是新增 Issue。頁面不會預選結果。
+
+此功能不收集 IMEI、序號、Android ID、MAC、日誌或截圖，但仍應自行檢查顯示內容。缺少發佈憑據的本地建置版可能無法提交。詳見[機型報告協定](https://github.com/wess09/AzurPilot-for-Android/blob/main/doc/device-reporting.md)及[Runtime 開發文件](/zh-HK/android/developer/runtime)。
+
 
 ## <DocIcon name="settings" /> 設定項速查
 

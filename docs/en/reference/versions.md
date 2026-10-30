@@ -1,7 +1,7 @@
 ---
 title: Source Version Index
 description: Repository commits, branches, audit timestamps, unverified items, and asset licensing baselines.
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # Source Version Index
@@ -20,6 +20,9 @@ The documentation on this site reflects read-only code audits of the current rep
 The core program repository uses `master`, while the Android host and desktop launcher use `main`. Links pointing to `/blob/main/` on the core repository return HTTP 404.
 :::
 
+
+**Incremental verification (October 30, 2026):** The current core `master` is `2eba570571`, Launcher `main` is `e3e269054c` (stable 3.0.4), and Android `main` is `5b4458557b`. Task, API and configuration catalogs were regenerated from the current core: **101 tasks, 173 groups, 80 WebSocket methods**. The older SHA values in the table above remain the original 2026-10-20 audit baseline, not the current implementation.
+
 ## <DocIcon name="search" /> Audit Methodology
 
 - Cloned shallow repositories (`--depth 1`) for all three projects at current HEAD.
@@ -28,15 +31,15 @@ The core program repository uses `master`, while the Android host and desktop la
 - Reviewed 54 internal architecture specifications in `docs/modules/` and 32 design documents across `doc/`.
 - Validated configurations against `task.yaml`, `argument.yaml`, `args.json`, and `contract.json`.
 - Inspected CI pipelines in `.github/workflows/` and `.cnb/`.
-- Extracted task matrix (102 commands) and API schemas (72 methods) using automated extraction scripts.
+- Extracted task matrix (101 commands) and API schemas (80 methods) using automated extraction scripts.
 
 ## <DocIcon name="badge-dollar" /> Telemetry and Counts
 
 | Dimension | Measured Count | Extraction Source |
 | --- | --- | --- |
-| Task Commands | 102 | `args.json` |
-| Parameter Groups | 167 | `argument.yaml` |
-| WebSocket RPC Methods | 72 | `frontend/src/api/contract.json` |
+| Task Commands | 101 | `args.json` |
+| Parameter Groups | 173 | `argument.yaml` |
+| WebSocket RPC Methods | 80 | `frontend/src/api/contract.json` |
 | Model Context Protocol Tools | 18 | `mcp_server_sse.py` |
 | Core Architectural Specifications | 54 documents | `docs/modules/` |
 | Python Unit Test Modules | 209 files | `tests/` |

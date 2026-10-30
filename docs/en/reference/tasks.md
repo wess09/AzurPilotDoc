@@ -1,14 +1,14 @@
 ---
 title: Task Command Matrix
-description: Catalog of all 102 task command identifiers, menu groupings, parameter groups, and manual references.
-updated: 2026-10-20
+description: Catalog of all 101 task command identifiers, menu groupings, parameter groups, and manual references.
+updated: 2026-10-31
 ---
 
 # Task Command Matrix
 
 This table indexes all task keys in `args.json` (excluding Dashboard resource definitions). **Command** corresponds to the dispatch method on `alas.py` (CamelCase converted to snake_case) and the value of `Scheduler.Command`.
 
-Total: 102 tasks. Data baseline: `https://github.com/wess09/AzurPilot` @ `7de6bb9`.
+Total: 101 tasks. Data baseline: `https://github.com/wess09/AzurPilot` @ `2eba570`.
 
 ## <DocIcon name="settings" /> System (`Alas`)
 

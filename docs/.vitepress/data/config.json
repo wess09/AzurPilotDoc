@@ -1,10 +1,10 @@
 {
   "source": {
     "repository": "https://github.com/wess09/AzurPilot",
-    "commit": "7de6bb914da5798e76ef34a85a75648a526d319f",
-    "audited": "2026-10-20"
+    "commit": "2eba570571ec9b7afd8c9b8ce52c7ccb2705a747",
+    "audited": "2026-10-30"
   },
-  "groupCount": 167,
+  "groupCount": 173,
   "groups": [
     {
       "group": "Scheduler",
@@ -71,7 +71,6 @@
         "OperationHandover",
         "OpsiAbyssal",
         "OpsiArchive",
-        "OpsiAshAssist",
         "OpsiAshBeacon",
         "OpsiCrossMonth",
         "OpsiDaily",
@@ -102,7 +101,7 @@
         "ThreeOilLowCost",
         "WarArchives"
       ],
-      "usedByCount": 81
+      "usedByCount": 80
     },
     {
       "group": "Campaign",
@@ -113,12 +112,13 @@
         "UseClearMode",
         "UseFleetLock",
         "UseAutoSearch",
+        "ContinueAfterRestart",
         "Use2xBook",
         "AmbushEvade",
         "UseRecommendFleet",
         "DefeatWithdraw"
       ],
-      "fieldCount": 10,
+      "fieldCount": 11,
       "usedBy": [
         "Ambush11",
         "Coalition",
@@ -440,6 +440,20 @@
         "OpsiStronghold"
       ],
       "usedByCount": 3
+    },
+    {
+      "group": "Equipment",
+      "fields": [
+        "Enable",
+        "ClearBeforeApply",
+        "Config"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "Exercise",
+        "OpsiAshBeacon"
+      ],
+      "usedByCount": 2
     },
     {
       "group": "OpsiSirenBug",
@@ -782,6 +796,18 @@
       "usedByCount": 1
     },
     {
+      "group": "Dock",
+      "fields": [
+        "MinLevel",
+        "MaxLevel"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "DockScan"
+      ],
+      "usedByCount": 1
+    },
+    {
       "group": "Dorm",
       "fields": [
         "Collect",
@@ -805,6 +831,7 @@
         "BackUpMethod",
         "ZipMethod",
         "AzurStatsID",
+        "CloudUpload",
         "API",
         "ResearchRecord",
         "CommissionRecord",
@@ -820,8 +847,7 @@
         "OpsiOther",
         "MeowfficerBuy",
         "MeowfficerTalent",
-        "TelemetryReport",
-        "BugReport"
+        "TelemetryReport"
       ],
       "fieldCount": 22,
       "usedBy": [
@@ -1012,10 +1038,10 @@
       "usedByCount": 1
     },
     {
-      "group": "FleetInfo",
+      "group": "FleetAffinityTraining",
       "fields": [
-        "Result",
-        "Record"
+        "Enabled",
+        "Target"
       ],
       "fieldCount": 2,
       "usedBy": [
@@ -1024,15 +1050,67 @@
       "usedByCount": 1
     },
     {
-      "group": "FleetTech",
+      "group": "FleetEquipment",
       "fields": [
-        "MinLevel",
-        "MaxLevel",
+        "Enabled",
+        "Codes",
+        "State"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "FleetInfo"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "FleetInfo",
+      "fields": [
+        "UpdateEmotion",
+        "Result",
         "Record"
       ],
       "fieldCount": 3,
       "usedBy": [
-        "FleetTechScan"
+        "FleetInfo"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "FleetLevelTraining",
+      "fields": [
+        "Enabled",
+        "Target"
+      ],
+      "fieldCount": 2,
+      "usedBy": [
+        "FleetInfo"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "FleetRotation",
+      "fields": [
+        "Enabled",
+        "SelectedOnly",
+        "Rules",
+        "State"
+      ],
+      "fieldCount": 4,
+      "usedBy": [
+        "FleetInfo"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "FleetTraining",
+      "fields": [
+        "FullScanRecord",
+        "CheckIntervalHours",
+        "State"
+      ],
+      "fieldCount": 3,
+      "usedBy": [
+        "FleetInfo"
       ],
       "usedByCount": 1
     },
@@ -1190,9 +1268,10 @@
       "group": "Hard",
       "fields": [
         "HardStage",
-        "HardFleet"
+        "HardFleet",
+        "RunAt18"
       ],
-      "fieldCount": 2,
+      "fieldCount": 3,
       "usedBy": [
         "Hard"
       ],
@@ -1391,9 +1470,10 @@
         "Positions",
         "WorkerFilter",
         "MinFarm",
+        "CropTargets",
         "PlantPotatoes"
       ],
-      "fieldCount": 4,
+      "fieldCount": 5,
       "usedBy": [
         "IslandFarm"
       ],
@@ -1578,10 +1658,11 @@
         "Positions",
         "WorkerFilter",
         "MinNursery",
+        "CropTargets",
         "IgnorePineapple",
         "PlantLavender"
       ],
-      "fieldCount": 5,
+      "fieldCount": 6,
       "usedBy": [
         "IslandFarm"
       ],
@@ -1593,11 +1674,12 @@
         "Positions",
         "WorkerFilter",
         "MinOrchard",
+        "CropTargets",
         "IgnoreAvocado",
         "PlantRubber",
         "AmagiChanRubber"
       ],
-      "fieldCount": 6,
+      "fieldCount": 7,
       "usedBy": [
         "IslandFarm"
       ],
@@ -1626,6 +1708,31 @@
       "fieldCount": 1,
       "usedBy": [
         "IslandPlan"
+      ],
+      "usedByCount": 1
+    },
+    {
+      "group": "IslandProductionPlanner",
+      "fields": [
+        "ApplySettings",
+        "RescanTechnology",
+        "ScanSeasonTasks",
+        "SeasonTaskTargets",
+        "ExtraTargets",
+        "DailyProfitLowerLimit",
+        "DailyBufferSafetyMargin",
+        "FieldsEfficiency",
+        "OrchardEfficiency",
+        "NurseryEfficiency",
+        "RestaurantGrade",
+        "TeahouseGrade",
+        "JuuEateryGrade",
+        "GrillGrade",
+        "JuuCoffeeGrade"
+      ],
+      "fieldCount": 15,
+      "usedBy": [
+        "IslandProductionPlanner"
       ],
       "usedByCount": 1
     },
@@ -1931,20 +2038,6 @@
       "usedByCount": 1
     },
     {
-      "group": "MindCalculator",
-      "fields": [
-        "MinLevel",
-        "MaxLevel",
-        "Result",
-        "FleetTechRecord"
-      ],
-      "fieldCount": 4,
-      "usedBy": [
-        "MindCalculatorScan"
-      ],
-      "usedByCount": 1
-    },
-    {
       "group": "Oil",
       "fields": [
         "Value",
@@ -2030,11 +2123,12 @@
     {
       "group": "OpsiAshAssist",
       "fields": [
+        "Enable",
         "Tier"
       ],
-      "fieldCount": 1,
+      "fieldCount": 2,
       "usedBy": [
-        "OpsiAshAssist"
+        "OpsiAshBeacon"
       ],
       "usedByCount": 1
     },
@@ -2045,11 +2139,12 @@
         "AssistRequestLimit",
         "AssistRequestState",
         "DossierAutoAttackMode",
+        "DossierSkipAssist",
         "RequestAssist",
         "EnsureFullyCollected",
         "AutoCollectShip"
       ],
-      "fieldCount": 7,
+      "fieldCount": 8,
       "usedBy": [
         "OpsiAshBeacon"
       ],

@@ -45,11 +45,14 @@ for (const file of pages) {
   const desc = pick(/<meta name="description" content="([^"]*)"/)
   const canonical = pick(/<link rel="canonical" href="([^"]*)"/)
   const lang = pick(/<html[^>]*lang="([^"]*)"/)
-  // 站点有两个 locale：根为 zh-CN，/en/ 为 en-US
-  const expectedLang = rel.startsWith('en/') ? 'en-US' : 'zh-CN'
+  // 校验全部五种站点语言；不同语言可以翻译成相同标题，唯一性约束只在语言内生效。
+  const localeMap = { en: 'en-US', ja: 'ja-JP', 'zh-HK': 'zh-HK', 'zh-TW': 'zh-TW' }
+  const prefix = rel.split('/')[0]
+  const expectedLang = localeMap[prefix] || 'zh-CN'
+  const locale = localeMap[prefix] ? prefix : 'root'
   const h1 = (html.match(/<h1[\s>]/g) || []).length
   const is404 = rel === '404.html'
-  const isHome = rel === 'index.html'
+  const isHome = rel === 'index.html' || /^(en|ja|zh-HK|zh-TW)\/index\.html$/.test(rel)
 
   if (!title) errors.push(`${rel}: 缺少 title`)
   if (!desc) errors.push(`${rel}: 缺少 meta description`)
@@ -60,12 +63,14 @@ for (const file of pages) {
   if (!is404 && !/property="og:title"/.test(html)) errors.push(`${rel}: 缺少 og:title`)
 
   if (title) {
-    if (titles.has(title)) errors.push(`title 重复: ${rel} 与 ${titles.get(title)}`)
-    titles.set(title, rel)
+    const key = `${locale}:${title}`
+    if (titles.has(key)) errors.push(`title 重复: ${rel} 与 ${titles.get(key)}`)
+    titles.set(key, rel)
   }
   if (desc) {
-    if (descriptions.has(desc)) errors.push(`description 重复: ${rel} 与 ${descriptions.get(desc)}`)
-    descriptions.set(desc, rel)
+    const key = `${locale}:${desc}`
+    if (descriptions.has(key)) errors.push(`description 重复: ${rel} 与 ${descriptions.get(key)}`)
+    descriptions.set(key, rel)
     // 中文摘要 40–160 字符较合适：太短没有检索信息量，太长会被截断。
     if (!is404 && desc.length < 40) warnings.push(`${rel}: description 只有 ${desc.length} 字，信息量不足`)
     if (desc.length > 160) warnings.push(`${rel}: description ${desc.length} 字，可能被搜索结果截断`)

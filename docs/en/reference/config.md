@@ -1,7 +1,7 @@
 ---
 title: Configuration Reference
-description: Structural path semantics, scheduling schemas, common parameter groups, and complete index across all 167 groups.
-updated: 2026-10-20
+description: Structural path semantics, scheduling schemas, common parameter groups, and complete index across all 173 groups.
+updated: 2026-10-31
 ---
 
 # Configuration Reference
@@ -16,7 +16,7 @@ Example: Research.Research.UseCube
 
 When bound at runtime, business modules access parameters using snake_case properties: `self.config.Research_UseCube`.
 
-Current baseline: **167 parameter groups** across **102 tasks**. Source baseline: `https://github.com/wess09/AzurPilot` @ `7de6bb9`.
+Current baseline: **173 parameter groups** across **101 tasks**. Source baseline: `https://github.com/wess09/AzurPilot` @ `2eba570`.
 
 ::: tip Verify Field Details in WebUI
 The tables below list schema keys and parameter counts. Detailed validation bounds, descriptions, and defaults load dynamically from `argument.yaml` and `i18n/*.json`.
@@ -59,7 +59,7 @@ Groups referenced by 3 or more tasks, sorted by task frequency:
 
 ## <DocIcon name="clipboard" /> Complete Parameter Group Index
 
-Expand to view the complete index across all 167 parameter groups.
+Expand to view the complete index across all 173 parameter groups.
 
 ::: details All Parameter Groups
 

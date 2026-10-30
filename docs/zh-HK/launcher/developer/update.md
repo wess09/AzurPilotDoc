@@ -1,130 +1,25 @@
 ---
 title: 更新鏈路與鏡像
-description: 核心倉庫的 git 更新、uv 依賴同步、啟動器 mTLS 自更新、鏡像與回退策略。
-updated: 2026-10-30
+description: Launcher 3.x 的元件部署、核心同步、Stable／Canary 清單、mTLS 載荷與多來源回退機制。
+updated: 2026-10-31
 ---
 
 # 更新鏈路與鏡像
 
-啟動器有兩條更新線，走完全不同的協議：核心代碼用 git，啟動器自身用 mTLS + 靜態清單。
+現行流程有**三個獨立部分**：部署 Git／ADB 元件、更新 AzurPilot 核心、更新啟動器本身。
 
-## <DocIcon name="refresh" /> 核心倉庫更新
+## 元件及核心
 
-```text
-git pull
-  ├── 成功 → uv sync --frozen
-  └── 失败 → 指数退避重试（至多 20 次）
-```
+公開 `stable.json.runtime`（schema 2）包含 Git／ADB ZIP、雜湊、大小和 `deploy/**` 腳本。元件存於 `.azurpilot/tools/`；「部署」只處理上述引導檔案。
 
-重試 20 次不是為了「等網絡恢復」，而是為了扛住國內訪問 GitHub 的間歇性失敗。超過次數後進入錯誤頁，不會帶着半更新的代碼啟動。
+「啟動」才由內嵌 uv 安裝 Python 3.14.x，再以 deploy 腳本拉取核心、同步依賴、構建 WebUI。實作使用 `uv sync --no-dev --no-install-project` 及下載鏡像回退；舊文檔稱永遠執行 `uv sync --frozen` 已不準確。明確選擇「環境修復」會重新下載元件並重建 `.venv`，但保留使用者設定。
 
-### 部署配置
+## 正式版、Canary 及鏡像
 
-`deploy.<platform>[-cn].yaml` 控制更新行為：
+`LAUNCHER_UPDATE_URL` 在構建時決定**公開更新清單**的網址；備用清單為 `https://ap.launcher-update.nanoda.work/updata/stable.json`。讀取清單毋須 mTLS，GitHub 以外的更新載荷可使用內嵌客戶端證書，並核驗 SHA-256。
 
-| 字段 | 説明 |
-| --- | --- |
-| `Git.Repository` | 倉庫地址 |
-| `Git.Branch` | 預設 `master` |
-| `Git.GitExecutable` | `.venv` 內 git 的路徑 |
-| `Git.GitProxy` | HTTP / SOCKS5 代理 |
-| `Git.SSLVerify` | 是否校驗證書 |
-| `Python.PypiMirror` | PyPI 鏡像 |
+`updateChannel` 為 `stable`（預設）或 `canary`；`updateSource` 為 `auto`、`official`、`github`、`cloudflare`，只改變**載荷的下載優先順序**。自動模式在系統原始語言是簡體中文且使用北京時間時優先官方來源，其他環境優先 GitHub、Cloudflare、官方來源。HTTP 429 可觸發降低併發數和 Retry-After 等候。
 
-六個變體：
+啟動器約每 10 分鐘檢查新版本。runtime、正式版及 Canary 清單欄位獨立更新。
 
-| 平台 | 國際 | 國內 |
-| --- | --- | --- |
-| Windows | `deploy.windows.yaml` | `deploy.windows-cn.yaml` |
-| macOS | `deploy.mac.yaml` | `deploy.mac-cn.yaml` |
-| Linux / Unix | `deploy.unix.yaml` | `deploy.unix-cn.yaml` |
-
-CN 版把倉庫地址換成 `git://git.pull/AzurPilot`，並優先國內 PyPI。
-
-### 依賴同步
-
-```bash
-uv sync --frozen
-```
-
-- 嚴格按 `uv.lock`，不重新解析版本。
-- 依賴安裝失敗 → 錯誤頁，不啟動後端。
-- `.venv` 是可重定位的，整個目錄隨項目移動。
-
-### Python 下載源
-
-`setup.rs` 按順序嘗試：
-
-```text
-1. registry.npmmirror.com/-/binary/python-build-standalone/
-2. mirror.nju.edu.cn/github-release/astral-sh/python-build-standalone/
-3. python-standalone.org/mirror/astral-sh/python-build-standalone/
-4. github.com/astral-sh/python-build-standalone/releases/download/
-```
-
-PyPI 依次使用阿里雲、騰訊雲、CERNET，最後官方源。
-
-## <DocIcon name="medal" /> 啟動器自更新
-
-| 項 | 值 |
-| --- | --- |
-| 預設清單 | `https://launcher-api.azurpilot.com/updata/stable.json` |
-| 覆蓋變數 | `LAUNCHER_UPDATE_URL` |
-| 傳輸 | mTLS（客戶端證書由 CI 注入） |
-| 載荷 | R2 + CNB Release |
-| 清單託管 | Cloudflare 靜態資源（無自定義 Worker 腳本） |
-| 下載入口 | `launcher-download.azurpilot.com` 做 302 |
-
-::: tip 為什麼用靜態資源而不是 Worker
-Cloudflare Worker 按請求計費，也會引入「每次請求都執行」的運行時依賴。清單是靜態 JSON，放在靜態資源上即可，不消耗 Workers 配額。
-:::
-
-### 校驗
-
-1. 通過 mTLS 建立連接，確認伺服端身份。
-2. 拉取 `stable.json`，比較版本。
-3. 下載載荷，校驗大小與摘要。
-4. 替換可執行檔案並重新啟動。
-
-失敗時回退到下一個鏡像；全部失敗則保留當前版本，不阻斷使用。
-
-### 正式版、Canary 與下載來源
-
-由 3.0.3 起，更新清單支援正式版及 Canary：`updateChannel=stable`（預設）讀取正式版，`canary` 讀取 Canary 項目。沒有 Canary 構建時不會顯示更新。
-
-`updateSource` 包括 `auto`（預設）、`official`、`github`、`cloudflare`，只調整**更新檔案下載的優先順序**，失敗時仍會嘗試其他可用來源。自動模式在簡體中文兼北京時間環境優先官方來源，其他環境優先 GitHub、Cloudflare、官方來源。下載後驗證 SHA-256。
-
-清單 URL 由編譯期的 `LAUNCHER_UPDATE_URL` 指定，備用地址為 `https://ap.launcher-update.nanoda.work/updata/stable.json`。更改下載來源不會改變清單地址。
-
-## <DocIcon name="handshake" /> 兩條線的交互
-
-| 事件 | 核心 | 啟動器 |
-| --- | --- | --- |
-| 更新核心 | 代碼與依賴變化 | 不變 |
-| 更新啟動器 | 不變 | 二進制變化 |
-| 啟動器要求新 Python | 不變 | 重建 `.venv` |
-| 核心要求新依賴 | `uv sync` 處理 | 不變 |
-
-::: warning 不要同時更新兩者
-先更新啟動器到能支援新核心的版本，再更新核心；或者反過來確認新啟動器兼容當前核心。同時更新出問題時，很難判斷是哪一邊導致的。
-:::
-
-## <DocIcon name="cloud" /> 代理與直連
-
-啟動器在以下場景**繞過系統代理**：
-
-- 更新代碼、內置 Python、uv 與依賴安裝。
-- WebView 連接本地 WebUI（`--no-proxy-server`）。
-
-原因：本地迴環不該走代理；下載鏈路已有自己的鏡像與重試策略，系統代理反而增加失敗點。
-
-需要代理時，寫在 `deploy.yaml` 的 `Git.GitProxy`，不要讓系統代理介入全部流量。
-
-## <DocIcon name="settings" /> 私有部署
-
-| 需求 | 做法 |
-| --- | --- |
-| 用自己的核心 fork | 改 `Git.Repository` 與 `Branch` |
-| 用自己的更新源 | 構建時設 `LAUNCHER_UPDATE_URL` |
-| 內網鏡像 | 部署 `stable.json` 與載荷，保持字段結構一致 |
-| 離線環境 | 首次在有網環境完成自舉，之後 `--skip-update` 啟動 |
+參見[首次啟動](/zh-HK/launcher/user/first-run)和[構建發佈](/zh-HK/launcher/developer/build-release)。

@@ -1,7 +1,7 @@
 ---
 title: WebSocket API v1
-description: 核心程序的 WebSocket API v1：協議信封、會話建立、訂閲主題、錯誤語義，以及 72 個方法的完整清單與可運行調用示例。
-updated: 2026-10-20
+description: 核心程序的 WebSocket API v1：協議信封、會話建立、訂閲主題、錯誤語義，以及 80 個方法的完整清單與可運行調用示例。
+updated: 2026-10-31
 ---
 
 # WebSocket API v1
@@ -178,6 +178,13 @@ wss://<远程入口>/api/v1/ws
 ```
 
 `after` 是游標，返回此後的增量條目。
+
+### 業務 WebSocket 與啟動器專用通道
+
+本文描述 `/api/v1/ws`（`v:1`）業務協定。啟動器另有需要 Bearer 鑑權的 `/api/v2/launcher/ws`，不能直接發送 v1 信封。專用通道的 `login.issue` 生成 60 秒有效、只能使用一次的票據，WebUI 使用業務方法 `auth.launcher({ticket})` 登入，不會傳輸 WebUI 密碼。
+
+目前也提供 `launcher.status`、`launcher.autostart.set`、`launcher.command.get`、`fleetTraining.reset` 及 `auth.launcher` 等方法；參數以以下更新後的方法表為準。詳見[啟動器架構](/zh-HK/launcher/developer/architecture)。
+
 
 ## <DocIcon name="clipboard" /> 方法清單
 

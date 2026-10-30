@@ -1,14 +1,14 @@
 ---
 title: タスクコマンド一覧
-description: 102 個のタスクコマンドの名称、メニュー分類、引数グループ、対応マニュアル一覧を網羅したリファレンス。
-updated: 2026-10-20
+description: 101 個のタスクコマンドの名称、メニュー分類、引数グループ、対応マニュアル一覧を網羅したリファレンス。
+updated: 2026-10-31
 ---
 
 # タスクコマンド一覧
 
 以下の表は `args.json` に定義されたすべてのタスクキー（Dashboard 資源定義を除く）を網羅しています。**コマンド**は `alas.py` のメソッド名（キャメルケースからスネークケースへ変換）であり、設定内の `Scheduler.Command` の値に対応します。
 
-合計 102 個のタスク。データ取得元：`https://github.com/wess09/AzurPilot` @ `7de6bb9`。
+合計 101 個のタスク。データ取得元：`https://github.com/wess09/AzurPilot` @ `2eba570`。
 
 ## <DocIcon name="settings" /> システム（`Alas`）
 

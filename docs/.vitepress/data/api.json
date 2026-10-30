@@ -1,11 +1,11 @@
 {
   "source": {
     "repository": "https://github.com/wess09/AzurPilot",
-    "commit": "7de6bb914da5798e76ef34a85a75648a526d319f",
-    "audited": "2026-10-20",
+    "commit": "2eba570571ec9b7afd8c9b8ce52c7ccb2705a747",
+    "audited": "2026-10-30",
     "contractVersion": 1
   },
-  "count": 72,
+  "count": 80,
   "methods": [
     {
       "name": "accounts.manage",
@@ -100,6 +100,19 @@
           "default": false,
           "name": "force",
           "required": false
+        }
+      ]
+    },
+    {
+      "name": "auth.launcher",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "ticket",
+          "required": true
         }
       ]
     },
@@ -248,6 +261,156 @@
       ]
     },
     {
+      "name": "dock.configure",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "integer",
+          "description": "",
+          "name": "min_level",
+          "required": true
+        },
+        {
+          "type": "integer",
+          "description": "",
+          "name": "max_level",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "dock.importLegacy",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "revision",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "dock.patch",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "revision",
+          "required": true
+        },
+        {
+          "type": "DockCardChange[]",
+          "description": "",
+          "item": {
+            "type": "DockCardChange",
+            "description": ""
+          },
+          "name": "changes",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "dock.report",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "dock.review",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "revision",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "pending_revision",
+          "required": true
+        },
+        {
+          "type": "DockReviewDecision[]",
+          "description": "",
+          "item": {
+            "type": "DockReviewDecision",
+            "description": ""
+          },
+          "name": "decisions",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "dock.stageImport",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "revision",
+          "required": true
+        },
+        {
+          "type": "MindShip[]",
+          "description": "",
+          "item": {
+            "type": "MindShip",
+            "description": ""
+          },
+          "name": "ships",
+          "required": true
+        }
+      ]
+    },
+    {
       "name": "events.subscribe",
       "mutates": false,
       "description": "",
@@ -281,7 +444,8 @@
               "logs",
               "preview",
               "stock",
-              "notifications"
+              "notifications",
+              "launcher"
             ]
           },
           "name": "topics",
@@ -298,6 +462,25 @@
           "type": "string",
           "description": "",
           "name": "instance",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "fleetTech.mergeShips",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "revision",
           "required": true
         }
       ]
@@ -351,7 +534,7 @@
       ]
     },
     {
-      "name": "fleetTech.syncMind",
+      "name": "fleetTraining.reset",
       "mutates": true,
       "description": "",
       "fields": [
@@ -359,6 +542,12 @@
           "type": "string",
           "description": "",
           "name": "instance",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "revision",
           "required": true
         }
       ]
@@ -430,6 +619,12 @@
       ]
     },
     {
+      "name": "instances.importable",
+      "mutates": false,
+      "description": "",
+      "fields": []
+    },
+    {
       "name": "instances.importConfig",
       "mutates": true,
       "description": "",
@@ -449,13 +644,39 @@
       ]
     },
     {
-      "name": "instances.importable",
+      "name": "instances.list",
       "mutates": false,
       "description": "",
       "fields": []
     },
     {
-      "name": "instances.list",
+      "name": "launcher.autostart.set",
+      "mutates": true,
+      "description": "",
+      "fields": [
+        {
+          "type": "boolean",
+          "description": "",
+          "name": "enabled",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "launcher.command.get",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "commandId",
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "launcher.status",
       "mutates": false,
       "description": "",
       "fields": []
@@ -514,29 +735,6 @@
       ]
     },
     {
-      "name": "mind.calculate",
-      "mutates": false,
-      "description": "",
-      "fields": [
-        {
-          "type": "string",
-          "description": "",
-          "name": "instance",
-          "required": true
-        },
-        {
-          "type": "MindShip[]",
-          "description": "",
-          "item": {
-            "type": "MindShip",
-            "description": ""
-          },
-          "name": "ships",
-          "required": true
-        }
-      ]
-    },
-    {
       "name": "mind.catalog",
       "mutates": false,
       "description": "",
@@ -546,31 +744,6 @@
           "description": "",
           "name": "instance",
           "required": true
-        }
-      ]
-    },
-    {
-      "name": "mind.export",
-      "mutates": false,
-      "description": "",
-      "fields": [
-        {
-          "type": "string",
-          "description": "",
-          "name": "instance",
-          "required": true
-        },
-        {
-          "type": "string",
-          "description": "",
-          "enum": [
-            "json",
-            "csv",
-            "xlsx"
-          ],
-          "default": "xlsx",
-          "name": "format",
-          "required": false
         }
       ]
     },
@@ -600,6 +773,46 @@
       ]
     },
     {
+      "name": "mind.plan",
+      "mutates": false,
+      "description": "",
+      "fields": [
+        {
+          "type": "string",
+          "description": "",
+          "name": "instance",
+          "required": true
+        },
+        {
+          "type": "string",
+          "description": "",
+          "name": "revision",
+          "required": true
+        },
+        {
+          "type": "integer[]",
+          "description": "",
+          "item": {
+            "type": "integer",
+            "description": ""
+          },
+          "name": "ship_ids",
+          "required": true
+        },
+        {
+          "type": "integer",
+          "description": "",
+          "enum": [
+            120,
+            125
+          ],
+          "default": 120,
+          "name": "target_level",
+          "required": false
+        }
+      ]
+    },
+    {
       "name": "mind.recognize",
       "mutates": false,
       "description": "",
@@ -620,48 +833,6 @@
           "type": "string",
           "description": "",
           "name": "content",
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "mind.report",
-      "mutates": false,
-      "description": "",
-      "fields": [
-        {
-          "type": "string",
-          "description": "",
-          "name": "instance",
-          "required": true
-        }
-      ]
-    },
-    {
-      "name": "mind.save",
-      "mutates": true,
-      "description": "",
-      "fields": [
-        {
-          "type": "string",
-          "description": "",
-          "name": "instance",
-          "required": true
-        },
-        {
-          "type": "MindShip[]",
-          "description": "",
-          "item": {
-            "type": "MindShip",
-            "description": ""
-          },
-          "name": "ships",
-          "required": true
-        },
-        {
-          "type": "string",
-          "description": "",
-          "name": "revision",
           "required": true
         }
       ]
@@ -1010,7 +1181,6 @@
           "description": "",
           "enum": [
             "zh-CN",
-            "zh-MIAO",
             "en-US",
             "ja-JP",
             "zh-TW"

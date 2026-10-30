@@ -1,7 +1,7 @@
 ---
 title: 原始碼版本索引
 description: 說明文件審計所依據的倉庫、分支與 commit、審計範圍與時間、尚未驗證的事項，以及站點素材的來源與許可。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 原始碼版本索引
@@ -20,6 +20,9 @@ updated: 2026-10-20
 核心用 `master`，另外兩個用 `main`。舊文章裡的 `/blob/main/` 連結指向核心倉庫會 404。
 :::
 
+
+**2026 年 10 月 30 日增量核對：** 核心 `master` 為 `2eba570571`、Launcher `main` 為 `e3e269054c`（正式版 3.0.4）、Android `main` 為 `5b4458557b`。任務、參數及 API 索引已按目前核心重新產生，分別有 **101 項任務、173 個選項組和 80 個 WebSocket 方法**。上表的舊 SHA 仍是 10 月 20 日審計基線。
+
 ## <DocIcon name="search" /> 審計方法
 
 - 以 `--depth 1` 克隆三個倉庫，記錄 HEAD。
@@ -28,15 +31,15 @@ updated: 2026-10-20
 - 讀取 `docs/modules/`（54 篇模組說明文件）、`doc/`（Android 31 篇、啟動器 1 篇）。
 - 解析 `task.yaml`、`argument.yaml`、`args.json`、`i18n/zh-CN.json`、`contract.json`。
 - 讀取 `.github/workflows/` 與 `.cnb/` 的 CI 配置。
-- 用腳本生成任務表（102 項）與 API 表（72 項），避免手抄錯誤。
+- 用腳本生成任務表（101 項）與 API 表（80 項），避免手抄錯誤。
 
 ## <DocIcon name="badge-dollar" /> 覆蓋統計
 
 | 維度 | 數量 | 來源 |
 | --- | --- | --- |
-| 任務命令 | 102 | `args.json` |
-| 選項組 | 167 | `argument.yaml` |
-| WebSocket 方法 | 72 | `frontend/src/api/contract.json` |
+| 任務命令 | 101 | `args.json` |
+| 選項組 | 173 | `argument.yaml` |
+| WebSocket 方法 | 80 | `frontend/src/api/contract.json` |
 | MCP 工具 | 18 | `mcp_server_sse.py` |
 | 核心模組說明文件 | 54 篇 | `docs/modules/` |
 | Python 測試檔案 | 209 | `tests/` |

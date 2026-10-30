@@ -1,7 +1,7 @@
 ---
 title: WebUI 介面導覽
 description: AzurPilot WebUI 的頁面結構、任務配置表單、排程編輯器、統計與系統設定逐項說明。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # WebUI 介面導覽
@@ -107,6 +107,11 @@ WebUI 是 React + Vite 構建的控制台，通過 `/api/v1/ws` 與後端通信�
 - <DocIcon name="medal" /> **艦隊科技**：獨立記錄艦船身份與等級，統計科技點，不按心智計費條件排除。
 
 兩者都需要 `MindCalculatorScan` / `FleetTechScan` 任務產出數據。掃描會重置船塢篩選，完成前保留舊數據。
+
+### 艦隊培養「重新整理狀態」
+
+「重新整理狀態」調用 `fleetTraining.reset`，**僅能在實例停止後**使用。它清空本地培養讀數、檢查時鐘、未完成的換船及換裝進度與艦隊快照，但保留目標、開關、間隔和裝備設定。**不會在遊戲內還原已更換的艦船或裝備。** 請先檢查實際艦隊，再重新啟動。[WebSocket API](/zh-TW/api/websocket)列出對應方法。
+
 
 ## <DocIcon name="settings" /> 系統設定
 

@@ -4,8 +4,8 @@ AzurPilot 三个仓库的统一文档门户：核心程序、Android 宿主、�
 
 - 框架：VitePress 1.6.4 + Vue 3 + TypeScript
 - 输出：纯静态站点（无服务端、无数据库、无 Worker）
-- 语言：简体中文（English 尚未发布，见[版本索引](docs/reference/versions.md)）
-- 页面：68 个内容页 + 404
+- 语言：简体中文、英语、日语、繁体中文（香港／台湾）
+- 页面：中文及多语言内容页（随站点文件自动统计）
 
 ## 本地开发
 

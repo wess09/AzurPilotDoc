@@ -1,7 +1,7 @@
 ---
 title: API Overview
 description: "Overview of the three external AzurPilot interfaces: WebSocket RPC, Android thin interface, and MCP services."
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # API Overview
@@ -82,6 +82,13 @@ MCP Configuration:
   }
 }
 ```
+
+## Cloud statistics and template APIs
+
+In the new cloud pipeline, the client parses commission/research rewards locally. `POST https://api.azurpilot.com/api/v3/post/drops` accepts structured records; unknown items send only a **49×49 icon** to `https://templates-api.azurpilot.com/api/v3/post/templates/unknown`. Signed template metadata is fetched from `https://templates.azurpilot.com/latest.json`. Full screenshots are not the primary statistics API payload.
+
+Uploads are optional and queued locally with idempotent record IDs, retry/backoff and explicit rejection handling. This external protocol is separate from the local business WebSocket and launcher WebSocket. See the [core cloud API specification](https://github.com/wess09/AzurPilot/blob/master/docs/modules/cloud-api.md) and [local statistics](/en/azurpilot/user/observability).
+
 
 ## <DocIcon name="map" /> Continue Reading
 

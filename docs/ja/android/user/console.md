@@ -1,7 +1,7 @@
 ---
 title: コンソール・フローティング・スクリーンセーバー
 description: Android ホストの画面構成、グローバルフローティングパネル、焼き付き防止スクリーンセーバー、ウィジェット、保活設定。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # コンソール・フローティング・スクリーンセーバー
@@ -96,6 +96,13 @@ Android 実機で周回を行う際の最大の障害は、OS 独自の省電力
 - ワンタップで ZIP 形式にアーカイブしてエクスポート可能。
 
 エクスポート前に、アーカイブ内に `config/deploy.yaml`、`password.txt`、`remote-access.json` などの機密ファイルが含まれていないことを確認してください。
+
+## 端末の互換性レポートを投稿する
+
+「設定 → 端末を投稿」から収集された端末・OS 情報を確認し、利用実績に基づいて「使用可能」または「使用不可」を明示的に選択して、GitHub 公開に同意した後で送信します。[対応端末 Issue #1](https://github.com/wess09/AzurPilot-for-Android/issues/1) にコメントが追加され、重複報告は既存コメントを示します。結果は自動選択されません。
+
+IMEI、シリアル番号、Android ID、MAC、ログ、スクリーンショットは送信しません。情報は送信前に確認してください。公開用の認証情報がないローカルビルドでは送信できない場合があります。[端末報告仕様](https://github.com/wess09/AzurPilot-for-Android/blob/main/doc/device-reporting.md)と[Runtime](/ja/android/developer/runtime)を参照してください。
+
 
 ## <DocIcon name="settings" /> 設定項目一覧
 

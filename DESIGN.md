@@ -83,8 +83,8 @@
 | `<Steps>` / `<Step>` | 有序步骤，带编号 |
 | `<Figure>` | 图示容器 + 说明 |
 | `<Reveal>` | 进入视口淡入（尊重 `prefers-reduced-motion`） |
-| `<TaskTable>` | 102 个任务的可筛选表 |
-| `<ApiTable>` | 72 个方法的可展开表 |
+| `<TaskTable>` | 101 个任务的可筛选表 |
+| `<ApiTable>` | 80 个方法的可展开表 |
 
 ## 5. 动效
 

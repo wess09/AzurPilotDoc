@@ -1,7 +1,7 @@
 ---
 title: デイリーとリソース
 description: 委託、研究（科研）、寮舎、指揮ニャ、大艦隊、デイリー任務、演習、ショップ、開発ドックの設定と報酬受取ロジック。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # デイリーとリソース
@@ -167,6 +167,13 @@ updated: 2026-10-20
 | `ExerciseStrategy` | 攻撃陣形と戦術 |
 | `DelayUntilHoursBeforeNextUpdate` | リセット直前まで実行を遅延（強敵回避） |
 | `LowHpThreshold` | 撤退・リセット判定用 HP 閾値 |
+
+### 演習の戦闘前／戦闘後の装備プラン
+
+演習では `Equipment.Enable`（既定はオフ）、`Equipment.ClearBeforeApply` と YAML の `Equipment.Config` を利用できます。`flagship`、`up`、`down`、`head`、`middle`、`tail` の各配置で、初戦前の `before` と終了時の `after` 装備コードを指定します。装備コード入力に対応した操作方法が必要です。
+
+**`before` を指定して `after` を空にすると、戦闘後に装備が外され、元に戻りません。** 中断時も自動復旧は保証されないため、実際の装備を確認してください。META については[大規模作戦](/ja/azurpilot/user/tasks/opsi)を参照してください。
+
 
 ## <DocIcon name="trophy" /> 限界挑戦（`LimitChallenge`）
 

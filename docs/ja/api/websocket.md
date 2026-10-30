@@ -1,7 +1,7 @@
 ---
 title: WebSocket API v1
 description: コアプログラムの WebSocket API v1：メッセージ形式、セッション確立、購読トピック、エラー定義、および 72 種の全メソッド仕様。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # WebSocket API v1
@@ -178,6 +178,13 @@ wss://<リモートアクセスURL>/api/v1/ws
 ```
 
 `after` にカーソル番号を指定することで、それ以降の増分ログエントリを取得できます。
+
+### 業務 API とランチャー専用 WebSocket
+
+このページは `/api/v1/ws` の `v:1` 業務プロトコルを説明します。ランチャーは別の認証付き `/api/v2/launcher/ws` を使うため、v1 のメッセージをそのまま送信できません。専用チャンネルの `login.issue` が発行する 60 秒有効な使い捨てチケットを、WebUI が業務 API の `auth.launcher({ticket})` で消費します。
+
+`launcher.status`、`launcher.autostart.set`、`launcher.command.get`、`fleetTraining.reset`、`auth.launcher` などは以下の更新済み一覧で確認してください。[Launcher アーキテクチャ](/ja/launcher/developer/architecture)も参照してください。
+
 
 ## <DocIcon name="clipboard" /> メソッド一覧
 

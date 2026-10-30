@@ -1,7 +1,7 @@
 ---
 title: 介面總覽
 description: AzurPilot 對外暴露的三類介面：WebSocket RPC、Android 薄介面與 MCP 服務，以及鑑權與穩定性邊界。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 介面總覽
@@ -82,6 +82,13 @@ MCP：
   }
 }
 ```
+
+## 雲端統計與模板 API
+
+新版委託及科研獎勵先由客戶端解析，主統計服務 `POST https://api.azurpilot.com/api/v3/post/drops` 接收結構化記錄。未知物品僅將 **49×49 圖示**送到 `https://templates-api.azurpilot.com/api/v3/post/templates/unknown`；`https://templates.azurpilot.com/latest.json` 提供簽署的模板版本資訊。完整獎勵截圖並非主統計 API 的載荷。
+
+上報依設定啟用，失敗時由本地持久化佇列重試，並用記錄 ID 避免重複統計。這與本機 WebSocket 和啟動器專用 WebSocket 是不同的協定。詳見[核心雲 API 規格](https://github.com/wess09/AzurPilot/blob/master/docs/modules/cloud-api.md)及[本地統計](/zh-TW/azurpilot/user/observability)。
+
 
 ## <DocIcon name="map" /> 繼續閱讀
 

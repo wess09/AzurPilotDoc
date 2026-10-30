@@ -1,125 +1,44 @@
 ---
-title: Tauri と Rust アーキテクチャ
-description: デュアルウィンドウ、カスタム URI プロトコル、起動ステートマシン、トレイと通知、WebView と Rust 間の通信境界。
-updated: 2026-10-20
+title: Tauri と Rust の構成
+description: Launcher 3.x の React フロントエンド、Tauri／Rust、デプロイ状態、WebSocket v2、各 OS の安全境界。
+updated: 2026-10-31
 ---
 
-# Tauri と Rust アーキテクチャ
+# Tauri と Rust の構成
 
-ランチャーは「GUI を備えたインストーラー 兼 プロセススーパーバイザー」として構成されています。独立したフロントエンドプロジェクトを持たず、WebView は Rust 内部に埋め込まれた HTML をロードし、`tauri://` とは別のカスタムプロトコルを介して画面を提供します。
+Launcher 3.x は **React + Tauri 2 + Rust** で実装されています。旧版の「フロントエンド工程がない」「バックエンドとの通信は HTTP SSE」という説明は現行コードに一致しません。
 
-## <DocIcon name="monitor" /> ウィンドウ構成
+## 主要なコード
 
-| ウィンドウ | サイズ | 特徴 |
-| --- | --- | --- |
-| `main` | 1280×880 | リサイズ可能。初期状態は非表示で、バックエンドの準備完了後に表示 |
-| `splash` | 800×450 | 枠なし（ボーダーレス）、リサイズ不可。メインウィンドウに先立ち表示 |
+| ファイル | 役割 |
+| --- | --- |
+| `frontend/src/App.tsx` | ホーム、デプロイ、起動、更新、キャンセル、エラー |
+| `frontend/src/SettingsDialog.tsx` | 更新チャンネル、ミラー、表示と電源設定 |
+| `src/launcher.rs` | 実行状態とキャンセル処理 |
+| `src/components.rs` | Git／ADB 部品、検証、復元 |
+| `src/setup.rs` | Python、コア更新、依存関係 |
+| `src/settings.rs` | SQLite 設定 |
+| `src/backend.rs` | Python プロセス管理 |
+| `src/launcher_control.rs` | 認証付き WebSocket v2 |
+| `src/updater.rs` | ランチャー自体の更新 |
+| `src/power.rs` | システムのスリープ抑止 |
 
-WebView のパラメータでは以下の挙動が明示的にカスタマイズされています：
+## 実行フローと通信
 
-```text
---enable-features=msWebView2EnableDraggableRegions
---disable-features=ElasticOverscroll,msWebOOUI,msPdfOOUI,msSmartScreenProtection
---no-proxy-server
+初回は **「デプロイ」** で Git、ADB と deploy スクリプトのみを取得します。その後の **「起動」** で uv が Python 3.14.x を準備し、コアの取得、依存関係と WebUI の構築を経て `gui.py` を起動します。標準ポートは `22267` です。
+
+ランチャーは `ws://127.0.0.1:<WebuiPort>/api/v2/launcher/ws` に `Authorization: Bearer <AP_WEBUI_TRUST_SECRET>` で接続します。ここは通知、自動起動命令、一度限りのログイン票を扱う専用チャンネルです。ブラウザーの業務 API `/api/v1/ws`（`v:1`）とは別物です。60 秒有効な `launcherTicket` を WebUI が消費してログインするため、パスワードを URL に渡しません。旧 HTTP SSE インターフェースは廃止されています。
+
+Windows は Job Object、Unix はプロセスグループを使って後端を管理します。終了時はワーカーを回収しつつ、独立したエミュレーターは残す設計です。
+
+## 確認
+
+```bash
+npm --prefix frontend test
+npm --prefix frontend run build
+cargo check --locked --all-targets
+cargo test --locked --all-targets
+cargo test --locked --test launcher_ws
 ```
 
-- `--no-proxy-server`：ローカルの WebUI への接続時にシステムプロキシをバイパスし、プロキシソフトによる `127.0.0.1` の誤遮断を防止。
-- SmartScreen 保護の無効化：内包されたローカル HTML であるため、外部サイト向けの誤警告を防止。
-
-::: tip macOS の WKWebView
-Windows 向けの `additionalBrowserArgs` は macOS では効果を持ちません。プラットフォーム間の差異は共通パラメータを仮定せず、`#[cfg]` マクロにより適切にハンドリングしてください。
-:::
-
-## <DocIcon name="plug" /> カスタム URI プロトコル
-
-| プロトコル | 提供内容 |
-| --- | --- |
-| `alas-splash://` | スプラッシュ画面（進捗状況、各フェーズの案内テキスト） |
-| `alas-error://` | エラー表示画面（エラー事由、ログファイルのパス、再試行ボタン） |
-
-画面は Rust 内部の埋め込み文字列と `splash-progress.js` により制御されます。進捗情報は Tauri のイベントシステムを介して Rust から WebView へプッシュされ、JavaScript 側は描画処理のみを担当します。
-
-UI 改変時の正しい手順：
-
-1. `main.rs` 内の HTML テンプレートまたは `splash-progress.js` を改変。
-2. 4言語の `locales/*.yml` を同期更新。
-3. `--preview-crash` オプションでエラー画面をプレビュー確認。
-4. 3プラットフォームそれぞれでスクリーンショットを撮影して表示崩れがないか確認。
-
-## <DocIcon name="rocket" /> 起動ステートマシン
-
-```text
-Idle
- → Splash（スプラッシュ画面の表示）
-   → Provisioning（環境自律構築）
-     → Updating（git pull ＋ uv sync）
-       → StartingBackend（ポート競合解消、gui.py 起動）
-         → Waiting（最大60秒の準備完了待機）
-           → Ready（メインウィンドウ表示、認証トークン注入）
-             → Running（システムトレイ常駐）
-```
-
-いずれかのステップでエラーが発生した場合は `Error` ステートへ遷移し、`alas-error://` 画面が表示されてログのパスと再試行ボタンが提示されます。
-
-## <DocIcon name="handshake" /> WebView と Rust 間の通信境界
-
-| 通信方向 | 採用技術 | 用途 |
-| --- | --- | --- |
-| Rust → WebView | Tauri event | 起動進捗、エラー通知、テーマ切り替え |
-| WebView → Rust | `#[tauri::command]` | 再試行処理、ログディレクトリを開く、アプリ終了 |
-| バックエンド → ランチャー | HTTP SSE `/api/notify_stream` | 周回タスクの通知情報 |
-| バックエンド → ランチャー | HTTP `/api/launcher/stream` | 終了、再起動、OS 起動時自動開始の命令 |
-
-バックエンドプロセスはランチャー内部の関数を直接呼び出すことはできません。HTTP ストリーム経由でコマンドを送信し、ランチャー側がパースして実行します。この厳密な境界により、バックエンドの不具合によってランチャーのプロセス管理が破壊される事態を防ぎます。
-
-## <DocIcon name="box" /> システムトレイと通知
-
-| 機能 | 実装方式 |
-| --- | --- |
-| システムトレイ | Tauri の `tray-icon` 機能を使用 |
-| トレイメニュー | メイン画面の表示、バックエンドの再起動、ログフォルダを開く、終了 |
-| 通知システム | Windows Toast / macOS / Linux ネイティブ通知 |
-| 単一インスタンス | 既存プロセスへのフォーカス移動 |
-| 自動起動 | Windows レジストリの Run キー（`--start-minimized` を付与） |
-
-通知テキストは SSE ストリームから受信され、表示言語はランチャーの現在ロケールに連動します。
-
-## <DocIcon name="message-text" /> 国際化（i18n）
-
-```text
-locales/zh-CN.yml   # 基軸ファイル
-locales/zh-TW.yml
-locales/ja.yml
-locales/en.yml
-```
-
-Rust コード内では `t!("module.key")` マクロを使用し、パラメータを埋め込む場合は `t!("k", p = v)` として YAML 内に `%{p}` と記述します。文言を追加する際は必ず4言語同時に追加してください。キーが存在しない場合はキー名自体がそのまま UI に露出します。
-
-## <DocIcon name="shield" /> セキュリティ境界
-
-| 領域 | 対策 |
-| --- | --- |
-| 管理者権限 | Windows マニフェストに `requireAdministrator` を明記 |
-| 自己自動更新 | mTLS クライアント証明書による相互認証（証明書は非公開） |
-| ローカル WebUI | `--no-proxy-server` の適用、ワンタイム認証トークンの利用 |
-| 子プロセスの制御 | `CREATE_NO_WINDOW` によるコンソール画面の完全非表示化 |
-| プロセスクリーンアップ | 環境変数マーカー ＋ Job Object による終了時の一括走査回収 |
-| ログの安全性 | パスワードや機密トークンをログファイルに出力しない |
-
-## <DocIcon name="shield" /> 開発時の禁止事項
-
-| 禁止事項 | 理由 |
-| --- | --- |
-| macOS 環境での `additionalBrowserArgs` への依存 | WKWebView はこの引数を受け付けません |
-| `println!` によるログ出力 | GUI モードでは標準出力が表示されず、ログファイルにも記録されません |
-| バックエンドプロセスの直接 `kill` | Job Object / プロセスグループのクリーンアップがスキップされ、ゾンビプロセスが残存します |
-| 1言語のみの YAML 編集 | 他言語環境で生のキー名が露出します |
-| uv のパスのハードコード | 内包 uv が見つからない場合の PATH フォールバックを阻害します |
-
-## <DocIcon name="map" /> 関連ドキュメント
-
-<ul class="ap-linklist">
-<li><a href="/ja/launcher/developer/backend-lifecycle">バックエンドプロセスのライフサイクル<span class="desc">最も注意を要するプロセス管理仕様</span></a></li>
-<li><a href="/ja/launcher/developer/update">更新パイプラインとミラー<span class="desc">git・uv・mTLS</span></a></li>
-<li><a href="/ja/launcher/developer/build-release">ビルドとリリース<span class="desc">3プラットフォームの成果物生成</span></a></li>
-</ul>
+[初回起動](/ja/launcher/user/first-run)と[ビルドと公開](/ja/launcher/developer/build-release)も参照してください。

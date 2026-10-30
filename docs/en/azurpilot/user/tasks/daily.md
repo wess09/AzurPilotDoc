@@ -1,7 +1,7 @@
 ---
 title: Dailies & Resources
 description: Setup and rewards for commissions, research, dorm, Meowfficers, guilds, daily challenges, exercises, and shops.
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # Dailies & Resources
@@ -164,6 +164,13 @@ Runs daily attempts following server resets. Ensure fleet compositions meet stag
 | `ExerciseStrategy` | Attack strategy |
 | `DelayUntilHoursBeforeNextUpdate` | Delays attacks until shortly before reset to find easier matches |
 | `LowHpThreshold` | Emergency retreat HP threshold |
+
+### Exercise equipment plans
+
+Exercise can use `Equipment.Enable` (off by default), `Equipment.ClearBeforeApply`, and YAML `Equipment.Config`. Each of the six positions `flagship`, `up`, `down`, `head`, `middle`, `tail` supports `before` and `after` equipment codes. The first battle applies `before`; task completion attempts `after`.
+
+**If `before` is configured but `after` is empty, that position's equipment is removed during cleanup, not restored.** Interrupted tasks may leave equipment changed; verify manually. An equipment-code-capable control backend is required. See [META Operations](/en/azurpilot/user/tasks/opsi).
+
 
 ## <DocIcon name="trophy" /> Challenge Mode (`LimitChallenge`)
 

@@ -1,7 +1,7 @@
 ---
 title: WebUI Backend
 description: Process supervision, WebSocket RPC protocol, method routing, authentication, and authoring new backend APIs.
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # WebUI Backend
@@ -49,7 +49,7 @@ self.methods = {
 | `handler` | Invoked business function |
 | `mutates` | Flags state mutations so clients know when to refresh |
 
-The router registers **72 methods** covering instances, configuration, scheduling, logs, statistics, mind calculators, fleet technology, stock exchanges, remote pairings, accounts, updates, announcements, and backgrounds.
+The router registers **80 methods** covering instances, configuration, scheduling, logs, statistics, mind calculators, fleet technology, stock exchanges, remote pairings, accounts, updates, announcements, and backgrounds.
 
 ## <DocIcon name="plug" /> WebSocket RPC Protocol
 

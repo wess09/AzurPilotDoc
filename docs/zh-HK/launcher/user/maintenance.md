@@ -1,159 +1,28 @@
 ---
 title: 更新、修復與移除
-description: 核心程序與啟動器兩條更新線的關係、環境損壞的修復方式、日誌與快取位置，以及遷移到新機器和完整移除的步驟。
-updated: 2026-10-30
+description: Launcher 3.x 的 Stable／Canary 設定、元件與 Python 修復、日誌匯出、資料保留和常見問題。
+updated: 2026-10-31
 ---
 
 # 更新、修復與移除
 
-啟動器有兩個獨立版本：**啟動器自身**和**核心程序**。搞清楚誰更新了誰，才能判斷「為什麼介面變了但功能沒變」。
+**啟動器、Git／ADB 元件及 AzurPilot 核心分開更新。** 啟動器自更新不會自動重新安裝整個核心。
 
-## <DocIcon name="refresh" /> 兩條更新線
+## 版本及設定
 
-| | 核心程序 | 啟動器 |
-| --- | --- | --- |
-| 更新方式 | 啟動時 `git pull` + `uv sync --frozen` | 自更新（mTLS + 多鏡像） |
-| 頻率 | 跟隨 `master`，每天可能有提交 | 帶版本號的 Release |
-| 影響 | 遊戲功能、WebUI、API | 外殼、啟動流程、進程管理 |
-| 回滾 | `git checkout <sha>` | 換回舊版壓縮包 |
+在「設定」選正式版 **stable**（預設）或測試版 **canary**，並選自動、官方、GitHub、Cloudflare CDN 作為優先下載源。失敗會回退其他來源，下載後檢查完整性。可分別選擇元件、Python、PyPI 鏡像，亦可控制背景音樂（預設關閉）、減弱動態效果、阻止電腦自動睡眠與開機自啟。視窗隱藏時背景影片會暫停。
 
-### 更新核心後會發生什麼
+## 各種操作的差別
 
-1. 啟動器下次啟動時 `git pull` 拉到新代碼。
-2. `uv sync --frozen` 按新 `uv.lock` 調整依賴。
-3. `gui.py` 的 `ensure_frontend()` 檢查 `frontend/dist`，必要時重新構建（需要 Node.js）。
-4. WebUI 刷新即生效；正在運行的實例會被停止並重新啟動。
-
-::: warning 前端構建需要 Node
-Windows 上啟動器會檢測系統級 Node.js，缺失時可自動下載安裝（SHA-256 校驗）。Linux / macOS 需要自備 Node，否則核心更新後前端可能構建失敗。
-:::
-
-### 更新啟動器後會發生什麼
-
-- 啟動器二進制被替換，`.venv`、`config/`、`log/` 保留。
-- 新版本可能要求不同的 Python 版本或工具鏈，此時會重新自舉 `.venv`（較慢，但配置不動）。
-- 不會回退核心代碼。
-
-### 版本兼容
-
-| 組合 | 結果 |
+| 操作 | 影響 |
 | --- | --- |
-| 新啟動器 + 舊核心 | 通常可用；若新啟動器依賴核心的新介面，會提示更新 |
-| 舊啟動器 + 新核心 | 可能缺少新協議支援（如免密登入、進程回收標記） |
-| 兩者都舊 | 功能可用，但可能缺少修復 |
+| 部署 | 下載 Git／ADB 及 deploy 引導檔案 |
+| 啟動 | 初始化 Python、核心和 WebUI，再啟動後端 |
+| 環境修復 | 重下元件、重建 `.venv`，保留原始碼、`config/`、`log/` |
+| 啟動器更新 | 更新啟動器程式，不刪除使用者設定 |
 
-判斷依據是倉庫的 `CHANGELOG.md` 與發佈説明，不要憑版本號大小猜。
+下載失敗時不要直接刪除整個程式目錄或執行破壞性的 Git 指令。先停止服務，再使用「環境修復」。首頁可匯出日誌 ZIP，回報故障時附上重現方式與日誌；分享前請檢查敏感數據。
 
-### 正式版、Canary 與更新來源
+macOS 新版數據目錄為 `AzurPilot.app/Contents/AzurPilot`，會嘗試遷移舊目錄。換機與解除安裝之前請備份 `config/`、統計數據。
 
-啟動器「設定」可分別選擇更新通道（預設 **stable**，或測試版 **canary**）與下載來源（自動、官方、GitHub、Cloudflare CDN）。Canary 可能更頻繁更新；沒有對應構建時不會提示更新。選擇來源只改變優先順序，失敗仍會回退其他可用來源，下載檔案也會驗證完整性。詳見[更新鏈路](/zh-HK/launcher/developer/update)。
-
-## <DocIcon name="wrench" /> 修復環境
-
-### 依賴損壞
-
-症狀：啟動報 `ModuleNotFoundError`、`ImportError`，或 `uv sync` 失敗。
-
-```bash
-# 在项目根目录
-uv sync --frozen
-```
-
-如果仍失敗：
-
-```bash
-# 删除虚拟环境后让启动器重建（会重新下载依赖）
-rm -rf .venv          # Windows: rmdir /s /q .venv
-```
-
-::: danger 刪 .venv 不會刪配置
-`.venv` 只裝運行環境，`config/` 與日誌在別處。但重建需要聯網，耗時幾分鐘。
-:::
-
-### Git 倉庫損壞
-
-症狀：更新失敗、`fatal: not a git repository`、衝突。
-
-```bash
-git status
-git stash            # 有本地修改时先暂存
-git pull --rebase
-```
-
-不要用 `git reset --hard` 清理——會丟掉你改過的配置模板或本地補丁。
-
-### 連接埠被佔用
-
-預設連接埠 `22267`。啟動器會結束佔用該連接埠的進程。若你同時運行了源碼版實例（預設 `25548`），不會衝突；但兩個啟動器實例會。
-
-### 快取
-
-| 目錄 | 內容 | 能否刪除 |
-| --- | --- | --- |
-| `cache/` | 運行時快取、圖片等 | 可以，會重新生成 |
-| `frontend/node_modules` | 前端依賴 | 可以，構建時重裝 |
-| `frontend/dist` | 前端產物 | 可以，`gui.py` 會重建 |
-| `log/` | 日誌 | 可以，但疑難排解前別刪 |
-
-### 日誌
-
-| 日誌 | 位置 |
-| --- | --- |
-| 啟動器 | `log/<日期>_launcher.txt` |
-| 核心程序 | `log/<日期>_<实例>.txt` |
-| 錯誤現場 | `log/error/<实例>/<时间戳>/` |
-
-啟動器日誌記錄了每個階段的命令與退出碼；核心日誌記錄任務邊界與識別過程。提 Issue 時兩個都要。
-
-## <DocIcon name="laptop" /> 遷移到新機器
-
-<Steps>
-<Step title="舊機器停止實例">
-
-先停調度，避免複製時配置還在寫。
-
-</Step>
-<Step title="複製 config">
-
-`config/` 整個目錄，含 `deploy.yaml`。帳號保險庫綁定設備，換機後需要重新錄入。
-
-</Step>
-<Step title="新機器安裝並首次啟動">
-
-讓啟動器完成環境自舉，然後關閉。
-
-</Step>
-<Step title="覆蓋配置">
-
-把舊 `config/` 覆蓋進去，啟動檢查實例列表與任務開關。
-
-</Step>
-<Step title="重配設備相關項">
-
-模擬器 Serial、ADB 路徑、截圖方案按新機器調整。
-
-</Step>
-</Steps>
-
-## <DocIcon name="circle-off" /> 移除
-
-1. 退出啟動器（托盤 → 退出），確認沒有 `gui.py` 殘留。
-2. 備份 `config/` 與 `AzurPilot_Data_Backup/`。
-3. 刪除整個目錄。
-4. 如果設定過開機自啟，在系統設定裏移除對應項（啟動器移除時通常會自動清理）。
-
-## <DocIcon name="circle-alert" /> 疑難排解速查
-
-| 現象 | 檢查 |
-| --- | --- |
-| 啟動畫面卡在「下載 Python」 | 網絡 / 鏡像；換 `-cn` 版或改 `deploy.yaml` |
-| 卡在「更新倉庫」 | 代理、分支名、GitHub 可達性；`--skip-update` 試啟動 |
-| 卡在「同步依賴」 | PyPI 鏡像；`uv.lock` 與代碼是否同版本 |
-| 打開窗口空白 | WebView2 / libwebkit2gtk |
-| 提示連接埠被佔用 | 另一個啟動器實例或佔用進程 |
-| 關閉窗口後任務繼續 | 正常：最小化到托盤 |
-| 托盤退出後仍有 python | 進程回收異常，查啟動器日誌裏的進程掃描記錄 |
-| 更新後 WebUI 打不開 | 前端構建失敗，查 `frontend/dist` 與 Node |
-| macOS 提示已損壞 | `xattr -dr com.apple.quarantine` |
-
-更細的進程問題見[後端進程生命週期](/zh-HK/launcher/developer/backend-lifecycle)。
+另見[首次啟動](/zh-HK/launcher/user/first-run)及[更新鏈路](/zh-HK/launcher/developer/update)。

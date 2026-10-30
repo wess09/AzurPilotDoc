@@ -1,7 +1,7 @@
 ---
 title: 源码版本索引
 description: 文档审计所依据的仓库、分支与 commit、审计范围与时间、尚未验证的事项，以及站点素材的来源与许可。
-updated: 2026-10-30
+updated: 2026-10-31
 ---
 
 # 源码版本索引
@@ -22,7 +22,7 @@ updated: 2026-10-30
 
 ## <DocIcon name="refresh" /> 2026-10-30 增量核对
 
-下表是本次**针对近期变更**核对的分支 HEAD，区别于上方 2026-10-20 的完整审计基线；未重跑全量任务／接口提取，所以上方覆盖统计仍属旧基线。
+下表是本次**针对近期变更**核对的分支 HEAD，区别于上方 2026-10-20 的完整审计基线。三份机器生成的索引已经重新提取，覆盖统计以下方实际当前值为准。
 
 | 项目 | 核对分支 | HEAD | 本次重点 |
 | --- | --- | --- | --- |
@@ -40,15 +40,15 @@ updated: 2026-10-30
 - 读取 `docs/modules/`（54 篇模块文档）、`doc/`（Android 31 篇、启动器 1 篇）。
 - 解析 `task.yaml`、`argument.yaml`、`args.json`、`i18n/zh-CN.json`、`contract.json`。
 - 读取 `.github/workflows/` 与 `.cnb/` 的 CI 配置。
-- 用脚本生成任务表（102 项）与 API 表（72 项），避免手抄错误。
+- 用脚本生成任务表（101 项）与 API 表（80 项），避免手抄错误。
 
 ## <DocIcon name="badge-dollar" /> 覆盖统计
 
 | 维度 | 数量 | 来源 |
 | --- | --- | --- |
-| 任务命令 | 102 | `args.json` |
-| 选项组 | 167 | `argument.yaml` |
-| WebSocket 方法 | 72 | `frontend/src/api/contract.json` |
+| 任务命令 | 101 | `args.json` |
+| 选项组 | 173 | `argument.yaml` |
+| WebSocket 方法 | 80 | `frontend/src/api/contract.json` |
 | MCP 工具 | 18 | `mcp_server_sse.py` |
 | 核心模块文档 | 54 篇 | `docs/modules/` |
 | Python 测试文件 | 209 | `tests/` |

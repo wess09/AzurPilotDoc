@@ -1,7 +1,7 @@
 ---
 title: 大型作戰
 description: 大世界 19 個任務的用途、行動力與黃幣機制、智能排程的決策邏輯、每月開荒與跨月注意事項。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 大型作戰
@@ -96,6 +96,11 @@ P ≤ L → 尝试购买
 | `OpsiAshAssist` | META 支援 |
 
 商店類任務的兌換優先級在 `Filter` 中配置。紫幣有限，優先換限定物品。
+
+### META 信標與裝備恢復
+
+`OpsiAshBeacon`、`OpsiAshAssist` 支援可選的 `Equipment.Config` 戰前／戰後配裝。信標完成後可嘗試由模擬戰鬥的準備畫面執行戰後方案。**META 檔案使用獨立艦隊，不觸發此功能。** 程序中斷或入口無法使用時，不能保證裝備恢復，請自行檢查。參見[演習裝備方案](/zh-TW/azurpilot/user/tasks/daily)。
+
 
 ## <DocIcon name="target" /> 隱秘、深淵、要塞
 

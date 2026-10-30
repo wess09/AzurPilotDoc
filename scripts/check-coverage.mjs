@@ -31,7 +31,11 @@ const descriptions = new Map()
 for (const file of pages) {
   const rel = path.relative(DOCS, file).replace(/\\/g, '/')
   const { data } = matter(await readFile(file, 'utf8'))
-  const isHome = rel === 'index.md'
+  const isHome = rel === 'index.md' || /^(en|ja|zh-HK|zh-TW)\/index\.md$/.test(rel)
+  // Uniqueness is per locale: translated pages have independent canonical URLs.
+  const locale = rel.match(/^(en|ja|zh-HK|zh-TW)\//)?.[1] ?? 'zh-CN'
+  const titleKey = `${locale}:${data.title}`
+  const descriptionKey = `${locale}:${data.description}`
 
   if (!data.title) errors.push(`${rel}: 缺少 title`)
   if (!isHome && !data.description) errors.push(`${rel}: 缺少 description`)
@@ -40,14 +44,14 @@ for (const file of pages) {
     if (data.description.length > 200) errors.push(`${rel}: description 过长（${data.description.length}）`)
   }
   if (data.title) {
-    if (titles.has(data.title)) errors.push(`标题重复: ${data.title} (${titles.get(data.title)} / ${rel})`)
-    titles.set(data.title, rel)
+    if (titles.has(titleKey)) errors.push(`标题重复: ${data.title} (${titles.get(titleKey)} / ${rel})`)
+    titles.set(titleKey, rel)
   }
   if (data.description) {
-    if (descriptions.has(data.description)) {
-      errors.push(`描述重复: ${rel} 与 ${descriptions.get(data.description)}`)
+    if (descriptions.has(descriptionKey)) {
+      errors.push(`描述重复: ${rel} 与 ${descriptions.get(descriptionKey)}`)
     }
-    descriptions.set(data.description, rel)
+    descriptions.set(descriptionKey, rel)
   }
 
   if (isHome || data.layout === 'page') continue

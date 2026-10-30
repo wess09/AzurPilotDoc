@@ -1,7 +1,7 @@
 ---
 title: 大型作战
 description: 大世界 19 个任务的用途、行动力与黄币机制、智能调度的决策逻辑、每月开荒与跨月注意事项。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 大型作战
@@ -96,6 +96,11 @@ P ≤ L → 尝试购买
 | `OpsiAshAssist` | META 支援 |
 
 商店类任务的兑换优先级在 `Filter` 中配置。紫币有限，优先换限定物品。
+
+### META 信标、支援的装备恢复
+
+`OpsiAshBeacon` 与 `OpsiAshAssist` 可以共用任务装备方案（`Equipment.Enable`／`Equipment.Config`），分别在战前和收尾尝试换装与恢复；普通信标结束后可利用「模拟战斗」准备入口完成战后方案。**META 档案使用独立编队，不触发该方案**。中断或恢复入口无法访问时不能保证装备恢复，需人工检查。配置格式与风险参见[演习装备方案](/azurpilot/user/tasks/daily)。
+
 
 ## <DocIcon name="target" /> 隐秘、深渊、要塞
 

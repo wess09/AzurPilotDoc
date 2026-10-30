@@ -1,7 +1,7 @@
 ---
 title: API 概要
 description: AzurPilot が外部に公開する3系統のインターフェース：WebSocket RPC、Android 薄型インターフェース、MCP サービスの仕様と境界。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # API 概要
@@ -82,6 +82,13 @@ MCP：
   }
 }
 ```
+
+## クラウド統計とテンプレート API
+
+新しい委託・研究統計では、報酬を端末側で解析して `POST https://api.azurpilot.com/api/v3/post/drops` に構造化レコードを送ります。未知のアイテムは **49×49 アイコンのみ**を `https://templates-api.azurpilot.com/api/v3/post/templates/unknown` に送信します。`https://templates.azurpilot.com/latest.json` から署名済みテンプレート情報を取得します。主統計 API に報酬画面全体を送信する仕組みではありません。
+
+送信は設定に従う任意機能で、失敗時はローカルキューに保持し、レコード ID で重複を防ぎます。本機能は WebSocket 業務 API や Launcher WS とは別です。[クラウド API 仕様](https://github.com/wess09/AzurPilot/blob/master/docs/modules/cloud-api.md)と[ローカル統計](/ja/azurpilot/user/observability)を参照してください。
+
 
 ## <DocIcon name="map" /> 関連マニュアル
 
