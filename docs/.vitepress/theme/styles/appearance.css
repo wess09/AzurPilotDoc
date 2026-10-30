@@ -56,3 +56,17 @@ html.dark .VPSwitchAppearance::before {
 .VPNavScreenAppearance .VPSwitch.VPSwitchAppearance {
   margin-right: 8px;
 }
+
+/* Light theme text contrast: keep small labels and active links WCAG AA readable.
+   Applied after the legacy theme CSS so earlier palette definitions cannot undo it. */
+html:not(.dark) {
+  --vp-c-brand-1: #2f5bb8 !important;
+  --vp-c-tip-1: #0054b8 !important;
+  --vp-c-danger-1: #9e1d23 !important;
+  --ap-muted: #555760 !important;
+}
+
+html:not(.dark) .vp-doc .tip.custom-block a,
+html:not(.dark) .vp-doc .tip.custom-block code {
+  color: #0054b8 !important;
+}
