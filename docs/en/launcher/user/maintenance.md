@@ -1,7 +1,7 @@
 ---
 title: Update, Repair & Uninstall
 description: Two independent update tracks, environment repair steps, log locations, machine migration, and clean uninstallation.
-updated: 2026-10-20
+updated: 2026-10-30
 ---
 
 # Update, Repair & Uninstall
@@ -43,6 +43,10 @@ On Windows, the launcher detects system Node.js installations and automatically 
 | Both Outdated | Functional, but missing upstream bug fixes and engine improvements |
 
 Consult repository release notes and `CHANGELOG.md` rather than guessing compatibility from version strings.
+
+### Stable, Canary, and Update Sources
+
+In launcher **Settings**, choose the update channel (**stable**, the default, or **canary** for test builds) separately from the download source (**Auto**, **Official**, **GitHub**, **Cloudflare CDN**). Canary builds may update more often; if none is in the manifest, no update is offered. The selected source only affects download priority; other available sources remain fallbacks and downloaded files are checked for integrity. See [Update Pipelines](/en/launcher/developer/update).
 
 ## <DocIcon name="wrench" /> Environment Repair Procedures
 

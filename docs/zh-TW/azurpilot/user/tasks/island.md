@@ -1,7 +1,7 @@
 ---
 title: 島嶼計劃
 description: 赤石計劃（島嶼）17 個任務：季節設定、五家商店經營、農田牧場、製造、每日採集與珍珠交易。
-updated: 2026-10-20
+updated: 2026-10-30
 ---
 
 # 島嶼計劃
@@ -53,6 +53,18 @@ updated: 2026-10-20
 | `IslandNursery` | `MinNursery`、`IgnorePineapple`、`PlantLavender` | 苗圃與薰衣草 |
 
 `Min*` 是保留數量下限，低於它才補種。`Positions` 決定走位點，通常保持預設。
+
+`IslandFarm.CropTargets`、`IslandOrchard.CropTargets`、`IslandNursery.CropTargets` 可逐行設定 `作物名: 目標庫存`。未列出的作物沿用對應 `Min*`，目標 `0` 表示不補種；優先補種庫存與目標比例較低的作物。
+
+## <DocIcon name="calculator" /> 島嶼生產規劃器（`IslandProductionPlanner`）
+
+在「工具」頁執行。規劃器掃描已解鎖科技與未完成季節任務，依據五間店鋪等級、效率及 `DailyProfitLowerLimit`（每日島幣淨收益下限）計算生產與銷售方案；`ExtraTargets` 可補充物品需求。
+
+1. 保持 `ApplySettings` 關閉（預設），輸入店鋪等級及收益下限後執行，先檢查日誌；`*` 表示預計修改的設定。
+2. 確認方案後才啟用 `ApplySettings` 並重新執行，將方案寫入既有餐飲、商區、農田等生產設定。
+3. 實際生產仍由原有島嶼任務完成。**規劃器不直接生產，也不自動處理季節訂單。** 相關需求可填入 `ExtraTargets`。
+
+另見[輔助工具](/zh-TW/azurpilot/user/tasks/tools)與[設定系統](/zh-TW/azurpilot/developer/config)。
 
 ## <DocIcon name="circle-check" /> 牧場（`IslandRancher`）
 

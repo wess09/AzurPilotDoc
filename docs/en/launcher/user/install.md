@@ -1,12 +1,12 @@
 ---
 title: Install Launcher
 description: Download, extraction, permissions, and runtime setup for Windows, macOS, and Linux desktop launcher installations.
-updated: 2026-10-20
+updated: 2026-10-30
 ---
 
 # Install Launcher
 
-The launcher is distributed as a portable archive without an installer wizard. Actual setup occurs on first execution: it initializes `.venv`, downloads Python, and clones the core repository.
+Windows releases include an installer (such as `AzurPilot_Setup_3.0.4.exe`) and portable archives; macOS and Linux use platform archives. On first run, or when you select **Deploy**, the launcher retrieves runtime components, prepares Python, and obtains the core repository.
 
 ## <DocIcon name="download" /> Download Channels
 
@@ -54,12 +54,12 @@ Extract using 7-Zip or Windows Explorer. Do not run the executable from inside t
 </Step>
 <Step title="Grant Administrator privileges">
 
-The `alas-launcher.exe` manifest declares `requireAdministrator` to handle ADB drivers and system networking. Confirm the UAC prompt.
+The `AzurPilot.exe` manifest declares `requireAdministrator` to handle ADB drivers and system networking. Confirm the UAC prompt.
 
 </Step>
 <Step title="Handle SmartScreen warnings">
 
-Unsigned binaries may trigger Windows SmartScreen. Click "More info" followed by "Run anyway".
+If SmartScreen blocks a file, first verify that it came from [official Releases](https://github.com/wess09/AzurPilotLauncher/releases/latest) and check its publisher/signature. Do not bypass security warnings without verifying the download.
 
 </Step>
 <Step title="Verify WebView2">
@@ -86,10 +86,10 @@ Certain macOS versions cache rejection states. Removing the quarantine attribute
 ## <DocIcon name="wrench" /> Linux
 
 ```bash
-tar -xf azurpilot-launcher-linux-x64.tar.xz
+tar -xf AzurPilot-Linux-x86_64.tar.xz
 cd AzurPilot
-chmod +x alas-launcher
-./alas-launcher
+chmod +x AzurPilot
+./AzurPilot
 ```
 
 System dependencies:

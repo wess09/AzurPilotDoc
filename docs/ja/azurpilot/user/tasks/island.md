@@ -1,7 +1,7 @@
 ---
 title: 島開発計画
 description: 赤石計画（島開発）全 17 種のタスク：シーズン設定、5店舗の自動経営、農園・牧場、製造、デイリー採掘、真珠取引。
-updated: 2026-10-20
+updated: 2026-10-30
 ---
 
 # 島開発計画
@@ -53,6 +53,18 @@ updated: 2026-10-20
 | `IslandNursery` | `MinNursery`、`IgnorePineapple`、`PlantLavender` | 苗床とラベンダーの栽培 |
 
 `Min*` は最小保持下限数であり、在庫がこの数値を下回った際に自動で再作付けが行われます。
+
+`IslandFarm.CropTargets`、`IslandOrchard.CropTargets`、`IslandNursery.CropTargets` に、1 行ずつ `作物名: 目標在庫` を指定できます。未指定の作物は既存の `Min*` を使い、`0` は補充しません。在庫数と目標数の比率が低い作物を優先します。
+
+## <DocIcon name="calculator" /> 島の生産プランナー（`IslandProductionPlanner`）
+
+「ツール」から実行します。島の技術解放状況と未完了のシーズンタスクを読み取り、5 店舗の等級、生産効率、`DailyProfitLowerLimit`（1 日の島コイン純利益の下限）を用いて生産・販売案を算出します。追加の品目需要は `ExtraTargets` に入力できます。
+
+1. `ApplySettings` は既定のオフのまま実行し、ログの案と `*` が付いた変更予定の設定を確認します。
+2. 内容に問題がない場合だけ `ApplySettings` をオンにして再実行すると、飲食店・商業地区・農場などの既存設定が書き換わります。
+3. 生産自体は従来の島タスクが担当します。**プランナーは生産やシーズン注文を実行しません。** 必要な注文品は `ExtraTargets` に追加してください。
+
+[補助ツール](/ja/azurpilot/user/tasks/tools)と[設定システム](/ja/azurpilot/developer/config)も参照してください。
 
 ## <DocIcon name="circle-check" /> 牧場（`IslandRancher`）
 

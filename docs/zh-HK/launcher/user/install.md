@@ -1,12 +1,12 @@
 ---
 title: 安裝啟動器
 description: Windows、macOS、Linux 的下載、解壓縮、權限與運行步驟，以及 WebView 依賴和首次啟動檢查。
-updated: 2026-10-20
+updated: 2026-10-30
 ---
 
 # 安裝啟動器
 
-啟動器是綠色壓縮包，沒有安裝嚮導。真正的「安裝」發生在首次啟動：它會在目錄裏建立 `.venv`、下載 Python、拉取核心倉庫。
+Windows 提供安裝程式（例如 `AzurPilot_Setup_3.0.4.exe`）及便攜壓縮包；macOS、Linux 使用相應壓縮包。首次運行或選擇「部署」後，啟動器才會準備運行元件、Python 環境及核心程式碼。
 
 ## <DocIcon name="download" /> 下載
 
@@ -54,12 +54,12 @@ updated: 2026-10-20
 </Step>
 <Step title="允許管理員權限">
 
-`alas-launcher.exe` 的 manifest 聲明瞭 `requireAdministrator`，啟動會彈 UAC。這是為了安裝 ADB 與寫入系統目錄。
+`AzurPilot.exe` 的 manifest 聲明瞭 `requireAdministrator`，啟動會彈 UAC。這是為了安裝 ADB 與寫入系統目錄。
 
 </Step>
 <Step title="處理 SmartScreen">
 
-未簽名的可執行檔案可能被 SmartScreen 攔截。選擇「更多資訊 → 仍要運行」。
+若 SmartScreen 攔截檔案，請先確認下載來自[官方 Releases](https://github.com/wess09/AzurPilotLauncher/releases/latest)，並檢查發行者及簽名；未核實前不要直接略過安全警告。
 
 </Step>
 <Step title="確認 WebView2">
@@ -86,10 +86,10 @@ open /Applications/AzurPilot.app
 ## <DocIcon name="wrench" /> Linux
 
 ```bash
-tar -xf azurpilot-launcher-linux-x64.tar.xz
+tar -xf AzurPilot-Linux-x86_64.tar.xz
 cd AzurPilot
-chmod +x alas-launcher
-./alas-launcher
+chmod +x AzurPilot
+./AzurPilot
 ```
 
 依賴：

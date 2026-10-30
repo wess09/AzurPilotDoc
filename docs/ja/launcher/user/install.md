@@ -1,12 +1,12 @@
 ---
 title: ランチャーのインストール
 description: Windows、macOS、Linux でのダウンロード、展開、権限付与、実行手順、および WebView 依存関係の確認。
-updated: 2026-10-20
+updated: 2026-10-30
 ---
 
 # ランチャーのインストール
 
-ランチャーはインストーラーウィザードのないポータブル圧縮アーカイブ形式で配布されています。実質的な「インストール」は初回起動時に自動実行され、ディレクトリ内に `.venv` が作成され、Python やコアリポジトリが自動取得されます。
+Windows ではインストーラー（例：`AzurPilot_Setup_3.0.4.exe`）とポータブル版を配布しています。macOS / Linux は対応アーカイブを使用します。初回実行時または「デプロイ」を選択すると、ランタイム部品と Python 環境、コアリポジトリを準備します。
 
 ## <DocIcon name="download" /> ダウンロード
 
@@ -54,12 +54,12 @@ updated: 2026-10-20
 </Step>
 <Step title="管理者権限の承認">
 
-`alas-launcher.exe` のマニフェストには `requireAdministrator` が宣言されているため、起動時に UAC（ユーザーアカウント制御）プロンプトが表示されます。これは ADB の配置やシステムディレクトリ書き込みに必要となります。
+`AzurPilot.exe` のマニフェストには `requireAdministrator` が宣言されているため、起動時に UAC（ユーザーアカウント制御）プロンプトが表示されます。これは ADB の配置やシステムディレクトリ書き込みに必要となります。
 
 </Step>
 <Step title="SmartScreen の警告への対処">
 
-署名のないバイナリのため SmartScreen にブロックされる場合があります。「詳細情報」をクリックし、「実行」を選択してください。
+SmartScreen でブロックされた場合は、まず[公式 Releases](https://github.com/wess09/AzurPilotLauncher/releases/latest) から取得したファイルかを確認し、発行元と署名を検証してください。未確認のまま警告を無視しないでください。
 
 </Step>
 <Step title="WebView2 の確認">
@@ -86,10 +86,10 @@ Apple の開発者署名がないため、初回起動時は Gatekeeper によ�
 ## <DocIcon name="wrench" /> Linux
 
 ```bash
-tar -xf azurpilot-launcher-linux-x64.tar.xz
+tar -xf AzurPilot-Linux-x86_64.tar.xz
 cd AzurPilot
-chmod +x alas-launcher
-./alas-launcher
+chmod +x AzurPilot
+./AzurPilot
 ```
 
 必要パッケージ：

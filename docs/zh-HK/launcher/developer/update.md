@@ -1,7 +1,7 @@
 ---
 title: 更新鏈路與鏡像
 description: 核心倉庫的 git 更新、uv 依賴同步、啟動器 mTLS 自更新、鏡像與回退策略。
-updated: 2026-10-20
+updated: 2026-10-30
 ---
 
 # 更新鏈路與鏡像
@@ -87,6 +87,14 @@ Cloudflare Worker 按請求計費，也會引入「每次請求都執行」的�
 4. 替換可執行檔案並重新啟動。
 
 失敗時回退到下一個鏡像；全部失敗則保留當前版本，不阻斷使用。
+
+### 正式版、Canary 與下載來源
+
+由 3.0.3 起，更新清單支援正式版及 Canary：`updateChannel=stable`（預設）讀取正式版，`canary` 讀取 Canary 項目。沒有 Canary 構建時不會顯示更新。
+
+`updateSource` 包括 `auto`（預設）、`official`、`github`、`cloudflare`，只調整**更新檔案下載的優先順序**，失敗時仍會嘗試其他可用來源。自動模式在簡體中文兼北京時間環境優先官方來源，其他環境優先 GitHub、Cloudflare、官方來源。下載後驗證 SHA-256。
+
+清單 URL 由編譯期的 `LAUNCHER_UPDATE_URL` 指定，備用地址為 `https://ap.launcher-update.nanoda.work/updata/stable.json`。更改下載來源不會改變清單地址。
 
 ## <DocIcon name="handshake" /> 兩條線的交互
 

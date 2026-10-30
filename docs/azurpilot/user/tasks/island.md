@@ -1,7 +1,7 @@
 ---
 title: 岛屿计划
 description: 赤石计划（岛屿）17 个任务：季节设置、五家商店经营、农田牧场、制造、每日采集与珍珠交易。
-updated: 2026-10-20
+updated: 2026-10-30
 ---
 
 # 岛屿计划
@@ -53,6 +53,18 @@ updated: 2026-10-20
 | `IslandNursery` | `MinNursery`、`IgnorePineapple`、`PlantLavender` | 苗圃与薰衣草 |
 
 `Min*` 是保留数量下限，低于它才补种。`Positions` 决定走位点，通常保持默认。
+
+`IslandFarm.CropTargets`、`IslandOrchard.CropTargets`、`IslandNursery.CropTargets` 可逐行填写 `作物名: 目标库存`。未列出的作物沿用对应的 `Min*` 库存下限；目标为 `0` 则不补种。补种优先考虑库存与目标比例较低的作物。
+
+## <DocIcon name="calculator" /> 岛屿生产规划器（`IslandProductionPlanner`）
+
+在「工具」页运行岛屿生产规划器。它读取岛屿科技解锁情况与未完成的季节任务，结合五家店铺等级、生产效率及 `DailyProfitLowerLimit`（每日岛币净收益下限）生成生产和销售方案。可通过 `ExtraTargets` 添加额外的物品目标。
+
+1. 保持 `ApplySettings` 关闭（默认），填写实际店铺等级与收益要求后运行，在日志中查看方案；`*` 标出拟改变的配置。
+2. 确认结果适合当前岛屿后，再启用 `ApplySettings` 并重新运行，才会写入现有的餐饮、商区、农田和其他生产任务配置。
+3. 由原有岛屿任务完成后续生产；**规划器本身不执行生产，也不自动处理季节订单**。季节订单需求可手动加入 `ExtraTargets`。
+
+相关设置见[辅助工具任务](/azurpilot/user/tasks/tools)与[配置系统](/azurpilot/developer/config)。
 
 ## <DocIcon name="circle-check" /> 牧场（`IslandRancher`）
 

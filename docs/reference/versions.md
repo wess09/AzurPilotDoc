@@ -1,7 +1,7 @@
 ---
 title: 源码版本索引
 description: 文档审计所依据的仓库、分支与 commit、审计范围与时间、尚未验证的事项，以及站点素材的来源与许可。
-updated: 2026-10-20
+updated: 2026-10-30
 ---
 
 # 源码版本索引
@@ -19,6 +19,18 @@ updated: 2026-10-20
 ::: warning 默认分支不统一
 核心用 `master`，另外两个用 `main`。旧文章里的 `/blob/main/` 链接指向核心仓库会 404。
 :::
+
+## <DocIcon name="refresh" /> 2026-10-30 增量核对
+
+下表是本次**针对近期变更**核对的分支 HEAD，区别于上方 2026-10-20 的完整审计基线；未重跑全量任务／接口提取，所以上方覆盖统计仍属旧基线。
+
+| 项目 | 核对分支 | HEAD | 本次重点 |
+| --- | --- | --- | --- |
+| 核心 | `master` | [`2eba570571`](https://github.com/wess09/AzurPilot/commit/2eba570571ec9b7afd8c9b8ce52c7ccb2705a747) | 岛屿规划、逐作物补种、云端统计与调度 |
+| 启动器 | `main` | [`e3e269054c`](https://github.com/wess09/AzurPilotLauncher/commit/e3e269054cb627c1484b58bb055b26f4b113ad40) | 3.0.4 安装产物、Stable／Canary、自更新源 |
+| Android | `main` | `5b4458557b` | 热更新错误提示、DNS 回退；最近上游检查提交不代表功能改变 |
+
+本次只修订了与核对结果直接相关的页面，未进行三平台真机回归。
 
 ## <DocIcon name="search" /> 审计方法
 

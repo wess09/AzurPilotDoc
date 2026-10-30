@@ -1,7 +1,7 @@
 ---
 title: Cruise & Island Missions
 description: "17 island routines: season settings, 5 automated storefronts, farming, ranching, daily gathering, and pearl trade."
-updated: 2026-10-20
+updated: 2026-10-30
 ---
 
 # Cruise & Island Missions
@@ -53,6 +53,18 @@ Manages three agricultural zones: Farmland, Orchard, and Nursery.
 | `IslandNursery` | `MinNursery`, `IgnorePineapple`, `PlantLavender` | Nursery plots and lavender crops |
 
 `Min*` options define minimum inventory reserve floors; crops replant only when reserves dip below this threshold.
+
+`IslandFarm.CropTargets`, `IslandOrchard.CropTargets`, and `IslandNursery.CropTargets` accept one `crop: target inventory` entry per line. Unlisted crops retain their corresponding `Min*` thresholds; a target of `0` disables replanting. Crops with a lower inventory-to-target ratio are prioritized.
+
+## <DocIcon name="calculator" /> Island Production Planner (`IslandProductionPlanner`)
+
+Run this task from **Tools**. It scans unlocked island technology and outstanding season tasks, then calculates a production and sales plan using the five shop grades, efficiency modifiers, and `DailyProfitLowerLimit` (minimum daily net island-coin profit). Use `ExtraTargets` for additional item demands.
+
+1. Keep `ApplySettings` off (the default), enter your shop grades and profit target, and run the task. Review the log; `*` marks settings that would change.
+2. Only after checking the plan, enable `ApplySettings` and run it again to write the existing restaurant, business, farming, and other production settings.
+3. Existing island tasks perform the actual production. **The planner does not produce items or complete seasonal orders.** Add seasonal-order demands manually to `ExtraTargets` when needed.
+
+See [Utility Tasks](/en/azurpilot/user/tasks/tools) and [Configuration](/en/azurpilot/developer/config).
 
 ## <DocIcon name="circle-check" /> Ranching (`IslandRancher`)
 

@@ -1,7 +1,7 @@
 ---
 title: Update Pipelines & Mirrors
 description: Core repository Git updates, uv dependency synchronization, launcher mTLS self-updates, and mirror failover strategies.
-updated: 2026-10-20
+updated: 2026-10-30
 ---
 
 # Update Pipelines & Mirrors
@@ -87,6 +87,14 @@ Cloudflare Workers incur per-request billing and introduce runtime dependencies.
 4. Replaces the active executable binary and restarts the process.
 
 If downloads fail, the updater fails over to secondary mirrors; if all fail, it retains the existing binary without interrupting operation.
+
+### Stable, Canary, and Download Sources
+
+Since 3.0.3, one update manifest can describe both channels: `updateChannel=stable` (default) selects the stable release; `canary` selects the Canary entry. If no Canary build is listed, no Canary update is offered.
+
+`updateSource` is `auto` (default), `official`, `github`, or `cloudflare`. It sets **payload download priority**, with fallback to other available URLs. In auto mode, Simplified Chinese with Beijing time prefers the official source; other environments prefer GitHub, then Cloudflare, then the official source. Payloads are verified using SHA-256.
+
+The update-manifest URL is set at build time by `LAUNCHER_UPDATE_URL`, with `https://ap.launcher-update.nanoda.work/updata/stable.json` as a fallback. Selecting a payload source does not change the manifest URL.
 
 ## <DocIcon name="handshake" /> Cross-Track Interactions
 

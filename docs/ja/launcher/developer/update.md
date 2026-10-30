@@ -1,7 +1,7 @@
 ---
 title: 更新パイプラインとミラー
 description: コアリポジトリの git 更新、uv 依存関係同期、ランチャー本体の mTLS 自己自動更新、ミラーとフォールバック戦略。
-updated: 2026-10-20
+updated: 2026-10-30
 ---
 
 # 更新パイプラインとミラー
@@ -87,6 +87,14 @@ Cloudflare Worker はリクエスト数に応じた課金やコールドスタ�
 4. 実行ファイルを安全に置換して再起動。
 
 途中でエラーが発生した場合は次のミラーへフォールバックします。すべての取得先が失敗した場合は現在のバージョンを維持し、ユーザーの利用を妨げません。
+
+### 正式版・Canary とダウンロード元
+
+3.0.3 以降、更新マニフェストは正式版と Canary の両方に対応します。`updateChannel=stable`（既定）は正式版、`canary` は Canary 項目を選択し、該当ビルドがなければ更新は提示されません。
+
+`updateSource` は `auto`（既定）、`official`、`github`、`cloudflare` から選べます。これは**更新ペイロードの取得優先順位**であり、失敗時は利用可能な別のソースへフォールバックします。自動設定では簡体字中国語と北京時間の環境で公式配信を優先し、その他では GitHub、Cloudflare、公式配信の順です。SHA-256 で検証します。
+
+マニフェスト URL はビルド時の `LAUNCHER_UPDATE_URL` で決まり、`https://ap.launcher-update.nanoda.work/updata/stable.json` が予備 URL です。ダウンロード元の変更はマニフェスト URL を変更しません。
 
 ## <DocIcon name="handshake" /> 2つの更新系統の相互影響
 
