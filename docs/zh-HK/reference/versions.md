@@ -1,7 +1,7 @@
 ---
 title: 源碼版本索引
 description: 文檔審計所依據的倉庫、分支與 commit、審計範圍與時間、尚未驗證的事項，以及站點素材的來源與許可。
-updated: 2026-10-31
+updated: 2026-11-01
 ---
 
 # 源碼版本索引
@@ -20,17 +20,17 @@ updated: 2026-10-31
 核心用 `master`，另外兩個用 `main`。舊文章裏的 `/blob/main/` 連結指向核心倉庫會 404。
 :::
 
-## <DocIcon name="refresh" /> 2026-10-30 增量核對
+## <DocIcon name="refresh" /> 2026-11-01 增量核對
 
-下表是本次**針對近期變更**核對的分支 HEAD，區別於上方 2026-10-20 的完整審計基線。三份機器生成的索引已經重新提取，覆蓋統計以下方實際當前值為準。
+對照上次成功審計的核心 `6f8c43da`、啟動器 `4c024769`、Android `3f00c7fc`。以下為**分支 HEAD**，並非正式發佈版本；上方 2026-10-20 基線保留為歷史記錄。
 
-| 項目 | 核對分支 | HEAD | 本次重點 |
+| 項目 | 分支 | HEAD | 變化 |
 | --- | --- | --- | --- |
-| 核心 | `master` | [`2eba570571`](https://github.com/wess09/AzurPilot/commit/2eba570571ec9b7afd8c9b8ce52c7ccb2705a747) | 島嶼規劃、逐作物補種、雲端統計與調度 |
-| 啟動器 | `main` | [`e3e269054c`](https://github.com/wess09/AzurPilotLauncher/commit/e3e269054cb627c1484b58bb055b26f4b113ad40) | 3.0.4 安裝產物、Stable／Canary、自更新源 |
-| Android | `main` | `5b4458557b` | 熱更新錯誤提示、DNS 回退；最近上游檢查提交不代表功能改變 |
+| 核心 | `master` | [`d058314ecf`](https://github.com/wess09/AzurPilot/commit/d058314ecfd1ca0b910ba832eb885a9e394599c9) | 培養達標停止、常用候補及通知；回退相機三次無進展及有界重定位；啟動引導恢復 Requests |
+| 啟動器 | `main` | [`4c024769c8`](https://github.com/wess09/AzurPilotLauncher/commit/4c024769c810391d30520a79e85a80cb1199fbc5) | HEAD 不變；最新穩定版 **3.0.6** 支援 Node.js 自動下載及獨立鏡像回退 |
+| Android | `main` | [`7bc1e48b41`](https://github.com/wess09/AzurPilot-for-Android/commit/7bc1e48b4160bd8361570ba83208e66d6b142e9b) | 三次上游檢查心跳，只修改 `.github/` 標記，無應用程式功能變更 |
 
-本次只修訂了與核對結果直接相關的頁面，未進行三平台真機迴歸。
+自動生成的任務／設定／WebSocket 索引仍基於核心 `2eba5705`（101／173／80），**不是目前 HEAD 的完整索引**。核心 [CI](https://github.com/wess09/AzurPilot/actions/runs/41212750148) 前端 470 通過、2 項斷言失敗；上一版 [Docs CI](https://github.com/wess09/AzurPilotDoc/actions/runs/41213764015) 成功。未進行真機驗證。
 
 ## <DocIcon name="search" /> 審計方法
 

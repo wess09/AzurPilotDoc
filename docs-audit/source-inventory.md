@@ -1,6 +1,6 @@
 # 源码审计范围与入口
 
-最近一次核对：2026-10-31。源分支、精确 SHA 和发布标签以 [source-versions.json](source-versions.json) 为准。
+最近一次核对：2026-11-01。源分支、精确 SHA 和发布标签以 [source-versions.json](source-versions.json) 为准。
 
 这是**关键入口清单**，不是对三个仓库每个文件的覆盖声明。以当前分支实际源码为第一事实来源；没有新提交时不依据心跳、Issue 标题或版本猜测新增功能。
 
@@ -22,7 +22,7 @@
 - `docs/.vitepress/data/config.json`：173 个配置选项组
 - `docs/.vitepress/data/api.json`：80 个 WebSocket 业务方法
 
-本次核对三个源分支均有新增提交（核心新增 `FleetDorm` 任务与配置组，启动器发布 3.0.6）；现有站点索引文件暂保留 `2eba5705` 快照，待文档团队完成新增多语言文案审核后统一重算索引。
+本次核心 `master` 前进至 `d058314e`，新增培养达标停止、常用候补与通知，回退地图相机进展及次数保护；Launcher `main` 保持 `4c024769`（稳定版 3.0.6）；Android `main` 仅新增三次上游心跳至 `7bc1e48b`。索引仍基于 `2eba5705`，未重新提取，不得将 101/173/80 视为当前 HEAD 的完整数量。
 
 ## 审计限制
 

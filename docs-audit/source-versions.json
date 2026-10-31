@@ -1,31 +1,31 @@
 {
   "schema_version": 1,
-  "audit_date": "2026-10-31",
-  "audit_type": "incremental audit of upstream repository HEADs and releases",
+  "audit_date": "2026-11-01",
+  "audit_type": "incremental audit from last successful documented source heads",
   "source_branches": {
     "wess09/AzurPilot": {
       "branch": "master",
-      "head": "6f8c43dabc5ff1269524073c6ba02048f9243dcb",
-      "previous_audited_head": "2eba570571ec9b7afd8c9b8ce52c7ccb2705a747",
-      "new_commits": 4
+      "head": "d058314ecfd1ca0b910ba832eb885a9e394599c9",
+      "previous_audited_head": "6f8c43dabc5ff1269524073c6ba02048f9243dcb",
+      "new_commits": 1
     },
     "wess09/AzurPilotLauncher": {
       "branch": "main",
       "head": "4c024769c810391d30520a79e85a80cb1199fbc5",
-      "previous_audited_head": "e3e269054cb627c1484b58bb055b26f4b113ad40",
-      "new_commits": 6
+      "previous_audited_head": "4c024769c810391d30520a79e85a80cb1199fbc5",
+      "new_commits": 0
     },
     "wess09/AzurPilot-for-Android": {
       "branch": "main",
-      "head": "3f00c7fcecd598a76684264e0ed22134b783031b",
-      "previous_audited_head": "5b4458557b8ef670edd4191c7b2e097c70cc3021",
-      "new_commits": 4
+      "head": "7bc1e48b4160bd8361570ba83208e66d6b142e9b",
+      "previous_audited_head": "3f00c7fcecd598a76684264e0ed22134b783031b",
+      "new_commits": 3
     }
   },
   "docs_repository": {
     "repository": "wess09/AzurPilotDoc",
     "branch": "master",
-    "head_before_this_audit": "d209bc98f3c46dc3f0b0b4b2b74a6f82490029f2"
+    "head_before_this_audit": "2eab5fd423862beca9e8a21e4a55fb70b7e7838b"
   },
   "source_indexes": {
     "from_repository": "wess09/AzurPilot",
@@ -53,15 +53,17 @@
     }
   },
   "prior_docs_ci": {
-    "run_id": 41098853139,
-    "commit": "d209bc98f3c46dc3f0b0b4b2b74a6f82490029f2",
+    "run_id": 41213764015,
+    "commit": "2eab5fd423862beca9e8a21e4a55fb70b7e7838b",
     "conclusion": "success"
   },
   "verification_notes": [
-    "Audited on 2026-10-31 with live git and gh queries across all three source repositories.",
-    "AzurPilot upstream master advanced by 4 commits to 6f8c43dabc5ff1269524073c6ba02048f9243dcb (feat: HTTP/3 transport, cloud rewards reporting, fleet-dorm linkage and event commission support). Existing documentation site indexes remain pinned to 2eba570 snapshot (101 tasks, 173 config groups, 80 WebSocket methods) pending doc sync for new FleetDorm task/group.",
-    "AzurPilotLauncher advanced by 6 commits to 4c024769c810391d30520a79e85a80cb1199fbc5, with stable release 3.0.6 published (adding Node.js runtime auto-download restoration and mirror source selection/fallback).",
-    "AzurPilot-for-Android advanced by 4 commits to 3f00c7fcecd598a76684264e0ed22134b783031b, all routine [skip ci] upstream check-ins without functional changes; latest release remains azurpilot-android-latest.",
-    "Prior Docs CI run 41098853139 on commit d209bc9 completed with success."
+    "Core master advanced by one commit (#1404) to d058314e: optional training completion, Favourite fallback and notifications, camera progress/attempt-limit rollback, Requests bootstrap restored.",
+    "Core master CI run 41212750148 failed two frontend FleetRotation.test.ts assertions (470 passed).",
+    "Launcher main unchanged at 4c024769 (stable 3.0.6); Android main advanced by three [skip ci] upstream-check heartbeats only.",
+    "Runtime HTTP/3-first remains in module/base/http.py; deploy/http.py was removed, bootstrap uses Requests/Git.",
+    "Generated catalogs remain pinned to core 2eba5705 (101 tasks, 173 config groups, 80 WebSocket methods), not current master.",
+    "Previous Docs CI run 41213764015 passed for commit 2eab5fd; this audit commit requires separate CI verification.",
+    "Five-language fleet/camera, version, transport and launcher guidance updated; no real-game or hardware tests."
   ]
 }

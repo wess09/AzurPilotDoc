@@ -1,7 +1,7 @@
 ---
 title: ソースコードバージョン索引
 description: ドキュメント監査が準拠するリポジトリ・ブランチ・コミットハッシュ、監査範囲、未検証事項、素材の権利情報。
-updated: 2026-10-31
+updated: 2026-11-01
 ---
 
 # ソースコードバージョン索引
@@ -21,7 +21,17 @@ updated: 2026-10-31
 :::
 
 
-**2026 年 10 月 30 日の増分確認：** コア `master` は `2eba570571`、Launcher `main` は `e3e269054c`（正式版 3.0.4）、Android `main` は `5b4458557b` です。現在のコアに基づき、索引を **101 タスク、173 オプショングループ、80 WebSocket メソッド**に再生成しました。上記表の古いコミットは 10 月 20 日の監査基準です。
+## <DocIcon name="refresh" /> 2026年11月1日の増分確認
+
+前回の成功した監査（コア `6f8c43da`、Launcher `4c024769`、Android `3f00c7fc`）からの差分です。以下は**ブランチ HEAD**であり、配布版のタグではありません。上の10月20日の監査基準は履歴として残しています。
+
+| 対象 | ブランチ | 確認済み HEAD | 主な変更 |
+| --- | --- | --- | --- |
+| コア | `master` | [`d058314ecf`](https://github.com/wess09/AzurPilot/commit/d058314ecfd1ca0b910ba832eb885a9e394599c9) | 育成完了時の停止、お気に入り候補、通知を追加。カメラの進展判定・試行上限をロールバックし、初期導入は Requests に復帰 |
+| Launcher | `main` | [`4c024769c8`](https://github.com/wess09/AzurPilotLauncher/commit/4c024769c810391d30520a79e85a80cb1199fbc5) | 新規コミットなし。正式版 **3.0.6** は Node.js 自動導入と独立ミラー切替に対応 |
+| Android | `main` | [`7bc1e48b41`](https://github.com/wess09/AzurPilot-for-Android/commit/7bc1e48b4160bd8361570ba83208e66d6b142e9b) | 上流確認の定期コミット3件のみ。アプリ機能の変更なし |
+
+自動生成されたタスク／設定／WebSocket の索引は引き続きコア `2eba5705` の **101/173/80** 件であり、**現行 HEAD の完全な索引ではありません**。コア [CI](https://github.com/wess09/AzurPilot/actions/runs/41212750148) はフロントエンドの2件のアサーションで失敗（470件成功）。直前の [Docs CI](https://github.com/wess09/AzurPilotDoc/actions/runs/41213764015) は成功しました。実機検証は未実施です。
 
 ## <DocIcon name="search" /> 監査方法
 

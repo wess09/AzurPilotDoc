@@ -1,7 +1,7 @@
 ---
 title: Source Version Index
 description: Repository commits, branches, audit timestamps, unverified items, and asset licensing baselines.
-updated: 2026-10-31
+updated: 2026-11-01
 ---
 
 # Source Version Index
@@ -21,7 +21,17 @@ The core program repository uses `master`, while the Android host and desktop la
 :::
 
 
-**Incremental verification (October 30, 2026):** The current core `master` is `2eba570571`, Launcher `main` is `e3e269054c` (stable 3.0.4), and Android `main` is `5b4458557b`. Task, API and configuration catalogs were regenerated from the current core: **101 tasks, 173 groups, 80 WebSocket methods**. The older SHA values in the table above remain the original 2026-10-20 audit baseline, not the current implementation.
+## <DocIcon name="refresh" /> Incremental verification — November 1, 2026
+
+Compared with the last successful audit: core `6f8c43da`, Launcher `4c024769`, Android `3f00c7fc`. These are **branch HEADs**, not release tags; the older October 20 baseline remains historical.
+
+| Project | Branch | Verified HEAD | Change |
+| --- | --- | --- | --- |
+| Core | `master` | [`d058314ecf`](https://github.com/wess09/AzurPilot/commit/d058314ecfd1ca0b910ba832eb885a9e394599c9) | Optional training completion, Favourite fallback and notifications; camera progress/attempt-limit rollback; Requests bootstrap |
+| Launcher | `main` | [`4c024769c8`](https://github.com/wess09/AzurPilotLauncher/commit/4c024769c810391d30520a79e85a80cb1199fbc5) | No new commits; stable **3.0.6** includes Node.js auto-download and mirror fallback |
+| Android | `main` | [`7bc1e48b41`](https://github.com/wess09/AzurPilot-for-Android/commit/7bc1e48b4160bd8361570ba83208e66d6b142e9b) | Three upstream-check heartbeats only; no application-code changes |
+
+Generated task/config/WebSocket catalogs still reflect core `2eba5705` (**101/173/80**), **not the complete current HEAD**. Core [CI](https://github.com/wess09/AzurPilot/actions/runs/41212750148) failed two frontend assertions (470 passed); the preceding [Docs CI](https://github.com/wess09/AzurPilotDoc/actions/runs/41213764015) succeeded. No live-device verification was performed.
 
 ## <DocIcon name="search" /> Audit Methodology
 

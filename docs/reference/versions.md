@@ -1,7 +1,7 @@
 ---
 title: 源码版本索引
 description: 文档审计所依据的仓库、分支与 commit、审计范围与时间、尚未验证的事项，以及站点素材的来源与许可。
-updated: 2026-10-31
+updated: 2026-11-01
 ---
 
 # 源码版本索引
@@ -20,17 +20,17 @@ updated: 2026-10-31
 核心用 `master`，另外两个用 `main`。旧文章里的 `/blob/main/` 链接指向核心仓库会 404。
 :::
 
-## <DocIcon name="refresh" /> 2026-10-31 增量核对
+## <DocIcon name="refresh" /> 2026-11-01 增量核对
 
-下表是本次**针对近期变更**核对的分支 HEAD，区别于上方 2026-10-20 的完整审计基线。三份机器生成的索引（101 个任务命令、173 个配置选项组、80 个 WebSocket 业务方法）暂保留 `2eba570` 快照基线，覆盖统计以下方实际当前值为准。
+对照上次成功审计的核心 `6f8c43da`、启动器 `4c024769`、Android `3f00c7fc`。以下为**分支 HEAD**，不等于正式 Release；上方 2026-10-20 基线保留为历史记录。
 
-| 项目 | 核对分支 | HEAD | 本次重点 |
+| 项目 | 分支 | HEAD | 变化 |
 | --- | --- | --- | --- |
-| 核心 | `master` | [`6f8c43dabc`](https://github.com/wess09/AzurPilot/commit/6f8c43dabc5ff1269524073c6ba02048f9243dcb) | HTTP/3 优先传输、换船后宅联动（`FleetDorm`）与逐排选船稳定确认、活动委托与云端奖励上报 |
-| 启动器 | `main` | [`4c024769c8`](https://github.com/wess09/AzurPilotLauncher/commit/4c024769c810391d30520a79e85a80cb1199fbc5) | 3.0.6 稳定版发布、Node.js 运行时自动下载与镜像源降级回退 |
-| Android | `main` | `3f00c7fcec` | 设备兼容性与上游同步检查；最新发布仍为 azurpilot-android-latest |
+| 核心 | `master` | [`d058314ecf`](https://github.com/wess09/AzurPilot/commit/d058314ecfd1ca0b910ba832eb885a9e394599c9) | 培养达标停止、常用候补及通知；回退相机三次无进展和有界重定位；启动引导恢复 Requests |
+| 启动器 | `main` | [`4c024769c8`](https://github.com/wess09/AzurPilotLauncher/commit/4c024769c810391d30520a79e85a80cb1199fbc5) | HEAD 不变；最新稳定版 **3.0.6** 支持 Node.js 自动下载与独立镜像回退 |
+| Android | `main` | [`7bc1e48b41`](https://github.com/wess09/AzurPilot-for-Android/commit/7bc1e48b4160bd8361570ba83208e66d6b142e9b) | 三次上游检查心跳，仅修改 `.github/` 标记，无应用业务改动 |
 
-本次只修订了与核对结果直接相关的页面，未进行三平台真机回归。
+自动生成的任务／配置／WebSocket 索引仍基于核心 `2eba5705`（101／173／80），**不是当前 HEAD 的完整索引**。核心 [CI](https://github.com/wess09/AzurPilot/actions/runs/41212750148) 前端 470 通过、2 项断言失败；上一版 [Docs CI](https://github.com/wess09/AzurPilotDoc/actions/runs/41213764015) 成功。未进行真机验证。
 
 ## <DocIcon name="search" /> 审计方法
 
