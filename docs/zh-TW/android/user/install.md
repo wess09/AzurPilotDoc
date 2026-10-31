@@ -1,7 +1,7 @@
 ---
 title: 安裝與架構選擇
 description: 選擇正確的 APK 架構與安裝包類型，從 GitHub 或 CNB 下載，處理簽名衝突與存儲不足。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 安裝與架構選擇

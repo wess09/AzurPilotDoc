@@ -1,7 +1,7 @@
 ---
 title: 權限啟用
 description: 內置 ADB 無線配對、Root 與外部 Shizuku 三種啟用方式，斷網重連、失效條件與安全邊界。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 權限啟用
@@ -118,12 +118,18 @@ Root 提供的是不同的啟動鏈路與權限上下文。遇到 ADB 路徑失�
 
 ## <DocIcon name="circle-check" /> 驗證啟用成功
 
-| 檢查 | 期望 |
-| --- | --- |
-| 啟用頁狀態 | 已就緒 / Ready |
-| 掛機頁 | 能建立虛擬熒幕並顯示畫面 |
-| 啟動任務 | 能截圖、點擊，任務推進 |
-| 日誌 | 無 `Binder` 超時、無 `SecurityException` |
+| 檢查 | 期望 | 驗證方式 |
+| --- | --- | --- |
+| 啟用頁狀態 | 已就緒 / Ready | 介面查看狀態投影 |
+| 掛機頁 | 能建立虛擬熒幕並顯示推流畫面 | 真機實測 Display 建立 |
+| 特權橋探測 | `127.0.0.1:22301` 響應 `ping` 且 `ok=true` | PRoot 內部連通測試 |
+| 啟動任務 | 能截圖、點擊，演習/日常任務正常推進 | 真實自動化任務執行 |
+| 裝備碼能力 | `capabilities.equipmentCode=true` 時可讀寫剪貼板 | 演習/META 方案測試 |
+| 日誌 | 無 `Binder` 超時、無 `SecurityException` | 查看應用與 ADB 日誌 |
+
+::: tip 區分靜態編譯與真機驗證
+無線配對的 SPAKE2 握手、Android Keystore 密鑰持久化、整機重新啟動後的失效狀態判定，以及特定廠商系統對後台 `app_process` 的保活策略，必須在真實物理設備上實操驗證，單測與模擬器無法模擬真實的硬件行為。
+:::
 
 ## <DocIcon name="wrench" /> 失敗疑難排解
 

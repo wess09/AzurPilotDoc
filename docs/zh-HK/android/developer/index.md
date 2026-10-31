@@ -1,7 +1,7 @@
 ---
 title: Android 開發者入口
 description: 從零構建 Android 宿主：需要的 JDK 與 NDK 版本、首次構建命令、自檢與驗證方式、Logcat 調試技巧，以及各模組在倉庫中的位置。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # Android 開發者入口
@@ -58,13 +58,14 @@ bash app/scripts/fetch-proot-libs.sh
 
 只想編 arm64 時，在 `app/local.properties` 寫 `build.debugAbi=arm64-v8a`。
 
-## <DocIcon name="circle-check" /> 日常驗證
+## <DocIcon name="circle-check" /> 靜態日常驗證
 
 | 改動 | 命令 |
 | --- | --- |
 | Kotlin / Compose / AIDL | `cd app && ./gradlew compileDebugKotlin -x verifyBundledAzurPilotRuntime` |
 | 原生橋 / CMake | `cd app && ./gradlew assembleDebug -Pazurpilot.slimApk=true` |
-| rootfs 覆蓋層 | `uv run --with psutil python -m unittest discover -s rootfs/tests` |
+| rootfs 覆蓋層 | `uv run --with psutil --with numpy --with pyyaml python -m unittest discover -s rootfs/tests` |
+| 設備上報後端微服務 | `cd server/device-report && go test ./... && go vet ./...` |
 | 文案 | `python app/scripts/check_i18n_strings.py` |
 | Shell / PowerShell 工具 | 先語法檢查，再在授權設備上只讀或受控執行 |
 
@@ -99,7 +100,7 @@ adb forward tcp:25548 tcp:25548
 ```text
 AzurPilot-for-Android/
 ├── app/
-│   ├── app/                 # 主模块：Compose UI、proot、privileged、bridge
+│   ├── app/                 # 主模块：Compose UI、proot、privileged、bridge、report
 │   ├── adb-runtime/         # 内置 Shizuku-m 的 ADB 运行时
 │   ├── download-core/       # OkHttp 下载器（分段、校验）
 │   ├── build-logic/         # Gradle 约定插件（SDK、ABI、签名、R8）
@@ -109,9 +110,11 @@ AzurPilot-for-Android/
 │   ├── navigation-runtime/  # 导航动效
 │   └── miuix-runtime/       # Miuix 外观适配
 ├── rootfs/                  # overlay、seeds、构建脚本、客户机测试
-├── server/                  # device-report、remote-access 网关
+├── server/
+│   ├── device-report/       # 机型上报微服务（Go 标准库、Dockerfile、deploy/compose.yaml）
+│   └── remote-access/       # 远端网关与反代服务
 ├── tools/                   # 真机测试与基准脚本
-├── doc/                     # 设计与协议文档
+├── doc/                     # 设计、线协议与运维文档
 └── docs/screenshots/        # 官方截图
 ```
 
@@ -142,7 +145,9 @@ AzurPilot-for-Android/
 ```text
 doc/architecture.md             分层与网关
 doc/module-reference.md         按职责的源码地图
-doc/privileged-bridge-protocol.md
+doc/privileged-bridge-protocol.md 特权桥线协议与共享内存截帧
+doc/device-reporting.md         机型适配上报与签名验证规范
+server/device-report/deploy/README.md 腾讯云 Docker 部署与证书轮换说明
 doc/runtime-provisioning.md
 doc/hot-update.md
 doc/release-channel.md
@@ -151,14 +156,14 @@ doc/ocr-acceleration.md
 doc/development-guide.md
 ```
 
-## <DocIcon name="flask" /> 修改後的最小驗證
+## <DocIcon name="flask" /> 嚴格區分靜態驗證與真機驗證
 
-| 範圍 | 不能省 |
-| --- | --- |
-| Kotlin / Koin / Compose | `compileDebugKotlin` |
-| 原生橋 / CMake | `assembleDebug -Pazurpilot.slimApk=true` |
-| rootfs Python | `unittest discover -s rootfs/tests` |
-| 文案 | `check_i18n_strings.py` |
-| 特權 / 懸浮窗 / 小組件 / 保活 | **真機全量回歸 + 逐張審查截圖** |
+| 範圍 | 靜態驗證（本地 / CI） | 真機驗證（物理設備必測） |
+| --- | --- | --- |
+| Kotlin / Koin / Compose | `compileDebugKotlin` | 介面在真實熒幕解像度與摺疊屏/深色模式適配 |
+| 原生橋 / CMake | `assembleDebug -Pazurpilot.slimApk=true` | 虛擬熒幕建立、輸入延遲與幀鎖配對釋放 |
+| rootfs 覆蓋層 | `python -m unittest discover -s rootfs/tests` | 前台包名解析與無障礙/原生觸控協調 |
+| 機型上報微服務 | `go test ./...` 與 `go vet ./...` | 真實手機通過客戶端證書向 Issue #1 提交評論 |
+| 特權 / 懸浮窗 / 小組件 / 保活 | 語法與依賴編譯通過 | **真機全量回歸 + 電池白名單息屏 30 分鐘保活** |
 
-模擬器通過、編譯通過，都不能覆蓋 OEM 行為差異。
+模擬器通過、編譯通過，均不能代表在特定 OEM 廠商系統上功能完整。所有涉及特權與硬件行為的改動必須保留真機測試結論。

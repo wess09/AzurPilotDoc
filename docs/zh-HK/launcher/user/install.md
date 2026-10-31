@@ -1,12 +1,12 @@
 ---
 title: 安裝啟動器
-description: Windows、macOS、Linux 的下載、解壓縮、權限與運行步驟，以及 WebView 依賴和首次啟動檢查。
+description: Windows、macOS、Linux 的下載、解壓縮、權限與運行步驟，以及 WebView 依賴、安裝器安全策略和首次啟動檢查。
 updated: 2026-10-31
 ---
 
 # 安裝啟動器
 
-Windows 提供安裝程式（例如 `AzurPilot_Setup_3.0.4.exe`）及便攜壓縮包；macOS、Linux 使用相應壓縮包。首次運行或選擇「部署」後，啟動器才會準備運行元件、Python 環境及核心程式碼。
+Windows 提供安裝嚮導（如 `AzurPilot_Setup_3.0.4.exe`、`NTEP-Launcher-Windows-x64-Setup.exe`）和便攜壓縮包；macOS 與 Linux 提供帶獨立運行時環境的平台壓縮包（`.tar.xz`）。首次運行或點擊「部署」時，啟動器會確保運行組件與 Python 環境就緒，並取得核心代碼。
 
 ## <DocIcon name="download" /> 下載
 
@@ -14,138 +14,157 @@ Windows 提供安裝程式（例如 `AzurPilot_Setup_3.0.4.exe`）及便攜壓�
 | --- | --- |
 | GitHub Releases | `github.com/wess09/AzurPilotLauncher/releases/latest` |
 | 官網下載頁 | `azurpilot.com/download.html` |
-| CNB | 國內鏡像 |
+| 國內鏡像 | Releases 鏡像源或 CNB 歸檔 |
 
 選擇**對應系統與 CPU 架構**的包：
 
-| 檔案名特徵 | 適用 |
+| 檔案名特徵 | 適用平台與説明 |
 | --- | --- |
-| `windows-x64` | 絕大多數 Windows |
-| `windows-arm64` | Windows on ARM |
-| `macos` | Apple Silicon / Intel（按發佈説明） |
-| `linux-x64` / `linux-arm64` | 對應架構 |
-| 帶 `-cn` | 國內鏡像版部署配置 |
+| `Windows-x64-Setup.exe` | 絕大多數 64 位 Windows PC（含兼容運行 x64 的 ARM 設備） |
+| `Windows-arm64-Setup.exe` | 原生 Windows 11 on ARM 設備 |
+| `macOS-*.tar.xz` | macOS（含 Apple Silicon 與 Intel 架構） |
+| `Linux-x86_64.tar.xz` / `Linux-aarch64.tar.xz` | Linux 對應架構 |
+| 帶 `-cn` 標記 | 預置國內鏡像源（PyPI / Git 鏡像）配置 |
 
 ::: tip 國際版與 CN 版的區別
-兩者的啟動器二進制相同，區別在部署配置裏的下載源：`-cn` 使用 `git://git.pull/AzurPilot` 與國內 PyPI / Python 鏡像。網絡環境不同就選不同版本，之後也可以手動改配置。
+兩者的啟動器二進制相同，區別在部署配置裏的下載源：`-cn` 使用國內代碼與依賴鏡像。網絡環境不同就選不同版本，啟動後也可以在「設定」中手動切換下載源。
 :::
 
-## <DocIcon name="folder" /> 解壓縮位置
+## <DocIcon name="folder" /> 解壓縮與安裝位置
 
-解壓縮到一個**固定、可寫、路徑簡單**的目錄：
+若使用便攜版或解壓縮包，應選擇一個**固定、可寫、路徑簡單**的目錄：
 
-- ✅ `D:\AzurPilot\`
-- ✅ `~/Applications/AzurPilot/`
-- ❌ `C:\Program Files\`（需要管理員寫權限）
-- ❌ 中文路徑 + 特殊符號混用（部分工具鏈兼容性差）
-- ❌ 同步盤（OneDrive / iCloud 會鎖定 `.venv` 裏的檔案）
+- ✅ `D:\AzurPilot\` 或 `D:\Apps\NTEPilot\`
+- ✅ `~/Applications/AzurPilot/` 或 `/Applications/AzurPilot.app`
+- ❌ `C:\Program Files\`（手動解壓縮普通用戶無直接寫權限）
+- ❌ 中文路徑 + 特殊符號混用（部分底層工具鏈兼容性差）
+- ❌ 同步盤（OneDrive / iCloud 會鎖定 `.venv` 內部檔案）
 
-::: danger 不要放在臨時目錄
-啟動器把核心倉庫、`.venv`、配置、日誌全部放在自己的目錄下。放臨時目錄會被清理工具刪掉，等於丟配置。
+::: danger 不要放在系統臨時目錄
+啟動器管理的核心倉庫、`.venv`、配置與日誌均位於工作區中。放在臨時目錄會被系統清理工具誤刪，導致配置丟失。
 :::
 
 ## <DocIcon name="monitor" /> Windows
 
-<Steps>
-<Step title="安裝或解壓縮">
+Windows 提供圖形化安裝程序與便攜版兩種安裝方式：
 
-使用 `AzurPilot_Setup_*.exe` 時按安裝嚮導操作；便攜壓縮包須先解壓到可寫入的獨立目錄，不要直接在壓縮包內執行。
+<Steps>
+<Step title="運行安裝嚮導或解壓縮">
+
+- **安裝嚮導版（推薦）**：運行 Setup 安裝程序。安裝嚮導內置簡體中文語言檔案（`installer/ChineseSimplified.isl`），提供全中文圖形介面。
+  - 預設安裝位置為 `{autopf}\NTEPilot`（或 `AzurPilot`）。
+  - 安裝程序會自動對安裝目錄及內部 `.venv`、`log` 目錄賦予普通用戶可寫權限（`users-modify`），無需後續手動提權即可正常記錄日誌與執行環境自舉。
+  - **安裝路徑安全保護**：嚮導會自動校驗安裝路徑，禁止安裝到 `C:\Windows` 等系統關鍵目錄、裸 Program Files 根目錄或磁盤根目錄（如 `D:\`）。若選擇了上級目錄，嚮導會自動追加子目錄防止誤操作。
+  - **進程安全清理**：若覆蓋安裝或更新，安裝程序會自動檢查並終止可能佔用的舊版啟動器或 Python 子進程（`pythonw.exe` / `python.exe`）。
+- **便攜壓縮包**：先用 7-Zip 或系統解壓縮到獨立資料夾，切勿直接在壓縮包內雙擊打開。
 
 </Step>
 <Step title="允許管理員權限">
 
-`AzurPilot.exe` 的 manifest 聲明瞭 `requireAdministrator`，啟動會彈 UAC。這是為了安裝 ADB 與寫入系統目錄。
+啟動器的 manifest 聲明瞭管理員權限請求（用於設定底層網絡與安裝 ADB 工具鏈等），啟動時若彈出 UAC 提權提示，請點擊「允許」。
 
 </Step>
 <Step title="處理 SmartScreen">
 
-若 SmartScreen 攔截檔案，請先確認下載來自[官方 Releases](https://github.com/wess09/AzurPilotLauncher/releases/latest)，並檢查發行者及簽名；未核實前不要直接略過安全警告。
+如果 SmartScreen 攔截下載檔案，先確認檔案來自官方發佈渠道並檢查發行者/簽名資訊；確認無誤後點擊「更多資訊」→「仍要運行」。
 
 </Step>
-<Step title="確認 WebView2">
+<Step title="確認 WebView2 運行時">
 
-Windows 11 已內置。Windows 10 若提示缺失，安裝 [WebView2 Runtime](https://developer.microsoft.com/microsoft-edge/webview2/) 後重試。
+Windows 11 系統已內置 WebView2。Windows 10 若彈出缺失提示，下載並安裝 [WebView2 Runtime](https://developer.microsoft.com/microsoft-edge/webview2/) 即可。
 
 </Step>
 </Steps>
 
 ## <DocIcon name="laptop" /> macOS
 
+macOS 發佈包為 `.tar.xz` 格式，解壓縮後得到標準的 `.app` 應用程序包（如 `NTEP Launcher.app` 或 `AzurPilot.app`）。
+
 ```bash
-# 解压后放到 Applications
-xattr -dr com.apple.quarantine /Applications/AzurPilot.app
-open /Applications/AzurPilot.app
+# 解压并移动至系统应用程序目录
+tar -xf NTEP-Launcher-macOS-$(uname -m).tar.xz
+mv "NTEP Launcher.app" /Applications/
+
+# 移除隔离标记
+xattr -dr com.apple.quarantine "/Applications/NTEP Launcher.app"
+open "/Applications/NTEP Launcher.app"
 ```
 
-程序未經 Apple 開發者簽名，直接雙擊會被 Gatekeeper 攔截。`xattr` 命令移除隔離標記後再打開。
+由於社區開源構建未加入 Apple 付費開發者簽名，首次打開前需通過 `xattr` 命令移除 macOS Gatekeeper 的 quarantine 隔離標記，即可正常運行。
 
-::: warning 不要用「右鍵 → 打開」反覆嘗試
-部分 macOS 版本會記住拒絕狀態。用 `xattr` 清一次最省事。
+::: tip 內部結構與空間優化
+macOS 應用包內部包含了 `Contents/MacOS` 主程序與 `Contents/NTEPilot`（或 `AzurPilot`）獨立工作區，CI 打包時使用 `rdfind` 硬連結去重與 xz 極限壓縮，減小了應用體積。
 :::
 
 ## <DocIcon name="wrench" /> Linux
 
+Linux 提供包含獨立 `.venv` 與二進制的 `.tar.xz` 歸檔：
+
 ```bash
-tar -xf AzurPilot-Linux-x86_64.tar.xz
-cd AzurPilot
-chmod +x AzurPilot
-./AzurPilot
+tar -xf NTEP-Launcher-Linux-x86_64.tar.xz
+cd NTEPilot
+chmod +x ntep-launcher
+./ntep-launcher
 ```
 
-依賴：
+系統運行依賴：
 
-| 依賴 | 説明 |
+| 依賴庫 | 説明 |
 | --- | --- |
-| `libwebkit2gtk-4.1` | WebView |
-| 較新 glibc | CI 使用 Ubuntu 22.04 構建 |
-| `libgtk-3` | 窗口 |
+| `libwebkit2gtk-4.1` | Tauri 2 所需的 WebKit 渲染引擎 |
+| `libgtk-3` | 窗口系統支援 |
+| `libappindicator3` | 系統托盤與狀態指示支援 |
+| 較新 glibc | CI 基於 Ubuntu 22.04 構建 |
 
-Debian / Ubuntu：
+在 Debian / Ubuntu 上安裝依賴：
 
 ```bash
-sudo apt install libwebkit2gtk-4.1-0 libgtk-3-0
+sudo apt update
+sudo apt install libwebkit2gtk-4.1-0 libgtk-3-0 libappindicator3-1
 ```
 
-如果發行版太舊導致啟動器無法運行，核心程序仍可以用命令行方式運行：進入目錄後 `uv run python gui.py`（需要系統 Python 3.14 與 uv）。
+如果系統缺少 GUI 環境或庫版本過舊，核心程序也可以直接在控制台啟動：進入工作區後使用 `.venv/bin/python main.py`（或 `gui.py`）。
 
 ## <DocIcon name="circle-check" /> 首次啟動檢查
 
-首次啟動會執行完整的環境自舉，耗時取決於網絡。判斷成功的標準：
+首次啟動時，啟動器會執行初始化檢查與環境自舉。判斷運行正常的標準：
 
-| 檢查 | 期望 |
+| 檢查項 | 正常表現 |
 | --- | --- |
-| 啟動畫面 | 依次顯示建立 `.venv`、下載 Python、更新倉庫、同步依賴 |
-| 窗口 | 打開後直接進入 WebUI，無需登入 |
-| 連接埠 | 預設 `22267` |
-| 目錄 | 出現 `.venv/`、`config/`、`frontend/`、`log/` |
+| 啟動畫面 | 實時顯示進度條、狀態副標題與 19 條貼心 Tips 輪播 |
+| 依賴安裝 | 依次顯示準備環境、下載/複用 Python 3.14.3、`uv sync` 依賴同步 |
+| 主窗口 | 啟動完成後自動載入 WebUI 介面，通過單次登入憑據免密訪問 |
+| 預設連接埠 | 預設監聽本機 `22267` |
+| 目錄就緒 | 工作區內生成 `.venv/`、`config/`、`log/` 等必要子目錄 |
 
 ## <DocIcon name="file-pen" /> 命令行參數
 
-| 參數 | 作用 |
-| --- | --- |
-| `--lang <zh-CN\|zh-TW\|ja\|en>` | 強制介面語言 |
-| `--skip-update` | 跳過倉庫更新（斷網或疑難排解更新問題時） |
-| `--preview-crash` | 預覽錯誤頁 |
-| `--start-minimized` | 啟動後最小化到托盤（開機自啟使用） |
+啟動器支援通過命令行傳參覆蓋運行設定與介面語言：
+
+| 參數 | 格式 / 別名 | 作用 |
+| --- | --- | --- |
+| `--lang` / `--locale` | `--lang <zh-CN\|zh-TW\|ja\|en>`、`/lang <locale>`、`--lang=zh-CN` | 強制指定介面語言，優先級高於系統自動識別 |
+| `--skip-update` | `--skip-update` | 跳過核心倉庫與運行組件的聯網更新檢查 |
+| `--preview-crash` | `--preview-crash` | 調試用：直接預覽崩潰/錯誤提示介面 |
+| `--start-minimized` | `--start-minimized` | 啟動後自動最小化到系統托盤（開機自啟動時調用） |
 
 ## <DocIcon name="circle-off" /> 移除
 
-便攜版可退出後刪除程式目錄；Windows 安裝程式版應透過系統「已安裝的應用程式」移除（安裝程式會登記解除安裝資訊）。事前請備份配置及統計。
-
-**刪除前先備份 `config/`**，否則實例配置、統計與帳號保險庫全部丟失。
+- **Windows 安裝程序版**：在系統「設定」→「已安裝的應用」中找到啟動器並點擊移除。移除嚮導會自動清理進程，並**彈出對話框交互詢問是否保留本地運行環境與配置數據**。選擇「是」將保留數據方便日後重裝；選擇「否」將完全移除安裝目錄。
+- **便攜版與 macOS / Linux**：退出啟動器後，先備份 `config/` 與統計數據，然後直接刪除應用資料夾或 `.app` 包。
 
 ```text
-需要保留：config/、AzurPilot_Data_Backup/
-可以删除：.venv/、frontend/、log/、cache/
+建议保留：config/、AzurPilot_Data_Backup/
+可随应用删除：.venv/、frontend/dist/、log/、cache/
 ```
 
 ## <DocIcon name="message" /> 常見安裝問題
 
-| 現象 | 原因 |
+| 現象 | 原因與解決方案 |
 | --- | --- |
-| 雙擊沒反應 | 未通過 UAC，或被安全軟件攔截 |
-| 提示缺少 WebView2 | 未安裝運行時 |
-| macOS「應用已損壞」 | 隔離標記未移除 |
-| Linux 報 `libwebkit2gtk` 缺失 | 未安裝 4.1 版本 |
-| 解壓縮後路徑含空格導致異常 | 換到無空格路徑 |
-| 啟動器反覆重新啟動 | 環境初始化失敗，見[首次啟動](/zh-HK/launcher/user/first-run#初始化失敗) |
+| 雙擊啟動無反應 | 未通過 UAC 授權，或被第三方殺毒軟件攔截；檢查管理員權限 |
+| Windows 提示缺少 WebView2 | 從微軟官網下載安裝 Evergreen 獨立安裝包 |
+| macOS 提示「應用已損壞」 | Gatekeeper 攔截未簽名應用，使用 `xattr -dr com.apple.quarantine` 移除屬性 |
+| Linux 報 `libwebkit2gtk-4.1` 缺失 | 確認安裝了 `4.1` 版本而非舊版 `4.0` |
+| 語言顯示不是中文 | 系統 locale 識別為外語；可通過啟動參數 `--lang zh-CN` 強制指定 |
+| 覆蓋安裝提示檔案被佔用 | 安裝程序會自動 `taskkill`，若手動解壓縮請確認已在托盤完全退出啟動器和 Python 進程 |

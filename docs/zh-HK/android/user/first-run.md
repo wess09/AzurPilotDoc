@@ -1,7 +1,7 @@
 ---
 title: 首次啟動與 Runtime
 description: Runtime 部署狀態機、首次啟動為什麼慢、必要權限、建立實例並啟動第一個任務。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 首次啟動與 Runtime

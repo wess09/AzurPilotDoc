@@ -177,13 +177,13 @@ wss://<远程入口>/api/v1/ws
 {"v":1,"type":"request","id":"7","method":"logs.get","params":{"instance":"ap","after":128}}
 ```
 
-`after` 是遊標，返回此後的增量條目。
+`after` 是游標，返回此後的增量條目。
 
-### 業務 WebSocket 與啟動器專用通道
+### 啟動器登入票據與業務 WebSocket 的關係
 
-本文描述 `/api/v1/ws`（`v:1`）業務協定。啟動器另有需要 Bearer 鑑權的 `/api/v2/launcher/ws`，不能直接發送 v1 信封。專用通道的 `login.issue` 生成 60 秒有效、只能使用一次的票據，WebUI 使用業務方法 `auth.launcher({ticket})` 登入，不會傳輸 WebUI 密碼。
+WebUI 業務介面仍使用 `/api/v1/ws`、信封 `v:1`。在當前啟動器中，本地 `/api/v2/launcher/ws` 是**另一條專用的、帶 Bearer 鑑權的 WebSocket v2 通道**，不能直接發送本頁的 `v:1` 請求。它可通過 `login.issue` 簽發 60 秒的一次性票據；WebUI 從啟動 URL 取票據並調用業務介面 `auth.launcher({ticket})`，不暴露 WebUI 密碼。
 
-目前也提供 `launcher.status`、`launcher.autostart.set`、`launcher.command.get`、`fleetTraining.reset` 及 `auth.launcher` 等方法；參數以以下更新後的方法表為準。詳見[啟動器架構](/zh-TW/launcher/developer/architecture)。
+新增業務方法包括 `launcher.status`、`launcher.autostart.set`、`launcher.command.get`、`fleetTraining.reset` 和 `auth.launcher`，具體參數以以下重新生成的介面表為準。完整啟動器內部協議見[Launcher 架構](/zh-TW/launcher/developer/architecture)。
 
 
 ## <DocIcon name="clipboard" /> 方法清單

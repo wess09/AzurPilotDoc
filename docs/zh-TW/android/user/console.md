@@ -97,11 +97,20 @@ Android 宿主把「控制」和「顯示」分開了：控制台負責配置，
 
 匯出前確認壓縮包裡沒有 `config/deploy.yaml`、`password.txt`、`remote-access.json`。這些檔案在 Runtime 的 `config/` 下，匯出日誌時不會自動包含，但手動打包整個目錄時會。
 
-## 提交機型相容性報告
+## 提交機型兼容性報告
 
-在「設定 → 提交你的機型」檢查自動偵測的裝置、系統與使用模式，**明確選擇「可正常使用」或「無法正常使用」**，並同意公開到 GitHub 後再提交。資料會作為留言加到 [Android 機型支援 Issue #1](https://github.com/wess09/AzurPilot-for-Android/issues/1)；重複上報會顯示既有留言，而不是新增 Issue。頁面不會預選結果。
+在「設定 → 提交你的機型」檢查自動採集的機型、系統與執行模式資訊，**親自選擇「可正常使用」或「無法正常使用」**，同意公開到 GitHub 後提交。報告會作為評論追加到 [Android 機型支援 Issue #1](https://github.com/wess09/AzurPilot-for-Android/issues/1)，不會新建 Issue。重複報告會關聯已有評論；未明確選擇實際結果時提交按鈕禁用，伺服端也會直接拒絕未經實際驗證的提交。
 
-此功能不收集 IMEI、序號、Android ID、MAC、日誌或截圖，但仍應自行檢查顯示內容。缺少發佈憑據的本地建置版可能無法提交。詳見[機型報告協定](https://github.com/wess09/AzurPilot-for-Android/blob/main/doc/device-reporting.md)及[Runtime 開發文件](/zh-TW/android/developer/runtime)。
+該功能嚴格去敏，不收集 IMEI、序列號、Android ID、MAC、電話狀態、日誌或截圖；提交前仍請在介面上核對顯示的資訊。
+
+### 提交網路與憑據說明
+
+- **公網 API 地址**：提交請求發送至部署於騰訊雲 Docker 服務的 `https://afa-api.azurpilot.com/v1/device-reports`。
+- **正文簽名防護**：客戶端使用內置私鑰對請求進行 SHA256withRSA 簽名（攜帶 5 分鐘有效期時間戳與 32 字符隨機 nonce 防重放）。
+- **憑據要求**：簽名憑據由 GitHub Actions 在構建發佈版時注入（`AZURPILOT_DEVICE_REPORT_*`）。本地自行編譯的未注入憑據 Debug 包在打開此頁面時會提示功能不可用，屬正常現象。
+- **真機驗證邊界**：靜態程式碼與單元測試僅驗證數據採集與格式去敏；真實的評論提交依賴伺服端線上與 GitHub API 連通，請確保在聯網且測試過核心功能後再行提交。
+
+詳細字段規範、去敏規則與伺服端 Docker 部署見[設備上報技術說明文件](https://github.com/wess09/AzurPilot-for-Android/blob/main/doc/device-reporting.md)；Android Runtime 工作原理見[開發說明文件](/zh-TW/android/developer/runtime)。
 
 
 ## <DocIcon name="settings" /> 設定項速查

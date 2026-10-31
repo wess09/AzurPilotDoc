@@ -140,15 +140,29 @@ AzurPilot WebUI not ready within 90000ms
 
 | 目录 | 作用 | 约束 |
 | --- | --- | --- |
-| `rootfs/overlays/` | 处理 Android / PRoot 兼容差异 | 不改用户配置 |
+| `rootfs/overlays/` | 处理 Android / PRoot 兼容差异 | 不改用户配置，每次启动由 APK 自动同步 |
 | `rootfs/seeds/` | 首启模板 | 只在首次部署写入 |
 | `rootfs/build/` | `build-azurpilot.sh` 等 | 必须在目标 ABI 的原生环境执行 |
 
-覆盖层里已有 `android_process_compat.py` 等兼容逻辑，测试在 `rootfs/tests/`：
+### 核心覆盖层清单
+
+APK 在**每次拉起 PRoot 进程前**，都会将内置 assets 中的最新覆盖层文件原子同步至运行时目录，保证即使经过上游源码热更，兼容适配依然有效：
+
+- `android_ntp.py`：异步后台 NTP 校时，首次调用立即返回设备时间，后台线程刷新，避免阻塞截屏循环与调度器。
+- `android_equipment.py`：装备码读写桥接，基于特权桥 `equipment_code_*` 协议端点，不依赖 FastInputIME 也不回退主屏。
+- `android_device.py`：虚拟屏前台应用检测，精确解析 `dumpsys window displays` 中的 `mDisplayId` 分区，查询对应屏幕的焦点窗口与已恢复 Activity。
+- `android_capture.py`：共享内存截帧初始化（`com.azurpilot.ghio.frames.v1`），失败时自动平滑回退至 TCP 22301 并在 30 秒后重试。
+- `android_app_launch.py`：拉起应用后调用特权桥 `app_prepare` 关闭 APS/缩放，并调用 `app_focus` 注入触摸重试恢复窗口焦点。
+
+单测位于 `rootfs/tests/`：
 
 ```bash
-uv run --with psutil python -m unittest discover -s rootfs/tests
+uv run --with psutil --with numpy --with pyyaml python -m unittest discover -s rootfs/tests
 ```
+
+::: tip 静态测试与真机验证的界限
+`unittest` 可验证覆盖层的解析逻辑、JSON 协议拼装与状态机分支（静态测试已通过）；但实际的共享内存传输速度、APS 分辨率生效以及窗口焦点重获仍需在实体设备上运行验证。
+:::
 
 ## <DocIcon name="zap" /> 空间与性能
 

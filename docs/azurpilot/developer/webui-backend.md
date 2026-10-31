@@ -1,7 +1,7 @@
 ---
 title: WebUI 后端
 description: gui.py 的进程监督、WebSocket RPC 协议、方法注册、鉴权与限流，以及新增 API 方法的完整流程。
-updated: 2026-10-30
+updated: 2026-10-31
 ---
 
 # WebUI 后端
@@ -148,7 +148,8 @@ self.methods = {
 | 模块 | 职责 |
 | --- | --- |
 | `module/runtime/process_manager.py` | worker 创建、停止、回收 |
-| `module/runtime/updater.py` | 更新检查与应用 |
+| `module/runtime/updater.py` | 更新检查与应用（继承 `RuntimeGitManager`） |
+| `module/runtime/update_network.py` | 运行时 CDN 更新（HTTP/3 优先传输与 Git 回退） |
 | `module/runtime/remote_access.py` | Tunnel 生命周期 |
 | `module/runtime/account_vault.py` | 账号保险库 |
 | `module/persistence/` | SQLite 总库、迁移、恢复 |

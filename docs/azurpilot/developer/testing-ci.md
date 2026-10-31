@@ -1,7 +1,7 @@
 ---
 title: 测试与 CI
 description: Python 单元测试、前端 Vitest 与 Playwright、导入冒烟、生成产物校验，以及 GitHub Actions 的五个作业。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 测试与 CI
@@ -25,11 +25,11 @@ updated: 2026-10-20
 # 全量 Python 单元测试
 uv run python -m unittest discover -s tests
 
-# 单个模块
-uv run python -m unittest tests.test_api
+# 单个模块（如换船与后宅联动回归）
+uv run python -m unittest tests.test_fleet_dorm tests.test_fleet_rotation
 
-# pytest 专项
-uv run pytest tests/shop_event
+# pytest 专项（如 HTTP/3 传输与 CDN 更新网络）
+uv run pytest tests/test_http_transport.py tests/test_runtime_update_network.py
 
 # 导入冒烟（不连设备）
 uv run python -m dev_tools.import_smoke_test

@@ -1,7 +1,7 @@
 ---
 title: 辅助工具任务
 description: 系统设置、退役与强化、情绪管理、日志与掉落记录，以及扫描、基准测试、半自动等工具类任务。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 辅助工具任务
@@ -28,7 +28,7 @@ updated: 2026-10-20
 
 按类别保存掉落截图与结构化记录：科研、委托、战斗、大世界各玩法、指挥喵等。`RetentionDays` 控制保留天数，过期按 `BackUpMethod` 删除或压缩。
 
-`AzurStatsID` / `API` 是社区统计服务的接入字段。不打算上报就留空。
+`CloudUpload` 是科研与委托结构化云端提交的总开关（默认开启），通信优先采用 HTTP/3 (QUIC)。科研与委托分为 `upload`（仅上传结构化数据）、`save_and_upload`（保存本地截图并上传）与 `do_not`（不上传但保留本地收益统计）。战斗、侵蚀1练级与指挥喵仅支持本地截图保存（`save` / `do_not`）。大世界各任务则通过独立开关控制是否落盘截图，无论是否保存截图均完整解析并计入本地掉落统计。
 
 ## <DocIcon name="pencil" /> 通用设置（`General`）
 
@@ -95,6 +95,17 @@ updated: 2026-10-20
 改这些值的典型场景：机器很慢、模拟器启动要两分钟以上，适当调大 `Reboot` 的等待；而不是关掉异常处理。
 
 ## <DocIcon name="search" /> 扫描类工具
+
+### 舰队信息与换船配置（`FleetInfo`）
+
+集中维护出击舰队编队、智能换船、好感与等级培养、后宅休息联动及编队装备方案：
+
+- `FleetRotation`：出击前智能换船总开关及轮换规则；
+- `FleetLevelTraining` / `FleetAffinityTraining`：等级与好感度目标设定；
+- `FleetDorm`：换船后宅休息联动开关及楼层（`floor_1` 训练 / `floor_2` 休息）；
+- `FleetEquipment`：编队装备码配置方案。
+
+具体出击前置执行流程与换船规则见[出击与活动](/azurpilot/user/tasks/campaign)中的智能换船与换船后宅休息说明。
 
 ### 舰队扫描（`FleetScan`）
 

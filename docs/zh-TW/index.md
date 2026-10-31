@@ -1,7 +1,6 @@
 ---
 layout: home
 title: AzurPilot 說明文件
-description: AzurPilot 核心程式、Android 宿主與桌面啟動器的使用、設定、開發及疑難排解指南。
 titleTemplate: false
 
 hero:

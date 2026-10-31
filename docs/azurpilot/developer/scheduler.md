@@ -1,7 +1,7 @@
 ---
 title: 调度器生命周期
 description: alas.py 的主循环、任务选择、异常分级、线程模型与缓存策略；修改调度行为前必读。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 调度器生命周期
@@ -62,6 +62,35 @@ def wait_until(self, future):
 | `False` | 不可恢复失败 | +1 |
 
 为什么可恢复失败不计数：失败计数驱动的是「强制重启模拟器」这种高代价动作。可恢复错误已经各自触发过针对性恢复，再升级会重复惩罚。
+
+## <DocIcon name="zap" /> 出击前置钩子与换船休息生命周期
+
+出击类任务（`CampaignBase` / `CampaignRun`）在执行具体海域循环前，集成了内联的前置换船与后宅休息生命周期，其执行时序独立于外层任务调度循环：
+
+```text
+CampaignBase.run()
+  ├─ 读取地图战斗次数
+  ├─ preflight_rotation() [若 FleetRotation.Enabled]
+  │    ├─ control_interval(0.1, 0.3) 设置输入节流
+  │    ├─ 扫描当前舰队好感/等级并计算换船候补
+  │    ├─ 船坞换船（保留固定舰位卡面校验）
+  │    ├─ 换装（卸装 -> 换船 -> 补装）
+  │    ├─ 提交编队并记录状态
+  │    └─ rest_after_rotation() [若 FleetDorm.Enabled]
+  │         ├─ 从已换船舰队中挑一队（全队出击 > 道中 > Boss）
+  │         ├─ 进后宅切换 floor_1 / floor_2
+  │         ├─ 逐艘取消原有选中，筛选先锋/主力并逐排拖动选齐整队
+  │         ├─ 稳定帧与位移验证（限制前五排，最多3次拖动）
+  │         ├─ 确认并退出（异常时取消选择回退）
+  │         └─ 恢复输入节奏
+  ├─ emotion.check_reduce() 心情检查
+  └─ 关卡寻路与战斗循环
+```
+
+### 异常边界与事务隔离
+
+- **后宅异常就地吸收**：`rest_after_rotation()` 内部捕获 `DormArrangeError` 与弹窗异常。后宅栏位不足、无法确认或翻页超时不会抛出到 `CampaignRun`，而是主动点击取消并退出后宅，跳过本次后宅安排，出击任务继续执行。换船与换装属于已提交状态，无需回滚。
+- **输入节流上下文**：`control_interval()` 使用 Python `ContextVar` 限定在 `preflight_rotation` 作用域内。通过 `Device.handle_control_check()` 为点击、拖动注入 0.1–0.3 秒随机等待，无论正常退出或抛出异常均由 `finally` 块恢复原始节奏，普通出击任务与主调度器循环不受影响。
 
 ## <DocIcon name="circle-alert" /> 异常矩阵
 

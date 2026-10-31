@@ -99,9 +99,18 @@ Android 宿主把「控制」和「显示」分开了：控制台负责配置，
 
 ## 提交机型兼容性报告
 
-在「设置 → 提交你的机型」检查自动采集的机型、系统与运行模式信息，**亲自选择「可正常使用」或「无法正常使用」**，同意公开到 GitHub 后提交。报告会作为评论追加到 [Android 机型支持 Issue #1](https://github.com/wess09/AzurPilot-for-Android/issues/1)，不会新建 Issue。重复报告会关联已有评论；未选择实际结果不能提交。
+在「设置 → 提交你的机型」检查自动采集的机型、系统与运行模式信息，**亲自选择「可正常使用」或「无法正常使用」**，同意公开到 GitHub 后提交。报告会作为评论追加到 [Android 机型支持 Issue #1](https://github.com/wess09/AzurPilot-for-Android/issues/1)，不会新建 Issue。重复报告会关联已有评论；未明确选择实际结果时提交按钮禁用，服务端也会直接拒绝未经实际验证的提交。
 
-该功能不收集 IMEI、序列号、Android ID、MAC、日志或截图；提交前仍请自行检查显示的信息。提交依赖发布版内置凭据和后端服务，未配置凭据的本地构建可能不可用。详细字段、去敏、鉴权与服务部署见[设备上报技术文档](https://github.com/wess09/AzurPilot-for-Android/blob/main/doc/device-reporting.md)；Android Runtime 工作原理见[开发文档](/android/developer/runtime)。
+该功能严格去敏，不收集 IMEI、序列号、Android ID、MAC、电话状态、日志或截图；提交前仍请在界面上核对显示的信息。
+
+### 提交网络与凭据说明
+
+- **公网 API 地址**：提交请求发送至部署于腾讯云 Docker 服务的 `https://afa-api.azurpilot.com/v1/device-reports`。
+- **正文签名防护**：客户端使用内置私钥对请求进行 SHA256withRSA 签名（携带 5 分钟有效期时间戳与 32 字符随机 nonce 防重放）。
+- **凭据要求**：签名凭据由 GitHub Actions 在构建发布版时注入（`AZURPILOT_DEVICE_REPORT_*`）。本地自行编译的未注入凭据 Debug 包在打开此页面时会提示功能不可用，属正常现象。
+- **真机验证边界**：静态代码与单元测试仅验证数据采集与格式去敏；真实的评论提交依赖服务端在线与 GitHub API 连通，请确保在联网且测试过核心功能后再行提交。
+
+详细字段规范、去敏规则与服务端 Docker 部署见[设备上报技术文档](https://github.com/wess09/AzurPilot-for-Android/blob/main/doc/device-reporting.md)；Android Runtime 工作原理见[开发文档](/android/developer/runtime)。
 
 
 ## <DocIcon name="settings" /> 设置项速查

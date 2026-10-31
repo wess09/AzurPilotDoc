@@ -1,7 +1,7 @@
 ---
 title: AzurPilot for Android
 description: 在手機上本地執行 AzurPilot：Kotlin 宿主 + PRoot Linux Runtime + 虛擬螢幕，或作為遠端客戶端連接其他實例。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # AzurPilot for Android
@@ -39,11 +39,11 @@ Android 版不是「手機端的精簡版」——它把**完整的核心程式*
 
 | 層 | 技術 | 職責 |
 | --- | --- | --- |
-| App 殼層 | Kotlin + Compose (Material / Miuix) | 介面、Runtime 部署、網關訂閱、懸浮窗 |
-| PRoot | jniLibs 九件套 | 免 Root 的系統調用映射 |
-| Runtime | Ubuntu 24.04 + Python 3.14 | 上游核心程式與 WebUI |
-| 特權服務 | app_process + AIDL + JNI | 虛擬螢幕、截圖、觸控注入 |
-| OCR 工作處理程序 | `:ocr` 獨立處理程序 | 推理 API（`127.0.0.1:22302`） |
+| App 殼層 | Kotlin + Compose (Material / Miuix) | 介面、Runtime 部署、網關訂閱、懸浮窗、機型上報客戶端 |
+| PRoot | jniLibs 九件套 | 免 Root 的系統調用映射與隔離環境 |
+| Runtime | Ubuntu 24.04 + Python 3.14 | 上游核心程式、WebUI 與 Android 專用兼容覆蓋層 |
+| 特權服務 | app_process + AIDL + JNI | 虛擬螢幕、TCP 22301 原生線協議、共享記憶體截幀、輸入注入 |
+| OCR 工作處理程序 | `:ocr` 獨立處理程序 | LiteRT / MNN 推理 API（`127.0.0.1:22302`） |
 
 三個處理程序邊界：
 
@@ -56,12 +56,14 @@ Android 版不是「手機端的精簡版」——它把**完整的核心程式*
 | 能力 | 說明 |
 | --- | --- |
 | 後臺虛擬螢幕 | 遊戲在獨立 Virtual Display 執行，主螢幕可正常使用 |
+| 特權橋線協議 | 本機 TCP 22301，8 個協議端點支援截圖、觸控、裝備碼讀寫與啟動聚焦 |
 | 懸浮控制 | 全局浮窗啟停任務、看佇列、滾日誌 |
 | 內置控制台 | 設備端完整 WebUI，無需電腦 |
 | OCR 硬體加速 | 高通 QNN、聯發科 NeuroPilot、海思 HiAI；失敗回退 CPU |
 | 幀通道 | 匿名共享記憶體 + SCM_RIGHTS，實測 15.6 ms（TCP 47.2 ms） |
+| 機型兼容性上報 | 騰訊雲 Docker 收集服務，SHA256withRSA 正文驗籤，自動彙總至 Issue #1 |
 | 螢幕保護防燒屏 | 黑色低亮度，30 秒後每 10 秒上下漂移 16dp |
-| 雙軌更新 | APK 與 Runtime 獨立；腳本可事務級熱更 |
+| 多軌更新與上游同步 | APK 與 Runtime 獨立；CI 每 30 分鐘避峰巡檢上游並自動觸發構建 |
 | 日誌匯出 | 宿主與業務日誌分離，7 天輪轉，一鍵打包 |
 
 ## <DocIcon name="clipboard" /> 環境要求

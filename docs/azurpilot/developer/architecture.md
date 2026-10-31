@@ -1,7 +1,7 @@
 ---
 title: 系统架构
 description: AzurPilot 的分层结构、进程模型、模块边界与数据流，以及修改代码前必须知道的约束。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 系统架构
@@ -153,6 +153,21 @@ def my_feature(self):
 - 先改 `module/config/argument/*.yaml`，再运行生成器。
 - 配置路径是 `<Task>.<Group>.<Argument>`，业务里通过 `self.config.Group_Argument` 访问。
 - 新增字段必须补 `i18n/*.json` 的翻译，生成器不会自动翻译。
+
+### 网络传输（HTTP/3 优先）
+
+`module/base/http.py` 与 `deploy/http.py` 提供统一的 HTTP/3-first 传输层，基于 `niquests` 库及全局 `QuicSharedCache(max_size=12288)`：
+
+- **服务域路由**：对 `SERVICE_DOMAINS`（`azurpilot.com`、`nanoda.work`）自动预热并建立 QUIC 连接，显著降低版本检查、掉落与模板提交、交易所与云端隧道的握手时延。
+- **渐进降级**：本地环境不支持 UDP 443 或网络受限时，自动无感知回退至 HTTP/2 与 HTTP/1.1。
+- **更新传输分离**：运行时更新（`RuntimeGitOverCdnClient`）复用该 HTTP/3 传输层从 CDN 下载 Git 打包对象，而启动引导阶段保留无外部依赖的轻量 Requests 回退。
+
+### 控制节流与输入节奏
+
+`module/device/control.py` 引入 `control_interval()` 作用域控制：
+
+- 在智能换船等操作中通过 `ContextVar` 注入 0.1–0.3 秒随机间隔，覆盖点击、拖动与滑动，抑制低性能或高延迟客户端上的操作积压。
+- 不影响卡死和连点检测，调用结束后在 `finally` 中严格恢复原节奏；页面就绪依然通过截图状态机判断，不以等待时间充当就绪标记。
 
 ## <DocIcon name="circle-alert" /> 已知的技术债
 

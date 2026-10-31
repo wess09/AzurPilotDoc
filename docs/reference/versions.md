@@ -20,15 +20,15 @@ updated: 2026-10-31
 核心用 `master`，另外两个用 `main`。旧文章里的 `/blob/main/` 链接指向核心仓库会 404。
 :::
 
-## <DocIcon name="refresh" /> 2026-10-30 增量核对
+## <DocIcon name="refresh" /> 2026-10-31 增量核对
 
-下表是本次**针对近期变更**核对的分支 HEAD，区别于上方 2026-10-20 的完整审计基线。三份机器生成的索引已经重新提取，覆盖统计以下方实际当前值为准。
+下表是本次**针对近期变更**核对的分支 HEAD，区别于上方 2026-10-20 的完整审计基线。三份机器生成的索引（101 个任务命令、173 个配置选项组、80 个 WebSocket 业务方法）暂保留 `2eba570` 快照基线，覆盖统计以下方实际当前值为准。
 
 | 项目 | 核对分支 | HEAD | 本次重点 |
 | --- | --- | --- | --- |
-| 核心 | `master` | [`2eba570571`](https://github.com/wess09/AzurPilot/commit/2eba570571ec9b7afd8c9b8ce52c7ccb2705a747) | 岛屿规划、逐作物补种、云端统计与调度 |
-| 启动器 | `main` | [`e3e269054c`](https://github.com/wess09/AzurPilotLauncher/commit/e3e269054cb627c1484b58bb055b26f4b113ad40) | 3.0.4 安装产物、Stable／Canary、自更新源 |
-| Android | `main` | `5b4458557b` | 热更新错误提示、DNS 回退；最近上游检查提交不代表功能改变 |
+| 核心 | `master` | [`6f8c43dabc`](https://github.com/wess09/AzurPilot/commit/6f8c43dabc5ff1269524073c6ba02048f9243dcb) | HTTP/3 优先传输、换船后宅联动（`FleetDorm`）与逐排选船稳定确认、活动委托与云端奖励上报 |
+| 启动器 | `main` | [`4c024769c8`](https://github.com/wess09/AzurPilotLauncher/commit/4c024769c810391d30520a79e85a80cb1199fbc5) | 3.0.6 稳定版发布、Node.js 运行时自动下载与镜像源降级回退 |
+| Android | `main` | `3f00c7fcec` | 设备兼容性与上游同步检查；最新发布仍为 azurpilot-android-latest |
 
 本次只修订了与核对结果直接相关的页面，未进行三平台真机回归。
 

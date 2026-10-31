@@ -97,9 +97,9 @@ P ≤ L → 尝试购买
 
 商店類任務的兑換優先級在 `Filter` 中配置。紫幣有限，優先換限定物品。
 
-### META 信標與裝備恢復
+### META 信標、支援的裝備恢復
 
-`OpsiAshBeacon`、`OpsiAshAssist` 支援可選的 `Equipment.Config` 戰前／戰後配裝。信標完成後可嘗試由模擬戰鬥的準備畫面執行戰後方案。**META 檔案使用獨立艦隊，不觸發此功能。** 程序中斷或入口無法使用時，不能保證裝備恢復，請自行檢查。參見[演習裝備方案](/zh-HK/azurpilot/user/tasks/daily)。
+`OpsiAshBeacon` 與 `OpsiAshAssist` 可以共用任務裝備方案（`Equipment.Enable`／`Equipment.Config`），分別在戰前和收尾嘗試換裝與恢復；普通信標結束後可利用「模擬戰鬥」準備入口完成戰後方案。**META 檔案使用獨立編隊，不觸發該方案**。中斷或恢復入口無法訪問時不能保證裝備恢復，需人工檢查。配置格式與風險參見[演習裝備方案](/zh-HK/azurpilot/user/tasks/daily)。
 
 
 ## <DocIcon name="target" /> 隱秘、深淵、要塞

@@ -1,7 +1,7 @@
 ---
 title: 权限激活
 description: 内置 ADB 无线配对、Root 与外部 Shizuku 三种激活方式，断网重连、失效条件与安全边界。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 权限激活
@@ -118,12 +118,18 @@ Root 提供的是不同的启动链路与权限上下文。遇到 ADB 路径失�
 
 ## <DocIcon name="circle-check" /> 验证激活成功
 
-| 检查 | 期望 |
-| --- | --- |
-| 激活页状态 | 已就绪 / Ready |
-| 挂机页 | 能创建虚拟屏并显示画面 |
-| 启动任务 | 能截图、点击，任务推进 |
-| 日志 | 无 `Binder` 超时、无 `SecurityException` |
+| 检查 | 期望 | 验证方式 |
+| --- | --- | --- |
+| 激活页状态 | 已就绪 / Ready | 界面查看状态投影 |
+| 挂机页 | 能创建虚拟屏并显示推流画面 | 真机实测 Display 创建 |
+| 特权桥探测 | `127.0.0.1:22301` 响应 `ping` 且 `ok=true` | PRoot 内部连通测试 |
+| 启动任务 | 能截图、点击，演习/日常任务正常推进 | 真实自动化任务执行 |
+| 装备码能力 | `capabilities.equipmentCode=true` 时可读写剪贴板 | 演习/META 方案测试 |
+| 日志 | 无 `Binder` 超时、无 `SecurityException` | 查看应用与 ADB 日志 |
+
+::: tip 区分静态编译与真机验证
+无线配对的 SPAKE2 握手、Android Keystore 密钥持久化、整机重启后的失效状态判定，以及特定厂商系统对后台 `app_process` 的保活策略，必须在真实物理设备上实操验证，单测与模拟器无法模拟真实的硬件行为。
+:::
 
 ## <DocIcon name="wrench" /> 失败排查
 

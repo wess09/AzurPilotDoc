@@ -1,7 +1,7 @@
 ---
 title: 宿主架构与模块
-description: App 壳层、PRoot Runtime、特权服务与网关协议的分层，以及按职责划分的源码地图。
-updated: 2026-10-20
+description: App 壳层、PRoot Runtime、特权服务、原生桥协议、网关与 Docker 上报微服务的分层架构及源码地图。
+updated: 2026-10-31
 ---
 
 # 宿主架构与模块
@@ -10,14 +10,15 @@ updated: 2026-10-20
 
 ## <DocIcon name="box" /> 分层
 
-| 层 | 进程 | 关键类 | 职责 |
+| 层 | 进程 / 载体 | 关键类与位置 | 职责 |
 | --- | --- | --- | --- |
 | App 壳层 | 主进程 | `AzurPilotApp`、`MainActivity`、`AppRoot` | 初始化、Compose UI、Runtime 控制 |
 | 部署 | 主进程 | `RootfsProvisioner` | 首次部署、更新、校验、切换 |
 | PRoot | 子进程 | `ProotHost` | 拉起会话、崩溃退避、stdin 保活 |
 | 网关 | 主进程 | `AzurPilotGateway` | 唯一的 `/api/v1/ws` 订阅者 |
-| 特权 | 独立进程 | `RemoteServiceImpl`、`bridge/` | 虚拟屏、截屏、注入 |
-| OCR | `:ocr` | 私有绑定服务 | 推理 API |
+| 特权与原生桥 | 独立进程 | `RemoteServiceImpl`、`BridgeServer`、`libbridge.so` | 虚拟屏、TCP 22301 线协议、共享内存截帧、输入注入 |
+| OCR | `:ocr` | 私有绑定服务 | LiteRT/MNN 推理 API |
+| 机型上报服务 | 腾讯云 Docker 容器 | `server/device-report/` | 接收签名上报、持久化去重、写入 GitHub Issue #1 评论 |
 
 ## <DocIcon name="rocket" /> 启动顺序
 
@@ -71,9 +72,19 @@ Koin 组合根按领域拆分：
 | 后端选择与授权 | `privileged/PermissionManager.kt` | 统一状态机，过期连接按 Binder 身份丢弃 |
 | Shizuku 连接 | `privileged/RemoteServiceManager.kt` | 外部/内置两条路径 |
 | root 启动 | `root/RootServiceStarter.kt` | `app_process` + 一次性 token 回投 |
-| 特权 IPC | `remote/RemoteServiceImpl.kt` | 拥有虚拟屏、窗口/电源、桥接服务 |
-| JNI | `bridge/`、`native/bridge.h` | 帧锁与输入操作码是 ABI |
+| 特权 IPC | `remote/RemoteServiceImpl.kt` | 拥有虚拟屏、窗口/电源控制 |
+| 特权桥线协议 | `remote/internal/BridgeServer.kt` | 监听 `127.0.0.1:22301`，9 个协议端点 |
+| 共享内存通道 | `remote/internal/SharedFrameServer.kt` | Unix 抽象套接字 `com.azurpilot.ghio.frames.v1`，Binder 事务 78 |
+| JNI 帧与输入 | `bridge/`、`native/bridge.h` | 帧锁与输入操作码是 ABI |
 | root 启动器 | `native/launcher.c` | 必须输出 `liblauncher.so` |
+
+### 服务端与机型上报
+
+| 职责 | 入口 | 约束 |
+| --- | --- | --- |
+| Go 报告服务 | `server/device-report/main.go` | 无独立 DB，内存目标 48 MiB，正文签名验证 |
+| Docker 编排 | `server/device-report/deploy/compose.yaml` | 单核调度、96 MiB 硬限、挂载持久化状态目录 |
+| 上报客户端 | `app/.../report/DeviceReportClient.kt` | 构造带时间戳/nonce 的 SHA256withRSA 正文签名 |
 
 ### 设置与界面
 
@@ -118,6 +129,32 @@ Runtime 在 `127.0.0.1:25548` 暴露三类接口：
 
 另有第三条「脚本热更」，只换上游源码与前端，要求 `uv.lock` 不变。
 
+## <DocIcon name="cloud" /> 机型上报与 Docker 微服务
+
+为收集 Android 生态下不同机型与定制系统上的实际兼容情况，宿主设计了客户端机型上报与服务端 Docker 收集微服务（`server/device-report/`）：
+
+```text
+Android 客户端（设置 → 提交机型）
+  → 本地只读检测厂商属性与 Google 机型目录
+    → SHA256withRSA / PKCS#1 v1.5 私钥对正文签名
+      → POST https://afa-api.azurpilot.com/v1/device-reports
+        → Cloudflare 边缘（mTLS 终止与限流）
+          → Nginx 反代 → 本机 127.0.0.1:18882
+            → Docker 容器（afa-api，Go 标准库实现）
+              ├── 校验时间戳（±5 分钟）与 32 字符 Hex nonce 防重放
+              ├── 校验客户端公钥签名与 8 KiB 正文长度
+              ├── 原子比对持久化去重状态 state.json
+              └── 持有服务端专用 GITHUB_TOKEN → POST Issue #1 评论
+```
+
+### 微服务架构设计与约束
+
+1. **公网端点**：`https://afa-api.azurpilot.com/v1/device-reports`。生产目录为 `/srv/agentdock/AgentDock/afa-api`。
+2. **认证分层**：Cloudflare 边缘执行客户端 TLS 验证；Docker 服务端使用已钉住的公开证书（`client-cert.pem`）独立校验 HTTP 正文签名（`X-Report-Timestamp`、`X-Report-Nonce`、`X-Report-Signature`）。
+3. **极简低资源开销**：Go 标准库静态二进制，以非 root 用户在 Docker 内运行；设置 `GOMEMLIMIT=48MiB` 内存软目标、96 MiB 容器硬上限与 `cpus: "1.0"` 单核配额。
+4. **状态与去重机制**：无独立数据库进程，挂载外部目录 `/srv/agentdock/AgentDock/afa-api-state/state.json`。只记录报告哈希、创建时间、评论 ID 与链接，**不持久化报告正文、不记录 IP**。容量上限 10,000 条，写操作前持久化待确认状态，并发重试时利用 Issue #1 隐藏标记对齐，防止因 GitHub 延迟导致刷评。
+5. **权限隔离**：GitHub API Token 仅在服务端 `deploy/private/service.env`（权限 0600）提供，目标限定在 `wess09/AzurPilot-for-Android` 的固定 Issue #1，永远不进入 APK。
+
 ## <DocIcon name="shield" /> 修改时的边界
 
 | 不要 | 因为 |
@@ -127,12 +164,16 @@ Runtime 在 `127.0.0.1:25548` 暴露三类接口：
 | 在普通进程使用忽略安全检查的 Context | 权限扩散 |
 | 重编号输入操作码 / 改 JNI 注册名 | 跨语言 ABI |
 | 假设悬浮窗能读 Activity 状态 | 它是独立 Window |
+| 把服务端 GITHUB_TOKEN 打进 APK | 造成 GitHub 凭据泄露 |
+| 仅凭静态编译通过就认定设备功能就绪 | 虚拟屏、OEM 触控注入与 SPAKE2 配对具有强硬件与 ROM 依赖 |
 
 ## <DocIcon name="circle-plus" /> 新功能放哪里
 
-1. 先找现有边界（端口、仓库、状态流）。
+1. 先找现有边界（端口、仓库、状态流、微服务）。
 2. 在实现侧添加能力。
 3. 通过已有端口暴露给 UI。
-4. 补最小验证：Kotlin 编译、原生构建、真机回归。
+4. 严格执行双层验证：
+   - **静态验证**：Gradle `compileDebugKotlin`、Go 测试与 vet、Python 覆盖层单测；
+   - **真机验证**：在实体 ARM64 设备上验证虚拟屏生命周期、输入穿透与断电/重启表现。
 
 如果必须新增边界，先写清楚生命周期与线程约束的 KDoc，再实现。

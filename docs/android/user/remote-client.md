@@ -1,7 +1,7 @@
 ---
 title: 作为远程客户端
 description: 不部署本机 Runtime，用 Android 手机连接其他机器上的 AzurPilot 实例：配对、切换、撤销与断线处理。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 作为远程客户端

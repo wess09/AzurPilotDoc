@@ -1,7 +1,7 @@
 ---
 title: AzurPilot Launcher
 description: 基於 Tauri 2 + Rust 的跨平台桌面啟動器：內置 uv 與 Python、自動拉取核心代碼、託管後端進程。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # AzurPilot Launcher
@@ -12,7 +12,7 @@ updated: 2026-10-20
 <span><b>倉庫</b> wess09/AzurPilotLauncher</span>
 <span><b>分支</b> main</span>
 <span><b>框架</b> Tauri 2 + Rust</span>
-<span><b>運行時</b> Python 3.14.6（內置）</span>
+<span><b>運行時</b> Python 3.14.3（內置/獨立管理）</span>
 <span><b>許可證</b> GPL-3.0</span>
 </div>
 
@@ -23,58 +23,72 @@ updated: 2026-10-20
 ## <DocIcon name="wrench" /> 它到底做了什麼
 
 ```text
-解压 → 启动器进程 → 启动画面 → 环境自举（uv/Python/git/adb）
-     → git 更新核心仓库 → uv sync --frozen
+解压/安装 → 启动器进程 → 启动画面 → 环境自举（uv/Python/git/adb）
+     → git 更新核心仓库 → uv sync --frozen --no-dev --no-install-project
        → 启动 gui.py → 打开 WebUI（免密直达）→ 托盘常驻
 ```
 
 | 能力 | 實現 |
 | --- | --- |
-| 環境自舉 | 內嵌 uv，下載 Python 3.14.6，建立可重定位 `.venv` |
-| 工具鏈 | git、adb 一併裝進 `.venv`，不污染系統 |
+| 環境自舉 | 內嵌 uv，自動下載獨立 Python 3.14.3，建立可重定位 `.venv` |
+| 工具鏈 | git、adb 集中收攏並管理，不污染宿主全局環境 |
 | 代碼更新 | `git pull`，失敗重試至多 20 次 |
-| 依賴同步 | `uv sync --frozen`，按 `uv.lock` 鎖定 |
-| 後端託管 | 清理連接埠佔用、注入環境標記、退出時全進程表回收 |
-| 自更新 | mTLS 校驗 + 多鏡像回退 |
-| 系統集成 | 托盤、原生通知、單實例、開機自啟 |
-| 國際化 | 簡中 / 繁中 / 日語 / 英語，按系統 locale |
+| 依賴同步 | `uv sync --frozen --no-dev --no-install-project`，按 `uv.lock` 嚴格鎖定 |
+| 後端託管 | 清理連接埠佔用、注入環境標記、退出時全進程表回收（Windows Job Object / Unix 進程組） |
+| 自更新 | mTLS 校驗 + 多鏡像回退機制 |
+| 系統集成 | 托盤、原生通知、單實例運行、開機自啟 |
+| 國際化 | 簡中 / 繁中 / 日語 / 英語四語支援；系統 locale 自動識別，Windows 安裝嚮導內置簡體中文語言包 |
 
 ## <DocIcon name="handshake" /> 與核心程序的關係
 
 | | 啟動器 | 核心程序 |
 | --- | --- | --- |
 | 倉庫 | AzurPilotLauncher | AzurPilot |
-| 語言 | Rust / Tauri | Python / React |
-| 版本線 | 獨立版本號 | 跟隨 `master` 滾動 |
-| 更新 | 自更新（mTLS） | `git pull` + `uv sync` |
+| 語言 | Rust / Tauri 2 | Python / React |
+| 版本線 | 獨立版本號（發佈版基線 3.0.4，源碼模板 0.0.0） | 跟隨 `master` 滾動 |
+| 更新 | 啟動器自更新（mTLS / 清單回退） | `git pull` + `uv sync` |
 | 包含遊戲邏輯 | 否 | 是 |
 
-::: tip 兩個版本號不是一回事
-啟動器 1.x 可以配任意核心提交。更新啟動器不會回退核心代碼，更新核心也不會改啟動器。
+::: tip 兩個版本號不是一回事與 0.0.0 説明
+啟動器版本與核心程序完全解耦，啟動器 3.x / 1.x 可以配任意核心提交。更新啟動器不會回退核心代碼，更新核心也不會改變啟動器二進制。
+在源碼倉庫中，`Cargo.toml`、`tauri.conf.json` 與 `Info.plist` 統一固定為 `0.0.0` 模板基線；實際發佈版本（如穩定的 **3.0.4**）由 CI 工作流在打包時動態解析 Git Tag 或輸入參數並注入，避免多檔案硬編碼版本漂移。
 :::
 
 ## <DocIcon name="clipboard" /> 環境要求
 
 | 維度 | 要求 |
 | --- | --- |
-| 系統 | Windows 10+、macOS、Linux（較新 glibc） |
-| WebView | Windows 需 WebView2；macOS 用系統 WKWebView；Linux 需 `libwebkit2gtk-4.1` |
-| 權限 | Windows 需要管理員（安裝 ADB、寫系統目錄） |
-| 網絡 | 首次啟動需聯網下載 Python 與依賴 |
-| 磁盤 | 約 3–5 GB（含 .venv 與倉庫） |
+| 系統 | Windows 10+（x64 / ARM64）、macOS 12+、Linux（Ubuntu 22.04+ 或同等較新 glibc 發行版） |
+| WebView | Windows 需 WebView2；macOS 使用系統 WKWebView；Linux 需 `libwebkit2gtk-4.1` 與 `libgtk-3` |
+| 權限 | Windows 安裝器與部分功能需管理員權限（安裝 ADB、寫系統目錄與連接埠綁定） |
+| 網絡 | 首次啟動或部署需聯網下載 Python 與項目依賴（支援國內鏡像回退） |
+| 磁盤 | 約 3–5 GB（含獨立 .venv 與核心代碼倉庫） |
 
 ## <DocIcon name="folder" /> 目錄結構
 
-```text
-AzurLaneAutoScript/                 # Windows / Linux 根目录
-AzurPilot.app/Contents/AzurLaneAutoScript/   # macOS
+跨平台打包提供了統一規範的目錄組織形式：
 
-├── alas-launcher.exe / alas-launcher
-├── .venv/                          # Python + uv + git + adb
+```text
+# Windows / Linux 目录结构
+AzurLaneAutoScript/                 # 根工作区目录
+├── alas-launcher.exe / alas-launcher  # 启动器可执行文件
+├── .venv/                          # Python 3.14.3 + uv + 依赖环境
+│   ├── Scripts/ (Windows) 或 bin/ (Linux)
+│   └── python/                     # standalone Python 安装目录
 ├── config/                         # 实例配置与 deploy.yaml
-├── frontend/                       # 核心仓库的前端
+├── frontend/                       # 核心 WebUI 前端产物
 ├── log/                            # 运行日志
 └── AzurPilot_Data_Backup/          # 每日备份
+
+# macOS 应用包结构 (App Bundle)
+AzurPilot.app/
+└── Contents/
+    ├── MacOS/
+    │   └── AzurPilot               # 启动器主入口二进制
+    ├── Resources/
+    │   └── icon.icns               # 应用图标
+    ├── Info.plist                  # 应用属性与版本配置
+    └── AzurLaneAutoScript/         # 独立工作区（含 .venv/bin、配置与日志）
 ```
 
 啟動器會向子進程追加環境變數：
@@ -82,18 +96,18 @@ AzurPilot.app/Contents/AzurLaneAutoScript/   # macOS
 | 平台 | PATH 追加 |
 | --- | --- |
 | Unix | `.venv/bin` |
-| Windows | `.venv/Scripts`、`.venv/Scripts/git/cmd` |
+| Windows | `.venv/Scripts`、`.venv/Scripts/git/cmd`（若使用內嵌 git） |
 
 ## <DocIcon name="scale" /> 與原版啟動器的差異
 
 | 項 | 本啟動器 |
 | --- | --- |
-| 平台 | Windows / macOS / Linux |
+| 平台 | Windows（x64 / ARM64）、macOS、Linux |
 | 更新策略 | 只更新 git 倉庫，依賴用 `.venv` 內的 uv 同步 |
 | 依賴鎖定 | `uv.lock` 精確鎖定，預設自動同步 |
-| adb | 不重新啟動、不替換 |
-| 工具位置 | 全部收進 `.venv` |
-| Node.js | 僅 Windows：檢測系統 Node，缺失時可自動安裝（SHA-256 校驗） |
+| adb | 不強行重新啟動、不強行替換 |
+| 工具位置 | 全部收進 `.venv` 或專用工具目錄 |
+| 多語言 | 簡中、繁中、日、英四語，安裝嚮導內置中文語言檔案 |
 
 ## <DocIcon name="map" /> 繼續閲讀
 

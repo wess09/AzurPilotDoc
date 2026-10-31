@@ -20,8 +20,17 @@ updated: 2026-10-31
 核心用 `master`，另外兩個用 `main`。舊文章裡的 `/blob/main/` 連結指向核心倉庫會 404。
 :::
 
+## <DocIcon name="refresh" /> 2026-10-30 增量核對
 
-**2026 年 10 月 30 日增量核對：** 核心 `master` 為 `2eba570571`、Launcher `main` 為 `e3e269054c`（正式版 3.0.4）、Android `main` 為 `5b4458557b`。任務、參數及 API 索引已按目前核心重新產生，分別有 **101 項任務、173 個選項組和 80 個 WebSocket 方法**。上表的舊 SHA 仍是 10 月 20 日審計基線。
+下表是本次**針對近期變更**核對的分支 HEAD，區別於上方 2026-10-20 的完整審計基線。三份機器生成的索引已經重新提取，覆蓋統計以下方實際當前值為準。
+
+| 專案 | 核對分支 | HEAD | 本次重點 |
+| --- | --- | --- | --- |
+| 核心 | `master` | [`2eba570571`](https://github.com/wess09/AzurPilot/commit/2eba570571ec9b7afd8c9b8ce52c7ccb2705a747) | 島嶼規劃、逐作物補種、雲端統計與排程 |
+| 啟動器 | `main` | [`e3e269054c`](https://github.com/wess09/AzurPilotLauncher/commit/e3e269054cb627c1484b58bb055b26f4b113ad40) | 3.0.4 安裝產物、Stable／Canary、自更新源 |
+| Android | `main` | `5b4458557b` | 熱更新錯誤提示、DNS 回退；最近上游檢查提交不代表功能改變 |
+
+本次只修訂了與核對結果直接相關的頁面，未進行三平臺真機迴歸。
 
 ## <DocIcon name="search" /> 審計方法
 

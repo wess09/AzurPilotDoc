@@ -1,7 +1,7 @@
 ---
 title: 排程器生命週期
 description: alas.py 的主循環、任務選擇、異常分級、執行緒模型與快取策略；修改排程行為前必讀。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 排程器生命週期
@@ -62,6 +62,35 @@ def wait_until(self, future):
 | `False` | 不可恢復失敗 | +1 |
 
 為什麼可恢復失敗不計數：失敗計數驅動的是「強制重新啟動模擬器」這種高代價動作。可恢復錯誤已經各自觸發過針對性恢復，再升級會重複懲罰。
+
+## <DocIcon name="zap" /> 出擊前置鉤子與換船休息生命週期
+
+出擊類任務（`CampaignBase` / `CampaignRun`）在執行具體海域循環前，集成了內聯的前置換船與後宅休息生命週期，其執行時序獨立於外層任務排程循環：
+
+```text
+CampaignBase.run()
+  ├─ 读取地图战斗次数
+  ├─ preflight_rotation() [若 FleetRotation.Enabled]
+  │    ├─ control_interval(0.1, 0.3) 设置输入节流
+  │    ├─ 扫描当前舰队好感/等级并计算换船候补
+  │    ├─ 船坞换船（保留固定舰位卡面校验）
+  │    ├─ 换装（卸装 -> 换船 -> 补装）
+  │    ├─ 提交编队并记录状态
+  │    └─ rest_after_rotation() [若 FleetDorm.Enabled]
+  │         ├─ 从已换船舰队中挑一队（全队出击 > 道中 > Boss）
+  │         ├─ 进后宅切换 floor_1 / floor_2
+  │         ├─ 逐艘取消原有选中，筛选先锋/主力并逐排拖动选齐整队
+  │         ├─ 稳定帧与位移验证（限制前五排，最多3次拖动）
+  │         ├─ 确认并退出（异常时取消选择回退）
+  │         └─ 恢复输入节奏
+  ├─ emotion.check_reduce() 心情检查
+  └─ 关卡寻路与战斗循环
+```
+
+### 異常邊界與事務隔離
+
+- **後宅異常就地吸收**：`rest_after_rotation()` 內部捕獲 `DormArrangeError` 與彈出視窗異常。後宅欄位不足、無法確認或翻頁超時不會拋出到 `CampaignRun`，而是主動點擊取消並退出後宅，跳過本次後宅安排，出擊任務繼續執行。換船與換裝屬於已提交狀態，無需回滾。
+- **輸入節流上下文**：`control_interval()` 使用 Python `ContextVar` 限定在 `preflight_rotation` 作用域內。通過 `Device.handle_control_check()` 為點擊、拖動注入 0.1–0.3 秒隨機等待，無論正常退出或拋出異常均由 `finally` 塊恢復原始節奏，普通出擊任務與主排程器循環不受影響。
 
 ## <DocIcon name="circle-alert" /> 異常矩陣
 

@@ -1,7 +1,7 @@
 ---
 title: WebUI 後端
 description: gui.py 的進程監督、WebSocket RPC 協議、方法註冊、鑑權與限流，以及新增 API 方法的完整流程。
-updated: 2026-10-31
+updated: 2026-10-30
 ---
 
 # WebUI 後端

@@ -1,7 +1,7 @@
 ---
 title: 安装与架构选择
 description: 选择正确的 APK 架构与安装包类型，从 GitHub 或 CNB 下载，处理签名冲突与存储不足。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 安装与架构选择

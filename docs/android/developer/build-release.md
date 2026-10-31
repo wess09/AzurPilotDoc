@@ -1,7 +1,7 @@
 ---
 title: 构建、签名与发布
-description: Android 宿主的版本规则、签名配置、CI 构建矩阵、发布清单字段与国内镜像分发。
-updated: 2026-10-20
+description: Android 宿主的版本规则、签名与 CI 密钥、构建矩阵、上游定时同步检查、发布清单与国内镜像分发。
+updated: 2026-10-31
 ---
 
 # 构建、签名与发布
@@ -45,33 +45,56 @@ CI 用 `git diff --quiet "$app_commit" HEAD -- app` 判断 Android 工程输入�
 
 「app 版本没变」不等于「不需要重建 Runtime」——`rootfs` 与工作流变化同样会触发产物重建。
 
-## <DocIcon name="key" /> 签名
+## <DocIcon name="key" /> 签名与 CI 密钥
 
-| 场景 | 密钥 | 说明 |
+| 场景 | 密钥 / Secret | 说明 |
 | --- | --- | --- |
-| Release | 仓库外 keystore（CI Secrets） | v1 + v2 + v3 全开 |
-| Debug | 仓内固定 `debug.keystore` | 保证所有机器产出的 debug 包可互相覆盖 |
+| Release APK 签名 | 仓库外 keystore（CI Secrets） | v1 + v2 + v3 全开 |
+| Debug APK 签名 | 仓内固定 `debug.keystore` | 保证所有机器产出的 debug 包可互相覆盖 |
+| 机型上报客户端证书 | `AZURPILOT_DEVICE_REPORT_CERT_BASE64` | 客户端 PEM 证书的 Base64，用于 HTTP 请求正文 RSA 验签 |
+| 机型上报客户端私钥 | `AZURPILOT_DEVICE_REPORT_KEY_BASE64` | PKCS#8 PEM 私钥的 Base64，注入 APK assets |
 
-四项配置：`KEYSTORE_PATH` / `KEYSTORE_PASSWORD` / `KEY_ALIAS` / `KEY_PASSWORD`。环境变量优先，`app/local.properties` 兜底。
-
-没有 keystore 时 release 保持未签名，构建不失败，但产物装不上，只用于编译验证。
+APK 签名四项配置：`KEYSTORE_PATH` / `KEYSTORE_PASSWORD` / `KEY_ALIAS` / `KEY_PASSWORD`。环境变量优先，`app/local.properties` 兜底。没有 keystore 时 release 保持未签名，构建不失败，但产物装不上。
 
 ::: danger 签名不一致 = 只能卸载重装
 `INSTALL_FAILED_UPDATE_INCOMPATIBLE` 意味着数据全丢。debug 与 release 互切前先导出配置。
 :::
 
-## <DocIcon name="cloud" /> CI 流程
+### 机型上报凭据注入与轮换
 
-`.github/workflows/rootfs.yml`，推送 `main` 或手动 dispatch 触发：
+`rootfs.yml` 在构建阶段将两个上报 Secret 解码至受 Git 忽略的临时目录 `.tmp/report-credentials/`：
+
+1. **有效性核验**：检查证书有效期以及公私钥匹配性，随后由 Gradle 生成 `assets/device-report/`。
+2. **构建缓存安全**：CI 显式禁用凭据生成任务的输出缓存，防止私钥资产泄露至共享构建缓存；构建结束后立即清理临时文件与生成目录。
+3. **打包验收**：CI 调用 `verify_device_report_assets.py` 验证所有最终 APK 压缩目录中包含可读的公开机型目录（约 502 KiB），且证书/私钥与 CI 输入完全一致。本地验证运行同一脚本时则强制要求 APK **不含**提交凭据。
+4. **凭据同步轮换**：若需轮换上报私钥，**必须同时**更新 GitHub Actions Secrets 和腾讯云 Docker 服务端公开证书 `deploy/private/client-cert.pem`。
+5. **服务器令牌隔离**：用于向 Issue #1 提交评论的 GitHub Token 仅保存在 Docker 生产服务器 `deploy/private/service.env`（权限 0600），绝对不进入任何 APK。
+
+## <DocIcon name="cloud" /> CI 流水线与定时同步检查
+
+Android 宿主由两条核心 GitHub Actions 工作流驱动：
+
+### 1. 发布构建工作流（`rootfs.yml`）
+
+推送 `main` 分支、打标签或手动 dispatch 触发：
 
 | 阶段 | 内容 |
 | --- | --- |
-| `resolve` | 取上游 AzurPilot dev head；比较输入，决定是否跳过构建 |
-| `build` | 按 ABI 矩阵在原生 runner 构建 rootfs（`rootfs/build/build-azurpilot.sh`） |
-| `apk` | 先 `fetch-proot-libs.sh`，再出按架构完整包与通用轻量包 |
-| `publish` | 上传固定 Release `azurpilot-android-latest`，更新 `latest.json` |
+| `resolve` | 查询上游 AzurPilot dev HEAD 与当前已发布版本；比较输入差异，决定是否跳过构建 |
+| `build` | 按 ABI 矩阵在原生 runner 构建 rootfs 镜像（`rootfs/build/build-azurpilot.sh`） |
+| `apk` | 先执行 `fetch-proot-libs.sh`，再构建按架构完整包与通用轻量包，注入凭据并验收 |
+| `publish` | 上传至固定 Release `azurpilot-android-latest`，原子更新 `latest.json` |
 
-另有 `.github/workflows/check-upstream.yml` 跟踪上游变化。
+### 2. 上游同步检查（`check-upstream.yml`）
+
+为及时跟进上游核心改动并保持计划工作流活跃，仓库配置了定时自动化检查：
+
+- **避峰触发周期**：Cron 设定为 `17,47 * * * *`（每小时第 17 与 47 分钟运行），避开整点 GitHub Actions 排队高峰。
+- **差异比对**：通过 `git ls-remote` 获取 `https://github.com/wess09/AzurPilot.git` 的 `refs/heads/dev` 最新提交，下载 `latest.json` 比对已发布的 `azurpilotCommit`。
+- **活跃心跳记录**：若上游未发生变化，工作流更新 `.github/schedule-heartbeat.txt`（UTC 时间戳）与 `.github/azurpilot-upstream.txt`，以 `github-actions[bot]` 提交 `chore: check AzurPilot upstream <commit> [skip ci]`。该提交防止 GitHub 因仓库无活跃而自动停用定时工作流。
+- **自动触发构建与镜像同步**：
+  - 无论是否需要构建，均调度 `sync-cnb.yml` 保持国内 CNB 源码镜像同步（不触发冗余构建）。
+  - 若检测到上游 `dev` 分支有新提交，自动向 `rootfs.yml` 派发构建事件（参数 `publish_update=true` 与最新 `azurpilot_ref`），实现全自动构建与发布。
 
 ### 本地复刻 release
 
@@ -127,5 +150,8 @@ CI 用 `git diff --quiet "$app_commit" HEAD -- app` 判断 Android 工程输入�
 - [ ] 完整包与轻量包都产出
 - [ ] 签名验证通过（apksigner 分档）
 - [ ] `latest.json` 字段完整、兼容字段指向 arm64
-- [ ] 在至少一台 ARM64 真机与一台 x86_64 模拟器上安装验证
+- [ ] 机型上报 Secrets（`AZURPILOT_DEVICE_REPORT_*`）已注入且经 `verify_device_report_assets.py` 校验
+- [ ] 上报证书若轮换，服务端 `client-cert.pem` 已同步更新
+- [ ] `check-upstream.yml` 定时心跳与 CNB 镜像分发正常
+- [ ] 在至少一台 ARM64 真机与一台 x86_64 模拟器上安装验证（真机验证无法被静态分析替代）
 - [ ] 热更接口返回符合预期（`enabled` / `requiresRuntimeUpdate`）

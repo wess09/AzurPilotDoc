@@ -54,17 +54,17 @@ updated: 2026-10-30
 
 `Min*` 是保留數量下限，低於它才補種。`Positions` 決定走位點，通常保持預設。
 
-`IslandFarm.CropTargets`、`IslandOrchard.CropTargets`、`IslandNursery.CropTargets` 可逐行設定 `作物名: 目標庫存`。未列出的作物沿用相應 `Min*`，目標 `0` 表示不補種；優先補種庫存與目標比例較低的作物。
+`IslandFarm.CropTargets`、`IslandOrchard.CropTargets`、`IslandNursery.CropTargets` 可逐行填寫 `作物名: 目标库存`。未列出的作物沿用對應的 `Min*` 庫存下限；目標為 `0` 則不補種。補種優先考慮庫存與目標比例較低的作物。
 
 ## <DocIcon name="calculator" /> 島嶼生產規劃器（`IslandProductionPlanner`）
 
-在「工具」頁運行。規劃器掃描已解鎖科技及未完成季節任務，根據五間店舖等級、效率及 `DailyProfitLowerLimit`（每日島幣淨收益下限）計算生產與銷售方案；`ExtraTargets` 可補充物品需求。
+在「工具」頁運行島嶼生產規劃器。它讀取島嶼科技解鎖情況與未完成的季節任務，結合五家店鋪等級、生產效率及 `DailyProfitLowerLimit`（每日島幣淨收益下限）生成生產和銷售方案。可通過 `ExtraTargets` 添加額外的物品目標。
 
-1. 保持 `ApplySettings` 關閉（預設），輸入店舖等級及收益下限後執行，先檢查日誌；`*` 表示計劃修改的設定。
-2. 確認方案後才啟用 `ApplySettings` 並重新執行，以寫入現有餐飲、商區、農田等生產設定。
-3. 實際生產由原有島嶼任務完成。**規劃器不直接生產，也不自動處理季節訂單。** 相關需求可填入 `ExtraTargets`。
+1. 保持 `ApplySettings` 關閉（預設），填寫實際店鋪等級與收益要求後運行，在日誌中查看方案；`*` 標出擬改變的配置。
+2. 確認結果適合當前島嶼後，再啟用 `ApplySettings` 並重新運行，才會寫入現有的餐飲、商區、農田和其他生產任務配置。
+3. 由原有島嶼任務完成後續生產；**規劃器本身不執行生產，也不自動處理季節訂單**。季節訂單需求可手動加入 `ExtraTargets`。
 
-另見[輔助工具](/zh-HK/azurpilot/user/tasks/tools)及[配置系統](/zh-HK/azurpilot/developer/config)。
+相關設定見[輔助工具任務](/zh-HK/azurpilot/user/tasks/tools)與[配置系統](/zh-HK/azurpilot/developer/config)。
 
 ## <DocIcon name="circle-check" /> 牧場（`IslandRancher`）
 

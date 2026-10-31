@@ -1,7 +1,7 @@
 ---
 title: OCR 與圖像鏈路
 description: 獨立 :ocr 進程、張量 API、LiteRT/MNN 後端、廠商 NPU 適配、CPU 回退與幀通道延遲。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # OCR 與圖像鏈路

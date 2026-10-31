@@ -1,36 +1,63 @@
 ---
 title: 首次啟動與環境初始化
-description: Launcher 3.x 的 Git／ADB 元件部署、Python 初始化、核心更新、WebUI 建置和一次性登入流程。
+description: Launcher 如何管理 Git/ADB 引導組件，通過獨立 uv 與鏡像回退安裝 Python 3.14.3，執行 uv sync 依賴鎖定，構建 WebUI 並啟動代管後端。
 updated: 2026-10-31
 ---
 
 # 首次啟動與環境初始化
 
-Launcher 3.x 將**「部署」及「啟動」分成兩步**。一般使用者毋須預先安裝 Git、ADB、uv 或 Python。
+啟動器將**組件部署**和**服務啟動**明確拆分為兩個階段。第一次打開後先確保執行環境與工具鏈就緒，再點擊啟動；用戶不必預先在操作系統中安裝 Git、ADB、uv 或 Python。
 
-## 先部署
+## 第一步：部署執行組件
 
-首次開啟後按「部署」。程式讀取 `stable.json.runtime`（schema 2），下載並驗證 Git、ADB 元件，放到 `.azurpilot/tools/`，再取得 `deploy/**` 及平台模板。完成後首頁顯示「啟動」。部署階段**不會**安裝 Python 或建置 WebUI。
+首次打開若缺少必要的環境工具，啟動器首頁或嚮導將提示進行「部署」：
 
-## 再啟動
+1. 讀取更新清單（如 `stable.json` 的 `runtime` 部分，schema 2）。
+2. 下載並校驗當前平臺的 Git 和 ADB 工具包，放置於工具目錄。
+3. 補齊 `deploy/**` 引導腳本及系統對應的 `config/deploy.template*.yaml`。
+4. 部署完成後返回主介面，狀態切換為可啟動。
 
-1. 內嵌 uv 安裝 Python 3.14.x，建立 `.venv` 及引導依賴。
-2. `deploy.git` 拉取／更新 AzurPilot 原始碼。
-3. 根據 `uv.lock` 同步依賴並建置 WebUI；缺少 Node.js 時可能需要額外安裝。
-4. 啟動 `gui.py`（預設本機 `22267`），透過受保護的 WebSocket v2 和一次性票據開啟 WebUI。
+部署階段**不強行捆綁整個 Python 執行時或原始碼鏡像**，避免體積過大與不同系統架構的兼容問題。中斷後會嘗試補齊未完成部分；即使取消也不會清空已經存在的用戶配置。組件源可在「設定」中選擇自動、CNB 或 GitHub。參見[更新鏈路與鏡像](/zh-TW/launcher/developer/update)。
 
-Git／ADB 與 `.venv` 分開存放。重建 Python 環境不等於重裝全部元件。
+## 第二步：啟動核心程式
 
-## 操作與排障
+點擊「啟動」後，啟動器後臺狀態機將依次執行環境自舉流程：
 
-首頁可部署、啟動、停止、檢查更新、修復環境及匯出日誌 ZIP。進行中的任務按第二次才確認取消。「設定」可選 Stable／Canary、下載鏡像、背景音樂、減弱動態效果和阻止睡眠。
+1. **內嵌 uv 自舉與獨立 Python 準備**：
+   - 啟動器提取內置的 `uv` 二進制（或複用已有獨立 uv）。
+   - 檢測 `.venv/python` 下的獨立 Python 3.14.3；若不存在，則使用 uv 自動下載 `cpython-3.14.3` 獨立構建包。
+   - **多鏡像回退保障**：內置輪詢 npmmirror 鏡像源（首選）、南京大學鏡像源以及官方源（或用戶通過 `UV_PYTHON_INSTALL_MIRROR` 指定的自定義鏡像）。
+   - 建立 relocatable 可重定位虛擬環境 `.venv`（Windows 下為 `Scripts`，Unix 下為 `bin`）。
+2. **原始碼檢查與更新**：
+   - 執行 `deploy.git` 拉取或更新核心程式倉庫（重試至多 20 次）。
+3. **依賴精確同步**：
+   - 調用 `uv sync --frozen --no-dev --no-install-project`，嚴格按照 `uv.lock` 鎖定版本同步依賴，避免安裝專案本身或開發依賴。
+   - 解析 uv 輸出中的 `Resolved`、`Downloading`、`Prepared`、`Installed` 等進度狀態，實時反饋至介面。
+4. **前端構建與檢查**：
+   - 檢查 `frontend/`，必要時構建 WebUI 前端靜態資源。
+5. **後端啟動與安全連接**：
+   - 啟動 `gui.py`（或 `main.py`），預設監聽本機 `22267` 連接埠；Windows 平臺使用 Job Object 納管，Unix 平臺使用獨立處理程序組。
+   - 後端就緒後建立受保護的啟動器專用 WebSocket 連接。
+6. **打開 WebUI**：
+   - 生成 60 秒有效的單次登入憑據（Launcher Ticket），喚起內置或系統瀏覽器打開 WebUI，免密直達管理介面。
 
-| 現象 | 優先檢查 |
-| --- | --- |
-| 元件下載失敗 | 網絡、鏡像來源、儲存空間 |
-| 缺少 `pyproject.toml` | 核心未部署完整，使用環境修復 |
-| 依賴／WebUI 建置失敗 | PyPI、Node.js、建置日誌 |
-| 後端逾時 | 埠 `22267` 和錯誤日誌 |
-| 回報故障 | 附上日誌 ZIP，不要只傳截圖 |
+## 啟動畫面與狀態交互
 
-相關說明：[更新與修復](/zh-TW/launcher/user/maintenance)、[架構](/zh-TW/launcher/developer/architecture)。
+- **進度與狀態反饋**：啟動畫面實時顯示進度百分比、主任務標題與副標題；內置 19 條貼心 Tips 輪播展示（包含環境最佳化、使用技巧與疑難排解建議）。
+- **取消操作與安全清理**：若在環境初始化或依賴同步過程中點擊取消，啟動器支援原子取消信號（`cancel_requested`），會安全終止子處理程序並執行臨時檔案清理，防止虛擬環境處於半損壞狀態。
+- **首頁與設定**：
+  - 首頁提供部署、啟動、檢查更新、環境修復、停止後端以及匯出日誌壓縮包入口。
+  - 「設定」面板支援切換語言（簡中/繁中/日/英）、更新通道（Stable / Canary）、下載源（自動/官方/GitHub/Cloudflare）、阻止計算機自動睡眠與開機自啟動開關。
+
+## 常見初始化疑難排解
+
+| 故障現象 | 關鍵疑難排解點 | 解決方案 |
+| --- | --- | --- |
+| Python 下載超時或失敗 | 檢查網路連接與鏡像源連接性 | 啟動器會自動嘗試備用鏡像；亦可在環境變數中指定 `UV_PYTHON_INSTALL_MIRROR` |
+| `uv sync` 報依賴鎖定錯誤 | 檢查 `uv.lock` 與 PyPI 鏡像配置 | 確認網路可訪問 PyPI 鏡像源；若檔案損壞可嘗試首頁「環境修復」 |
+| 找不到 `pyproject.toml` | 核心倉庫未能完整拉取 | 檢查 git 網路連通性，或執行環境修復重新檢出 |
+| WebUI 前端加載白屏 | Node.js 與前端編譯產物 | 檢查 `frontend/dist/` 是否生成完整，查看啟動日誌詳情 |
+| 後端啟動超時（等待 60 秒） | 連接埠佔用或 Python 語法/依賴異常 | 檢查 `22267` 連接埠是否被其他處理程序佔用，查閱 `log/` 最新日誌定位具體報錯 |
+| 反饋問題時的日誌提供 | 點擊首頁「匯出日誌」按鈕 | 匯出脫敏後的 ZIP 日誌包，連同系統版本反饋，避免僅發送單張截圖 |
+
+環境修復會強制重新下載缺失組件並重建 `.venv` 虛擬環境，但會嚴格保留用戶的 `config/` 配置與歷史執行日誌。詳見[更新、修復與解除安裝](/zh-TW/launcher/user/maintenance)及[Tauri 與 Rust 架構](/zh-TW/launcher/developer/architecture)。

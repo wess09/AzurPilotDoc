@@ -32,16 +32,16 @@ App（父） ──stdin 管道──▶ proot wrapper ──▶ Runtime 进程�
 `nohup` 式啟動會切斷父子關係，父進程死亡後 Runtime 繼續跑，下次啟動會爭搶同一份配置與資料庫。
 :::
 
-## 後台 NTP 校時與 DNS 回退
+## Android 後台 NTP 與 DNS 兼容層
 
-Android 專用 `rootfs/overlays/android_ntp.py` 只在 `AZURPILOT_ANDROID=1` 時由 `sitecustomize` 啟用。首次讀取時間直接返回裝置時鐘，NTP 在背景同步，成功後利用校時快取及單調時鐘推進。DNS／NTP 網絡延遲不再阻塞截圖和調度，`refresh(force=True)` 亦不等待這次連線完成。
+Android Runtime 新增 `rootfs/overlays/android_ntp.py`，通過僅在 `AZURPILOT_ANDROID=1` 時生效的 `sitecustomize` 延遲加載。首次時間讀取立即返回設備本機時間；網絡同步在後台執行緒完成，成功後通過快取與單調時鐘推進。DNS 或 NTP 超時不會長時間阻塞截圖和調度，失敗保留已校準結果或回退本機時間；`refresh(force=True)` 請求後台刷新而不等待本輪網絡返回。
 
-此機制**不會修改手機系統時間，也不代表 NTP 一定成功**。另外 `ContainerDns.kt` 提供 DoH 及 AliDNS 回退。詳見[更新與排障](/zh-HK/android/user/maintenance)及[技術說明](https://github.com/wess09/AzurPilot-for-Android/blob/main/doc/android-background-ntp.md)。
+該兼容層不修改系統時間，不代表 NTP 校時已成功，也不保證設備本機時鐘準確。APK 資產與 Runtime 均可攜帶覆蓋層；已實現同等異步能力的上游核心不會重複覆蓋。DNS 另由 `ContainerDns.kt` 提供 DoH 與 AliDNS 回退。更多檢查方式見[Android 更新與疑難排解](/zh-HK/android/user/maintenance)和[上游技術説明](https://github.com/wess09/AzurPilot-for-Android/blob/main/doc/android-background-ntp.md)。
 
 
-### Android 裝備碼特權橋
+### Android 裝備碼橋接
 
-使用 `azurpilot_android` 控制方式時，`rootfs/overlays/android_equipment.py` 透過宿主特權橋讀取及輸入裝備碼，先檢查 `ping.capabilities.equipmentCode`。若宿主不支援，不會偷偷回退到 uiautomator2；請更新 APK 並重啟。此功能可支援[演習及 META 裝備方案](/zh-HK/azurpilot/user/tasks/daily)，但無法保證中斷後恢復原裝備。
+使用 `azurpilot_android` 控制方式時，Runtime 的 `rootfs/overlays/android_equipment.py` 將裝備碼**輸入與讀取**交給宿主特權橋，並通過 `ping.capabilities.equipmentCode` 判斷設備是否支援。宿主未提供此能力時不會嘗試高權限輸入，也不會靜默回退到主熒幕的 uiautomator2；應更新 APK 並重新啟動。此能力影響[演習與 META 的裝備方案](/zh-HK/azurpilot/user/tasks/daily)，不保證遊戲內裝備操作在中斷後自動恢復。
 
 ## <DocIcon name="settings" /> 部署狀態機
 
@@ -140,15 +140,29 @@ AzurPilot WebUI not ready within 90000ms
 
 | 目錄 | 作用 | 約束 |
 | --- | --- | --- |
-| `rootfs/overlays/` | 處理 Android / PRoot 兼容差異 | 不改用戶配置 |
+| `rootfs/overlays/` | 處理 Android / PRoot 兼容差異 | 不改用戶配置，每次啟動由 APK 自動同步 |
 | `rootfs/seeds/` | 首啟模板 | 只在首次部署寫入 |
 | `rootfs/build/` | `build-azurpilot.sh` 等 | 必須在目標 ABI 的原生環境執行 |
 
-覆蓋層裏已有 `android_process_compat.py` 等兼容邏輯，測試在 `rootfs/tests/`：
+### 核心覆蓋層清單
+
+APK 在**每次拉起 PRoot 進程前**，都會將內置 assets 中的最新覆蓋層檔案原子同步至運行時目錄，保證即使經過上游源碼熱更，兼容適配依然有效：
+
+- `android_ntp.py`：異步後台 NTP 校時，首次調用立即返回設備時間，後台執行緒刷新，避免阻塞截圖循環與調度器。
+- `android_equipment.py`：裝備碼讀寫橋接，基於特權橋 `equipment_code_*` 協議端點，不依賴 FastInputIME 也不回退主熒幕。
+- `android_device.py`：虛擬熒幕前台應用檢測，精確解析 `dumpsys window displays` 中的 `mDisplayId` 分區，查詢對應熒幕的焦點窗口與已恢復 Activity。
+- `android_capture.py`：共享記憶體截幀初始化（`com.azurpilot.ghio.frames.v1`），失敗時自動平滑回退至 TCP 22301 並在 30 秒後重試。
+- `android_app_launch.py`：拉起應用後調用特權橋 `app_prepare` 關閉 APS/縮放，並調用 `app_focus` 注入觸摸重試恢復窗口焦點。
+
+單測位於 `rootfs/tests/`：
 
 ```bash
-uv run --with psutil python -m unittest discover -s rootfs/tests
+uv run --with psutil --with numpy --with pyyaml python -m unittest discover -s rootfs/tests
 ```
+
+::: tip 靜態測試與真機驗證的界限
+`unittest` 可驗證覆蓋層的解析邏輯、JSON 協議拼裝與狀態機分支（靜態測試已通過）；但實際的共享記憶體傳輸速度、APS 解像度生效以及窗口焦點重獲仍需在實體設備上運行驗證。
+:::
 
 ## <DocIcon name="zap" /> 空間與性能
 

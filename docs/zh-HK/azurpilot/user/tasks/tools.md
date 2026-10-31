@@ -1,7 +1,7 @@
 ---
 title: 輔助工具任務
 description: 系統設定、退役與強化、情緒管理、日誌與掉落記錄，以及掃描、基準測試、半自動等工具類任務。
-updated: 2026-10-20
+updated: 2026-10-31
 ---
 
 # 輔助工具任務
@@ -28,7 +28,7 @@ updated: 2026-10-20
 
 按類別儲存掉落截圖與結構化記錄：科研、委託、戰鬥、大世界各玩法、指揮喵等。`RetentionDays` 控制保留天數，過期按 `BackUpMethod` 刪除或壓縮。
 
-`AzurStatsID` / `API` 是社區統計服務的接入字段。不打算上報就留空。
+`CloudUpload` 是科研與委託結構化雲端提交的總開關（預設開啟），通信優先採用 HTTP/3 (QUIC)。科研與委託分為 `upload`（僅上傳結構化數據）、`save_and_upload`（儲存本地截圖並上傳）與 `do_not`（不上傳但保留本地收益統計）。戰鬥、侵蝕1練級與指揮喵僅支援本地截圖儲存（`save` / `do_not`）。大世界各任務則通過獨立開關控制是否落盤截圖，無論是否儲存截圖均完整解析並計入本地掉落統計。
 
 ## <DocIcon name="pencil" /> 通用設定（`General`）
 
@@ -95,6 +95,17 @@ updated: 2026-10-20
 改這些值的典型場景：機器很慢、模擬器啟動要兩分鐘以上，適當調大 `Reboot` 的等待；而不是關掉異常處理。
 
 ## <DocIcon name="search" /> 掃描類工具
+
+### 艦隊資訊與換船配置（`FleetInfo`）
+
+集中維護出擊艦隊編隊、智能換船、好感與等級培養、後宅休息聯動及編隊裝備方案：
+
+- `FleetRotation`：出擊前智能換船總開關及輪換規則；
+- `FleetLevelTraining` / `FleetAffinityTraining`：等級與好感度目標設定；
+- `FleetDorm`：換船後宅休息聯動開關及樓層（`floor_1` 訓練 / `floor_2` 休息）；
+- `FleetEquipment`：編隊裝備碼配置方案。
+
+具體出擊前置執行流程與換船規則見[出擊與活動](/zh-HK/azurpilot/user/tasks/campaign)中的智能換船與換船後宅休息説明。
 
 ### 艦隊掃描（`FleetScan`）
 

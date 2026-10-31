@@ -1,7 +1,7 @@
 ---
 title: 宿主架構與模組
-description: App 殼層、PRoot Runtime、特權服務與網關協議的分層，以及按職責劃分的原始碼地圖。
-updated: 2026-10-20
+description: App 殼層、PRoot Runtime、特權服務、原生橋協議、網關與 Docker 上報微服務的分層架構及原始碼地圖。
+updated: 2026-10-31
 ---
 
 # 宿主架構與模組
@@ -10,14 +10,15 @@ updated: 2026-10-20
 
 ## <DocIcon name="box" /> 分層
 
-| 層 | 處理程序 | 關鍵類 | 職責 |
+| 層 | 處理程序 / 載體 | 關鍵類與位置 | 職責 |
 | --- | --- | --- | --- |
 | App 殼層 | 主處理程序 | `AzurPilotApp`、`MainActivity`、`AppRoot` | 初始化、Compose UI、Runtime 控制 |
 | 部署 | 主處理程序 | `RootfsProvisioner` | 首次部署、更新、校驗、切換 |
 | PRoot | 子處理程序 | `ProotHost` | 拉起會話、崩潰退避、stdin 保活 |
 | 網關 | 主處理程序 | `AzurPilotGateway` | 唯一的 `/api/v1/ws` 訂閱者 |
-| 特權 | 獨立處理程序 | `RemoteServiceImpl`、`bridge/` | 虛擬螢幕、截圖、注入 |
-| OCR | `:ocr` | 私有綁定服務 | 推理 API |
+| 特權與原生橋 | 獨立處理程序 | `RemoteServiceImpl`、`BridgeServer`、`libbridge.so` | 虛擬螢幕、TCP 22301 線協議、共享記憶體截幀、輸入注入 |
+| OCR | `:ocr` | 私有綁定服務 | LiteRT/MNN 推理 API |
+| 機型上報服務 | 騰訊雲 Docker 容器 | `server/device-report/` | 接收簽名上報、持久化去重、寫入 GitHub Issue #1 評論 |
 
 ## <DocIcon name="rocket" /> 啟動順序
 
@@ -71,9 +72,19 @@ Koin 組合根按領域拆分：
 | 後端選擇與授權 | `privileged/PermissionManager.kt` | 統一狀態機，過期連接按 Binder 身份丟棄 |
 | Shizuku 連接 | `privileged/RemoteServiceManager.kt` | 外部/內置兩條路徑 |
 | root 啟動 | `root/RootServiceStarter.kt` | `app_process` + 一次性 token 回投 |
-| 特權 IPC | `remote/RemoteServiceImpl.kt` | 擁有虛擬螢幕、視窗/電源、橋接服務 |
-| JNI | `bridge/`、`native/bridge.h` | 幀鎖與輸入操作碼是 ABI |
+| 特權 IPC | `remote/RemoteServiceImpl.kt` | 擁有虛擬螢幕、視窗/電源控制 |
+| 特權橋線協議 | `remote/internal/BridgeServer.kt` | 監聽 `127.0.0.1:22301`，8 個協議端點 |
+| 共享記憶體通道 | `remote/internal/SharedFrameServer.kt` | Unix 抽象套接字 `com.azurpilot.ghio.frames.v1`，Binder 事務 78 |
+| JNI 幀與輸入 | `bridge/`、`native/bridge.h` | 幀鎖與輸入操作碼是 ABI |
 | root 啟動器 | `native/launcher.c` | 必須輸出 `liblauncher.so` |
+
+### 伺服端與機型上報
+
+| 職責 | 入口 | 約束 |
+| --- | --- | --- |
+| Go 報告服務 | `server/device-report/main.go` | 無獨立 DB，記憶體目標 48 MiB，正文簽名驗證 |
+| Docker 編排 | `server/device-report/deploy/compose.yaml` | 單核排程、96 MiB 硬限、掛載持久化狀態目錄 |
+| 上報客戶端 | `app/.../report/DeviceReportClient.kt` | 構造帶時間戳/nonce 的 SHA256withRSA 正文簽名 |
 
 ### 設定與介面
 
@@ -118,6 +129,32 @@ Runtime 在 `127.0.0.1:25548` 暴露三類介面：
 
 另有第三條「腳本熱更」，只換上游原始碼與前端，要求 `uv.lock` 不變。
 
+## <DocIcon name="cloud" /> 機型上報與 Docker 微服務
+
+為收集 Android 生態下不同機型與定製系統上的實際兼容情況，宿主設計了客戶端機型上報與伺服端 Docker 收集微服務（`server/device-report/`）：
+
+```text
+Android 客户端（设置 → 提交机型）
+  → 本地只读检测厂商属性与 Google 机型目录
+    → SHA256withRSA / PKCS#1 v1.5 私钥对正文签名
+      → POST https://afa-api.azurpilot.com/v1/device-reports
+        → Cloudflare 边缘（mTLS 终止与限流）
+          → Nginx 反代 → 本机 127.0.0.1:18882
+            → Docker 容器（afa-api，Go 标准库实现）
+              ├── 校验时间戳（±5 分钟）与 32 字符 Hex nonce 防重放
+              ├── 校验客户端公钥签名与 8 KiB 正文长度
+              ├── 原子比对持久化去重状态 state.json
+              └── 持有服务端专用 GITHUB_TOKEN → POST Issue #1 评论
+```
+
+### 微服務架構設計與約束
+
+1. **公網端點**：`https://afa-api.azurpilot.com/v1/device-reports`。生產目錄為 `/srv/agentdock/AgentDock/afa-api`。
+2. **認證分層**：Cloudflare 邊緣執行客戶端 TLS 驗證；Docker 伺服端使用已釘住的公開證書（`client-cert.pem`）獨立校驗 HTTP 正文簽名（`X-Report-Timestamp`、`X-Report-Nonce`、`X-Report-Signature`）。
+3. **極簡低資源開銷**：Go 標準庫靜態二進制，以非 root 用戶在 Docker 內執行；設定 `GOMEMLIMIT=48MiB` 記憶體軟目標、96 MiB 容器硬上限與 `cpus: "1.0"` 單核配額。
+4. **狀態與去重機制**：無獨立資料庫處理程序，掛載外部目錄 `/srv/agentdock/AgentDock/afa-api-state/state.json`。只記錄報告哈希、建立時間、評論 ID 與連結，**不持久化報告正文、不記錄 IP**。容量上限 10,000 條，寫操作前持久化待確認狀態，併發重試時利用 Issue #1 隱藏標記對齊，防止因 GitHub 延遲導致刷評。
+5. **權限隔離**：GitHub API Token 僅在伺服端 `deploy/private/service.env`（權限 0600）提供，目標限定在 `wess09/AzurPilot-for-Android` 的固定 Issue #1，永遠不進入 APK。
+
 ## <DocIcon name="shield" /> 修改時的邊界
 
 | 不要 | 因為 |
@@ -127,12 +164,16 @@ Runtime 在 `127.0.0.1:25548` 暴露三類介面：
 | 在普通處理程序使用忽略安全檢查的 Context | 權限擴散 |
 | 重編號輸入操作碼 / 改 JNI 註冊名 | 跨語言 ABI |
 | 假設懸浮窗能讀 Activity 狀態 | 它是獨立 Window |
+| 把伺服端 GITHUB_TOKEN 打進 APK | 造成 GitHub 憑據洩露 |
+| 僅憑靜態編譯通過就認定設備功能就緒 | 虛擬螢幕、OEM 觸控注入與 SPAKE2 配對具有強硬體與 ROM 依賴 |
 
 ## <DocIcon name="circle-plus" /> 新功能放哪裡
 
-1. 先找現有邊界（連接埠、倉庫、狀態流）。
+1. 先找現有邊界（連接埠、倉庫、狀態流、微服務）。
 2. 在實現側添加能力。
 3. 通過已有連接埠暴露給 UI。
-4. 補最小驗證：Kotlin 編譯、原生構建、真機迴歸。
+4. 嚴格執行雙層驗證：
+   - **靜態驗證**：Gradle `compileDebugKotlin`、Go 測試與 vet、Python 覆蓋層單測；
+   - **真機驗證**：在實體 ARM64 設備上驗證虛擬螢幕生命週期、輸入穿透與斷電/重新啟動表現。
 
 如果必須新增邊界，先寫清楚生命週期與執行緒約束的 KDoc，再實現。

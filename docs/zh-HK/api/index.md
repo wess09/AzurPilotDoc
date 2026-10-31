@@ -83,11 +83,11 @@ MCP：
 }
 ```
 
-## 雲端統計與模板 API
+## 雲端統計與模板服務（與本機 WebSocket 不同）
 
-新版委託及科研獎勵先由客戶端解析，主統計服務 `POST https://api.azurpilot.com/api/v3/post/drops` 接收結構化記錄。未知物品僅將 **49×49 圖示**送到 `https://templates-api.azurpilot.com/api/v3/post/templates/unknown`；`https://templates.azurpilot.com/latest.json` 提供簽署的模板版本資訊。完整獎勵截圖並非主統計 API 的載荷。
+委託、科研統計的新版雲端協議在客戶端完成獎勵解析：主服務 `https://api.azurpilot.com` 的 `POST /api/v3/post/drops` 收取結構化掉落；未知物品的 **49×49 圖標**提交到獨立 `https://templates-api.azurpilot.com/api/v3/post/templates/unknown`。客戶端從 `https://templates.azurpilot.com/latest.json` 獲取簽名模板指針、校驗清單和圖片哈希；不會把完整截圖作為主統計 API 的請求載荷。
 
-上報依設定啟用，失敗時由本地持久化佇列重試，並用記錄 ID 避免重複統計。這與本機 WebSocket 和啟動器專用 WebSocket 是不同的協定。詳見[核心雲 API 規格](https://github.com/wess09/AzurPilot/blob/master/docs/modules/cloud-api.md)及[本地統計](/zh-HK/azurpilot/user/observability)。
+雲端提交須啟用對應記錄方式；失敗數據進入本地持久化隊列，限流、斷網和進程重新啟動後可繼續處理。`record_id` 用於冪等，伺服端回執分別處理成功、重複、拒絕和重試。此協議**不是**瀏覽器的 `/api/v1/ws` 或啟動器專用 `/api/v2/launcher/ws`。詳細數據結構、端點及安全約束見[核心倉庫雲 API 文檔](https://github.com/wess09/AzurPilot/blob/master/docs/modules/cloud-api.md)，本地統計見[通知、日誌與統計](/zh-HK/azurpilot/user/observability)。
 
 
 ## <DocIcon name="map" /> 繼續閲讀
