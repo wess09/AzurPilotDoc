@@ -1,7 +1,7 @@
 ---
 title: システムアーキテクチャ
 description: AzurPilot のレイヤー構造、プロセスモデル、モジュール境界、データフロー、改修時に遵守すべき設計規約。
-updated: 2026-10-20
+updated: 2026-11-01
 ---
 
 # システムアーキテクチャ
@@ -147,6 +147,10 @@ def my_feature(self):
 - 4サーバー向けのアセットは `assets/{cn,en,jp,tw}/` に配置され、すべて 1280×720 を基準とします。
 - テンプレートオブジェクトは `TEMPLATE_` プレフィックスを付与して命名します。
 - ボタンリソースを変更した後は `uv run -m dev_tools.button_extract` を実行してください。
+
+### HTTP/3 ランタイム通信と初期導入の違い（2026-11-01）
+
+`module/base/http.py` は `niquests` と共有 `QuicSharedCache(max_size=12288)` を使用し、ランタイムのサービス通信で HTTP/3 を優先します。`module/runtime/update_network.py` は CDN の Git オブジェクトをこの通信層で取得し、失敗時は従来の Git fetch に戻ります。一方、**初期導入時は別経路**です。`deploy/git.py` と `deploy/git_over_cdn/client.py` は Requests / Git を使用し、旧 `deploy/http.py` は `master` から削除されました。初回インストール全体が HTTP/3 とは記載しないでください。[画像認識](/ja/azurpilot/developer/device-vision)と[出撃タスク](/ja/azurpilot/user/tasks/campaign)も参照してください。
 
 ## <DocIcon name="map" /> 開発者向け関連ドキュメント
 

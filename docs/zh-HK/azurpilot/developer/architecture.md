@@ -1,7 +1,7 @@
 ---
 title: 系統架構
 description: AzurPilot 的分層結構、進程模型、模組邊界與數據流，以及修改代碼前必須知道的約束。
-updated: 2026-10-31
+updated: 2026-11-01
 ---
 
 # 系統架構
@@ -156,7 +156,9 @@ def my_feature(self):
 
 ### 網絡傳輸（HTTP/3 優先）
 
-`module/base/http.py` 與 `deploy/http.py` 提供統一的 HTTP/3-first 傳輸層，基於 `niquests` 庫及全局 `QuicSharedCache(max_size=12288)`：
+**啟動引導並非統一 HTTP/3**：`deploy/git.py`、`deploy/git_over_cdn/client.py` 使用 Requests / Git；執行時 `module/runtime/update_network.py` 才採用 HTTP/3-first CDN 物件取得，並保留原有 Git 回退。
+
+`module/base/http.py` 是執行時 HTTP/3-first 傳輸層，基於 `niquests` 與共用 `QuicSharedCache(max_size=12288)`；**`deploy/http.py` 已從目前 `master` 刪除**。
 
 - **服務域路由**：對 `SERVICE_DOMAINS`（`azurpilot.com`、`nanoda.work`）自動預熱並建立 QUIC 連接，顯著降低版本檢查、掉落與模板提交、交易所與雲端隧道的握手時延。
 - **漸進降級**：本地環境不支援 UDP 443 或網絡受限時，自動無感知回退至 HTTP/2 與 HTTP/1.1。

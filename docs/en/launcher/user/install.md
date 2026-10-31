@@ -1,12 +1,14 @@
 ---
 title: Install Launcher
 description: Download, extraction, permissions, and runtime setup for Windows, macOS, and Linux desktop launcher installations.
-updated: 2026-10-31
+updated: 2026-11-01
 ---
 
 # Install Launcher
 
-Windows releases include an installer (such as `AzurPilot_Setup_3.0.4.exe`) and portable archives; macOS and Linux use platform archives. On first run, or when you select **Deploy**, the launcher retrieves runtime components, prepares Python, and obtains the core repository.
+Stable 3.0.6 also restores automatic Node.js runtime download and provides independent mirror selection with fallback and SHA-256 verification; see [Maintenance](/en/launcher/user/maintenance).
+
+Windows releases include an installer (such as `AzurPilot_Setup_3.0.6.exe`) and portable archives; macOS and Linux use platform archives. On first run, or when you select **Deploy**, the launcher retrieves runtime components, prepares Python, and obtains the core repository.
 
 ## <DocIcon name="download" /> Download Channels
 

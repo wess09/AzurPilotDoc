@@ -1,7 +1,7 @@
 ---
 title: System Architecture
 description: Layered architecture, process hierarchy, module boundaries, data pipelines, and invariants of the core program.
-updated: 2026-10-20
+updated: 2026-11-01
 ---
 
 # System Architecture
@@ -163,6 +163,10 @@ Database operations are managed by `module/persistence`. Database schemas migrat
 | `failure_record` | Held in memory; process restarts reset consecutive failure counters |
 | `EmulatorManager` | Inlines SSH command logic; sole task not delegating to a dedicated module |
 | `GameManager` | Work in progress; not for production use |
+
+### HTTP/3 runtime versus bootstrap transport (2026-11-01)
+
+`module/base/http.py` uses `niquests` with shared `QuicSharedCache(max_size=12288)` for HTTP/3-first runtime requests. `module/runtime/update_network.py` can fetch CDN Git objects through that runtime transport, falling back to the original Git fetch. **Bootstrap is separate**: `deploy/git.py` and `deploy/git_over_cdn/client.py` use Requests/Git, and the former `deploy/http.py` module has been removed from `master`. Do not claim HTTP/3 for the initial installation. See [Device & Vision](/en/azurpilot/developer/device-vision) and [Campaign Tasks](/en/azurpilot/user/tasks/campaign).
 
 ## <DocIcon name="map" /> Related Documentation
 

@@ -1,7 +1,7 @@
 ---
 title: Update, Repair & Uninstall
 description: Launcher 3.x Stable and Canary settings, component and Python environment repair, log export, data retention and troubleshooting.
-updated: 2026-10-31
+updated: 2026-11-01
 ---
 
 # Update, Repair & Uninstall
@@ -26,3 +26,7 @@ Do not wipe the installation directory or run destructive Git commands just to r
 On macOS, newer builds use `AzurPilot.app/Contents/AzurPilot` for application data and attempt to migrate older layouts. Back up `config/` and statistics before moving machines or uninstalling.
 
 See [First Run](/en/launcher/user/first-run) and [Update Pipeline](/en/launcher/developer/update).
+
+## Node.js runtime sources (stable 3.0.6)
+
+Stable **3.0.6** restores automatic Node.js installation when the required runtime is missing. Node.js has an **independent download-source setting**, separate from Git, Python and PyPI mirrors: Auto, Taobao mirror, Nanjing University mirror or official source. On failure, alternative sources can be tried; packages are checked against official SHA-256 values. For a failed first run, change the Node.js source in Settings and retry **Start** or **Repair** without deleting `config/` or logs. The source template version `0.0.0` is not the published release version.

@@ -1,12 +1,14 @@
 ---
 title: ランチャーのインストール
 description: Windows、macOS、Linux でのダウンロード、展開、権限付与、実行手順、および WebView 依存関係の確認。
-updated: 2026-10-31
+updated: 2026-11-01
 ---
 
 # ランチャーのインストール
 
-Windows ではインストーラー（例：`AzurPilot_Setup_3.0.4.exe`）とポータブル版を配布しています。macOS / Linux は対応アーカイブを使用します。初回実行時または「デプロイ」を選択すると、ランタイム部品と Python 環境、コアリポジトリを準備します。
+正式版 3.0.6 は Node.js ランタイムの自動ダウンロードを復旧し、独立したミラー選択・自動切替・SHA-256 検証に対応しています。[更新と修復](/ja/launcher/user/maintenance)を参照してください。
+
+Windows ではインストーラー（例：`AzurPilot_Setup_3.0.6.exe`）とポータブル版を配布しています。macOS / Linux は対応アーカイブを使用します。初回実行時または「デプロイ」を選択すると、ランタイム部品と Python 環境、コアリポジトリを準備します。
 
 ## <DocIcon name="download" /> ダウンロード
 

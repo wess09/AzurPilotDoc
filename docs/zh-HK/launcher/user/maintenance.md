@@ -1,7 +1,7 @@
 ---
 title: 更新、修復與移除
 description: 啟動器的正式版／Canary 更新機制、環境重建與安全清理策略、多語言切換、日誌匯出以及 Windows 交互移除。
-updated: 2026-10-31
+updated: 2026-11-01
 ---
 
 # 更新、修復與移除
@@ -72,3 +72,7 @@ updated: 2026-10-31
 | 退出啟動器後模擬器被連帶關閉 | Windows 下需確認後端與模擬器正常聲明並啟用了 Breakaway 機制；可在診斷日誌中核對 Job Object 釋放記錄 |
 
 參見[安裝啟動器](/zh-HK/launcher/user/install)、[首次啟動](/zh-HK/launcher/user/first-run)與[後端進程生命週期](/zh-HK/launcher/developer/backend-lifecycle)。
+
+## Node.js 下載源（正式版 3.0.6）
+
+正式版 **3.0.6** 已恢復缺少 Node.js 執行時的自動下載與安裝。Node.js 下載源獨立於 Git、Python 和 PyPI 鏡像，可選「自動／淘寶鏡像／南京大學／官方」，下載失敗會嘗試備選源並以官方 SHA-256 校驗。首次啟動失敗時，請在設定中切換 Node.js 下載源後重試「啟動」或「環境修復」，不要刪除 `config/` 與日誌。原始碼模板的 `0.0.0` 不等於正式發佈版號。
