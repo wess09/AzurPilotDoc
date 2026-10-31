@@ -1,7 +1,7 @@
 ---
 title: Campaign & Events
 description: Setup and parameters for main campaign, urgent commissions, 3-oil low-cost farming, events, raids, and War Archives.
-updated: 2026-10-20
+updated: 2026-11-01
 ---
 
 # Campaign & Events
@@ -123,6 +123,17 @@ These tasks operate exclusively while their corresponding events are active in-g
 | `RaidDaily` | Daily raid attempts | Consumes daily raid attempt tokens |
 
 Ensure `Scheduler.ServerUpdate` is configured accurately: daily attempts reset at server midnight.
+
+## <DocIcon name="refresh" /> Fleet Rotation, Training and Dormitory
+
+Before sorties, optional fleet rotation checks selected active fleets and may replace ships. These switches are **off by default**:
+
+- `FleetInfo.FleetTraining.StopOnComplete`: read level/affinity for every selected training slot in participating fleets at the existing interval. When **all enabled goals** are met, disable the **current sortie task** (`Scheduler.Enable`) and finish normally. Graduated ships remain in place; no reserve fleet is required. Ambiguous identities do not count as completion.
+- Rotation rule `favourite: true`: after checking configured reserve fleets **per slot**, choose a suitable Favourite only if no eligible reserve remains. Exclude assigned, busy, ambiguous, graduated or low-morale ships. This fallback is **CN-server only** and does not change Favourite flags.
+- `FleetInfo.FleetTraining.Notify`: send recorded level, affinity, morale and confirmed swap details to WebUI. OnePush is attempted, but the current `master` reads a mismatched configuration path; **external push is not verified**.
+- `FleetInfo.FleetDorm.Enabled` and `FleetInfo.FleetDorm.Floor`: optionally place the swapped fleet on `floor_1` (training) or `floor_2` (rest) after equipment processing. **CN-server only**. Selection checks the first **seven rows** with at most five row-by-row scrolls, verifies counts, and cancels safely when the floor or selected ships cannot be confirmed.
+
+Check the WebUI and game logs before routine use. Live multi-fleet and device behavior remains unverified. See [Scheduling](/en/azurpilot/user/scheduler) and [Device & Vision](/en/azurpilot/developer/device-vision).
 
 ## <DocIcon name="hand" /> Configuring Stopping Conditions
 

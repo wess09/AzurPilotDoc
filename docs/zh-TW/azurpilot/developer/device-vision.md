@@ -1,7 +1,7 @@
 ---
 title: 設備、識別與戰鬥
 description: 設備後端、截圖歸一化、頁面圖導航、OCR 推理、地圖檢測與戰鬥循環的程式碼入口與擴展方式。
-updated: 2026-10-31
+updated: 2026-11-01
 ---
 
 # 設備、識別與戰鬥
@@ -181,6 +181,12 @@ OSMap(MapEventResumeMixin, OSFleet, Map, GlobeCamera, StorageHandler, StrategicS
 - 17 個玩法任務放在 `tasks/`，繼承 `OSMap` 獲得全部導航能力。
 
 改大世界邏輯前，先看[大型作戰](/zh-TW/azurpilot/user/tasks/opsi)的用戶側語義，再看 `docs/modules/os/index.md`。
+
+### 地圖鏡頭定位回退（2026-11-01）
+
+核心 `master` 的 `d058314e` 已從 `module/map/camera.py` 移除「連續三次沒有已確認定位進展」、座標震盪偵測、20/40 次定位嘗試上限及失敗後一次邊緣重新定位。目前 `Camera.focus_to()` 會持續滑動直到 `map_swipe()` 回報無法繼續滑動；`ensure_edge_insight()` 亦不再使用原有的 12 次迴圈限制。**不可把舊有重試上限當成現行規格。** 裝置的 50 筆點擊記錄是另一機制。
+
+地標稀少時不會再因上述三次判定而退出，但異常畫面仍可能反覆滑動。請保留日誌與截圖，必要時手動停止；舊 `tests/test_map_camera_progress.py` 已刪除。參閱[出擊任務](/zh-TW/azurpilot/user/tasks/campaign)。
 
 ## <DocIcon name="pencil" /> 常見修改
 

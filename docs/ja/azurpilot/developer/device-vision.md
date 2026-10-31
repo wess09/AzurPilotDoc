@@ -1,7 +1,7 @@
 ---
 title: デバイス・認識・戦闘
 description: デバイスバックエンド、スクリーンショット正規化、画面遷移グラフ、OCR 推論、マップ検出、戦闘ステートループの実装。
-updated: 2026-10-20
+updated: 2026-11-01
 ---
 
 # デバイス・認識・戦闘
@@ -145,6 +145,12 @@ OSMap(MapEventResumeMixin, OSFleet, Map, GlobeCamera, StorageHandler, StrategicS
 - 17 種類のサブタスク群が `tasks/` に配置され、`OSMap` を継承してナビゲーション能力を利用します。
 
 内部仕様の詳細は[セイレーン作戦（大世界）](/ja/azurpilot/user/tasks/opsi)のマニュアルおよび `docs/modules/os/index.md` を参照してください。
+
+### マップカメラの位置決めロールバック（2026-11-01）
+
+コア `master` の `d058314e` では、`module/map/camera.py` から「確認できた進展が3回連続でない」判定、座標の振動検出、20/40回の試行上限、および失敗後の1回限りの端点再定位が削除されました。現在の `Camera.focus_to()` は `map_swipe()` が移動なしを返すまで続行し、`ensure_edge_insight()` に以前の12回制限はありません。**以前の上限を現行仕様として記載しないでください。** デバイスのクリック履歴50件は別機構です。
+
+特徴点の少ない海域で以前の3回判定は発生しなくなりましたが、異常画面では繰り返しスワイプする可能性があります。ログとスクリーンショットを保存し、必要なら手動停止してください。旧 `tests/test_map_camera_progress.py` は削除されました。[出撃タスク](/ja/azurpilot/user/tasks/campaign)も参照してください。
 
 ## <DocIcon name="pencil" /> アセット修正時の定石
 

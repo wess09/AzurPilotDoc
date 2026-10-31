@@ -1,7 +1,7 @@
 ---
 title: Device, Vision & Combat
 description: Device backends, screenshot normalization, UI page graph, OCR inference, map detection, and combat loops.
-updated: 2026-10-20
+updated: 2026-11-01
 ---
 
 # Device, Vision & Combat
@@ -171,6 +171,12 @@ OSMap(MapEventResumeMixin, OSFleet, Map, GlobeCamera, StorageHandler, StrategicS
 - Feature routines inherit from `OSMap` to access navigation primitives.
 
 Review [Operation Siren](/en/azurpilot/user/tasks/opsi) and internal specifications in `docs/modules/os/index.md`.
+
+### Camera positioning rollback (2026-11-01)
+
+Core `master` commit `d058314e` removed the previous three-unconfirmed-progress detector, oscillation checks, 20/40-attempt limits and one-time edge-relocalization recovery from `module/map/camera.py`. `Camera.focus_to()` now continues until `map_swipe()` reports no swipe; `ensure_edge_insight()` no longer has the former 12-iteration bound. **Do not describe the old limits as current behavior.** The device's 50-entry click history is a separate mechanism.
+
+Sparse maps no longer trigger that specific three-attempt condition, but unexpected screens may still cause repeated swipes. Preserve logs and screenshots and stop the task manually if necessary. The former `tests/test_map_camera_progress.py` was removed. See [Campaign Tasks](/en/azurpilot/user/tasks/campaign).
 
 ## <DocIcon name="pencil" /> Routine Development Workflows
 

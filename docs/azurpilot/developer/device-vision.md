@@ -1,7 +1,7 @@
 ---
 title: 设备、识别与战斗
 description: 设备后端、截图归一化、页面图导航、OCR 推理、地图检测与战斗循环的代码入口与扩展方式。
-updated: 2026-10-31
+updated: 2026-11-01
 ---
 
 # 设备、识别与战斗
@@ -181,6 +181,12 @@ OSMap(MapEventResumeMixin, OSFleet, Map, GlobeCamera, StorageHandler, StrategicS
 - 17 个玩法任务放在 `tasks/`，继承 `OSMap` 获得全部导航能力。
 
 改大世界逻辑前，先看[大型作战](/azurpilot/user/tasks/opsi)的用户侧语义，再看 `docs/modules/os/index.md`。
+
+### 地图相机定位回退（2026-11-01）
+
+核心 `master` 的 `d058314e` 已从 `module/map/camera.py` 移除「连续三次无已确认的定位进展」、坐标震荡检测、20/40 次定位尝试上限及失败后的单次边缘重新定位。当前 `Camera.focus_to()` 恢复为滑动直到 `map_swipe()` 返回不再滑动的循环；`ensure_edge_insight()` 也不再使用原先的 12 次有界循环。**不能把旧的重试上限写成现行行为。** 设备的 50 条点击记录是另一机制，不是相机定位次数上限。
+
+地标稀少时不会再触发上述三次判定，但异常画面仍可能反复滑动。请保留日志和截图，必要时手动停止；原 `tests/test_map_camera_progress.py` 已随回退删除。参见[出击任务](/azurpilot/user/tasks/campaign)。
 
 ## <DocIcon name="pencil" /> 常见修改
 
