@@ -1,7 +1,7 @@
 ---
 title: Task Manual Overview
-description: Command reference, category index, and reading guide for all 102 AzurPilot task routines.
-updated: 2026-10-20
+description: Command reference, category index, and reading guide for all 101 AzurPilot task routines.
+updated: 2026-11-08
 ---
 
 # Task Manual Overview
@@ -22,11 +22,11 @@ The interactive table below is generated from `args.json`, `zh-CN.json`, and `ta
 | Event Dailies | 7 | [Campaign & Events](/en/azurpilot/user/tasks/campaign) | Daily A/B/C/D/SP stage clears |
 | Dailies | 11 | [Dailies & Resources](/en/azurpilot/user/tasks/daily) | Commissions, research, dorm, Meowfficers |
 | Daily Missions | 11 | [Dailies & Resources](/en/azurpilot/user/tasks/daily) | Daily challenges, hard mode, exercises, shops |
-| Operation Siren | 19 | [Operation Siren](/en/azurpilot/user/tasks/opsi) | Exploration, obscure sectors, abyssal zones, intelligent scheduler |
+| Operation Siren | 16 | [Operation Siren](/en/azurpilot/user/tasks/opsi) | Exploration, obscure sectors, abyssal zones, intelligent scheduler |
 | Island Missions | 17 | [Cruise & Island Missions](/en/azurpilot/user/tasks/island) | Farmland, ranching, restaurants, manufacturing |
 | Fleet / Timing / Tools | 15 | [Utility Tasks](/en/azurpilot/user/tasks/tools) | Scanning, benchmarks, semi-automation |
 
-Counts reflect the current baseline release across 102 task keys. Active events introduce or retire tasks dynamically.
+Counts reflect the current baseline release across 101 task keys. Active events introduce or retire tasks dynamically.
 
 ## <DocIcon name="clipboard" /> Universal Task Schema
 

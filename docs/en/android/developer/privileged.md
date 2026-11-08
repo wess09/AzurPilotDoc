@@ -1,7 +1,7 @@
 ---
 title: Privileged Service & Native Bridge
 description: Built-in ADB, Root, and external Shizuku backends, AIDL interfaces, JNI ABI, virtual displays, and SDK dialog repatriation.
-updated: 2026-10-20
+updated: 2026-11-08
 ---
 
 # Privileged Service & Native Bridge
@@ -125,3 +125,15 @@ Instrumented test coverage includes: key encryption persistence, TLS exporters, 
 - [ ] Verify native libraries follow `lib*.so` naming conventions
 - [ ] Validate changes on physical devices rather than relying on emulators
 - [ ] Check for OEM-specific regressions across MediaTek, Xiaomi, and Huawei devices
+
+
+## Bounded retry while the first frame is not ready
+
+Immediately after a virtual display is created or rebuilt, the game may not have rendered its first frame. Shared-memory capture waits for a bounded period:
+
+- The retry budget is about **3 seconds**, with a **200 ms** interval.
+- Waiting occupies only the requesting client thread; it does not block the frame producer or other connections.
+- A virtual display with no frame still returns an error when the budget expires. This is not an indefinite wait and does not replace checking display creation.
+- The budget is below the client's 5-second socket timeout and absorbs transient first-frame races after display recreation.
+
+The TCP capture channel has corresponding bounded retries. If timeouts persist, inspect virtual-display state, game startup and bridge capabilities.
