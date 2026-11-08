@@ -1,7 +1,7 @@
 ---
 title: 更新、备份与排障
 description: APK、Runtime 与脚本热更三条通道的区别，上游定时同步检查，整包与热更的判定，以及数据备份和常见故障处理。
-updated: 2026-10-31
+updated: 2026-11-08
 ---
 
 # 更新、备份与排障
@@ -144,3 +144,16 @@ adb forward tcp:25548 tcp:25548
 Windows 可用仓库的 `tools/watch-android-logs.ps1`，默认跟踪 `com.azurpilot.ghio`。
 
 提 Issue 时附：设备型号、Android 版本、架构、Runtime 版本、操作步骤、日志片段。**不要附 `deploy.yaml`、`password.txt`、`remote-access.json`。**
+
+
+## 桌面配置导入兼容性
+
+从桌面版导入 JSON 配置时，Android 会在写入前按核心 schema 规整常见格式差异：
+
+- 日期时间：微秒时间戳和 ISO T 分隔符规范为 YYYY-MM-DD HH:mm:ss。
+- 数值范围：按 schema 的 validate 范围修正越界值。
+- 字符串类型：schema 预期字符串时，null 转为空字符串，数字和布尔值转为字符串。
+- 内部状态：不属于可编辑 schema 的内部状态字段保持原样。
+- 批次写入：先在后台线程生成并检查所有批次，再发送；同一参数组保持完整，跳过未变化值，并保留 Android 连接设置。
+
+这是 Android 导入端的兼容处理，不会修改桌面端原始配置文件。导入后仍应检查账号、设备、任务启用状态及高风险参数。
