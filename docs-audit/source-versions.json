@@ -1,38 +1,40 @@
 {
-  "schema_version": 1,
-  "audit_date": "2026-11-01",
-  "audit_type": "incremental audit from last successful documented source heads",
+  "audit_date": "2026-11-08",
+  "audit_type": "incremental cross-repository source and documentation audit",
   "source_branches": {
     "wess09/AzurPilot": {
       "branch": "master",
-      "head": "d058314ecfd1ca0b910ba832eb885a9e394599c9",
-      "previous_audited_head": "6f8c43dabc5ff1269524073c6ba02048f9243dcb",
-      "new_commits": 1
+      "head": "3a607a920f30d43d69454f9403b719d8b660cb76",
+      "previous_audited_head": "d058314ecfd1ca0b910ba832eb885a9e394599c9",
+      "new_commits": 4,
+      "dev_head": "2943abb9e378ec13b4f9558fa232fd7f50fc8746",
+      "dev_note": "Three post-master commits cover Vite 8.3.6, frontend cleanup and startup dependency reuse; public docs follow default master."
     },
     "wess09/AzurPilotLauncher": {
       "branch": "main",
-      "head": "4c024769c810391d30520a79e85a80cb1199fbc5",
+      "head": "466b8c6b02dd990752cfcdb5bf93e807018bc0e5",
       "previous_audited_head": "4c024769c810391d30520a79e85a80cb1199fbc5",
-      "new_commits": 0
+      "new_commits": 5
     },
     "wess09/AzurPilot-for-Android": {
       "branch": "main",
-      "head": "7bc1e48b4160bd8361570ba83208e66d6b142e9b",
-      "previous_audited_head": "3f00c7fcecd598a76684264e0ed22134b783031b",
-      "new_commits": 3
+      "head": "a944e2ef5353d636f6531bcff78a0dd21908e376",
+      "previous_audited_head": "7bc1e48b4160bd8361570ba83208e66d6b142e9b",
+      "new_commits": 35
     }
   },
   "docs_repository": {
     "repository": "wess09/AzurPilotDoc",
     "branch": "master",
-    "head_before_this_audit": "2eab5fd423862beca9e8a21e4a55fb70b7e7838b"
+    "head_before_this_audit": "acdb50d634cc3dd174136d6718a452039090503c"
   },
   "source_indexes": {
     "from_repository": "wess09/AzurPilot",
-    "from_commit": "2eba570571ec9b7afd8c9b8ce52c7ccb2705a747",
+    "from_commit": "3a607a920f30d43d69454f9403b719d8b660cb76",
     "task_commands": 101,
     "config_groups": 173,
-    "websocket_methods": 80
+    "websocket_methods": 80,
+    "note": "Extraction inputs did not change between 2eba5705 and 3a607a92; catalog contents are retained and provenance advanced."
   },
   "releases_checked": {
     "wess09/AzurPilot": {
@@ -40,30 +42,29 @@
       "published_at": "2026-09-21T06:43:11Z"
     },
     "wess09/AzurPilotLauncher": {
-      "latest_stable_tag": "3.0.6",
-      "published_at": "2026-10-31T11:27:22Z",
-      "also_has_prerelease_channels": [
-        "canary",
-        "runtime"
-      ]
+      "latest_stable_tag": "3.0.7",
+      "published_at": "2026-11-08T08:03:03Z"
     },
     "wess09/AzurPilot-for-Android": {
       "latest_release_tag": "azurpilot-android-latest",
-      "published_at": "2026-09-25T17:35:05Z"
+      "latest_asset_version": "1.3.196",
+      "last_updated_at": "2026-11-08T07:01:26Z"
     }
   },
   "prior_docs_ci": {
-    "run_id": 41213764015,
-    "commit": "2eab5fd423862beca9e8a21e4a55fb70b7e7838b",
+    "run_id": 41254199608,
+    "commit": "acdb50d634cc3dd174136d6718a452039090503c",
     "conclusion": "success"
   },
   "verification_notes": [
-    "Core master advanced by one commit (#1404) to d058314e: optional training completion, Favourite fallback and notifications, camera progress/attempt-limit rollback, Requests bootstrap restored.",
-    "Core master CI run 41212750148 failed two frontend FleetRotation.test.ts assertions (470 passed).",
-    "Launcher main unchanged at 4c024769 (stable 3.0.6); Android main advanced by three [skip ci] upstream-check heartbeats only.",
-    "Runtime HTTP/3-first remains in module/base/http.py; deploy/http.py was removed, bootstrap uses Requests/Git.",
-    "Generated catalogs remain pinned to core 2eba5705 (101 tasks, 173 config groups, 80 WebSocket methods), not current master.",
-    "Previous Docs CI run 41213764015 passed for commit 2eab5fd; this audit commit requires separate CI verification.",
-    "Five-language fleet/camera, version, transport and launcher guidance updated; no real-game or hardware tests."
+    "Core master advanced by four commits since the Nov 1 audit. Comparing 2eba5705 to 3a607a92 shows no changes to task.yaml, args.json, argument.yaml, router.py or frontend API contract inputs; generated counts remain 101 tasks, 173 config groups and 80 WebSocket methods.",
+    "The current MCP registry exposes 25 azurpilot_ tools by default. Legacy names are available only through an explicitly created compatibility endpoint.",
+    "When Error.HandleError is disabled, ordinary exceptions save an error log and stop the AzurPilot process; watchdog task timeouts stop the worker and preserve emulator state.",
+    "Android main advanced by 35 commits. Current source includes schema-aware desktop-config import normalization and bounded first-frame retries for shared-memory capture.",
+    "Android latest main build run 42454640653 succeeded; rolling release assets include version 1.3.196.",
+    "Launcher main advanced by five commits and released 3.0.7 with a separate connection-error window, retry/exit actions, tray recovery and WinUI 3 dialogs. Test and Pack runs 42459948454 and 42461003315 succeeded.",
+    "Core master CI Report run 42469549576 was skipped. The latest dev CI run 42469166004 failed the React/WebSocket contract check and button-config-check; the Windows stock-exchange job failed during uv setup. This is a dev result, not a master CI result.",
+    "The previous Docs CI run 41254199608 succeeded. The current documentation branch requires its own Docs CI run.",
+    "No real-game, emulator, Android OEM or cross-platform manual tests were performed."
   ]
 }

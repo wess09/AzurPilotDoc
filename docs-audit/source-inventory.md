@@ -1,29 +1,32 @@
 # 源码审计范围与入口
 
-最近一次核对：2026-11-01。源分支、精确 SHA 和发布标签以 [source-versions.json](source-versions.json) 为准。
+最近核对：2026-11-08。精确分支、SHA、Release 与 CI 以 [source-versions.json](source-versions.json) 为准。
 
-这是**关键入口清单**，不是对三个仓库每个文件的覆盖声明。以当前分支实际源码为第一事实来源；没有新提交时不依据心跳、Issue 标题或版本猜测新增功能。
+本清单覆盖四个仓库的关键入口，不代表逐文件人工审阅。公开文档优先跟随各仓库默认分支；开发分支与默认分支有差异时单独注明。
 
-| 仓库 | 核对的目录 / 文件 | 用途 |
+| 仓库 | 核对目录 / 文件 | 用途 |
 | --- | --- | --- |
-| [AzurPilot](https://github.com/wess09/AzurPilot/tree/master) | `module/`、`module/island_planner/`、`module/equipment/`、`module/cloud/` | 任务执行、岛屿生产规划、装备码、云端上传 |
-| AzurPilot | `frontend/src/api/contract.json`、`frontend/src/pages/`、`module/webui/` | 前后端 API 与界面能力 |
-| AzurPilot | `config/`、`module/config/`、`tests/test_equipment_code.py`、`tests/test_cloud_direct_upload.py` | 部署配置、配置系统和关键回归测试 |
-| [AzurPilotLauncher](https://github.com/wess09/AzurPilotLauncher/tree/main) | `src/launcher_protocol.rs`、`src/updater.rs`、`src/setup.rs`、`src/backend.rs` | 鉴权 WebSocket 协议、自更新、安装和后端控制 |
-| AzurPilotLauncher | `frontend/`、`capabilities/`、`.github/workflows/package.yml` | 桌面 UI、Tauri 权限与打包 |
-| [AzurPilot-for-Android](https://github.com/wess09/AzurPilot-for-Android/tree/main) | `app/`、`rootfs/overlays/android_equipment.py`、`rootfs/tests/` | Android 应用、装备码特权桥与运行环境测试 |
-| AzurPilot-for-Android | `server/device-report/`、`.github/workflows/check-upstream.yml` | 设备兼容性上报与上游变更检查 |
+| [AzurPilot](https://github.com/wess09/AzurPilot/tree/master) | `module/os/`、`docs/modules/os/`、`module/config/argument/` | 大世界导航、任务、资源、调度、任务目录和配置 |
+| AzurPilot | `module/mcp/registry.py`、`module/mcp/tools.py`、`module/mcp/device_contract.py` | MCP 注册表、兼容入口、写操作和设备控制契约 |
+| AzurPilot | `alas.py`、`module/api/router.py`、`frontend/src/api/contract.json` | 异常恢复、watchdog、WebSocket 方法 |
+| [AzurPilotLauncher](https://github.com/wess09/AzurPilotLauncher/tree/main) | `src/launcher.rs`、`src/native_dialog.rs`、`src/fs_util.rs`、`frontend/src/ConnectionWindow.tsx`、`CHANGELOG.md` | 启动器生命周期、连接错误窗口、文件系统恢复与 3.0.7 |
+| [AzurPilot-for-Android](https://github.com/wess09/AzurPilot-for-Android/tree/main) | Kotlin 宿主、`SharedFrameServer.kt`、`BridgeServer.kt`、`RemotePairingCard.kt` | Android 宿主、特权桥、共享内存截帧、远程客户端 |
+| AzurPilot-for-Android | `android_config_compat.py`、`android_app_launch.py`、`doc/config-import-compatibility.md`、`server/remote-access/` | 桌面配置导入、游戏启动、远程配对服务 |
+| [AzurPilotDoc](https://github.com/wess09/AzurPilotDoc/tree/master) | `docs/`、`docs/.vitepress/`、`docs-audit/` | 五语种文档、站点构建、生成索引与审计 |
 
 ## 机器生成索引
 
-下列文件全部从 [AzurPilot `2eba5705`](https://github.com/wess09/AzurPilot/commit/2eba570571ec9b7afd8c9b8ce52c7ccb2705a747) 源码快照提取，并非人工估算：
+- `tasks.json`：101 个任务命令
+- `config.json`：173 个配置组
+- `api.json`：80 个 WebSocket 方法
 
-- `docs/.vitepress/data/tasks.json`：101 个任务命令
-- `docs/.vitepress/data/config.json`：173 个配置选项组
-- `docs/.vitepress/data/api.json`：80 个 WebSocket 业务方法
+从核心快照 `2eba5705` 比较到当前 master `3a607a92`，`task.yaml`、`args.json`、`argument.yaml`、`router.py` 和前端 API 契约输入均未变化。因此本轮保留生成数据，仅更新来源 SHA 与审计日期。
 
-本次核心 `master` 前进至 `d058314e`，新增培养达标停止、常用候补与通知，回退地图相机进展及次数保护；Launcher `main` 保持 `4c024769`（稳定版 3.0.6）；Android `main` 仅新增三次上游心跳至 `7bc1e48b`。索引仍基于 `2eba5705`，未重新提取，不得将 101/173/80 视为当前 HEAD 的完整数量。
+## 分支与审计边界
 
-## 审计限制
+- AzurPilot 默认分支 `master`：`3a607a92`。当前 `dev` 为 `2943abb9`，另有 Vite 8.3.6、前端清理与启动依赖复用提交；公开文档跟随默认 master。
+- Launcher 默认分支 `main`：`466b8c6b`，稳定版 3.0.7。
+- Android 默认分支 `main`：`a944e2ef`，滚动 Release 资源已包含 1.3.196。
+- 文档仓库默认分支 `master`：`acdb50d6`，本轮通过独立分支和 PR 更新。
 
-本次仅通过 GitHub 仓库内容、提交、PR、Release 与 Actions 检查，不等于在真实设备上运行游戏、测试所有模拟器或完成跨平台图形回归。具体未验证项见 [unresolved-items.md](unresolved-items.md)。
+静态源码核对不等于真实游戏、模拟器、Android OEM 或跨平台图形实测。未验证事项见 [unresolved-items.md](unresolved-items.md)。

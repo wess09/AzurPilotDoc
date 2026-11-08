@@ -1,24 +1,24 @@
 # 验证与 CI 结果
 
-记录日期：2026-11-01。严格区分**上一版文档已通过**、**源码仓库 CI**与**本轮文档提交待验证**。
+记录日期：2026-11-08。严格区分源码分支 CI、上一版文档 CI 与本轮文档 PR 的待验证状态。
 
-## 上一版文档：已通过
+## 源码仓库
 
-- 文档基线：[`2eab5fd42386`](https://github.com/wess09/AzurPilotDoc/commit/2eab5fd423862beca9e8a21e4a55fb70b7e7838b)。
-- [Docs CI #41213764015](https://github.com/wess09/AzurPilotDoc/actions/runs/41213764015)：`completed / success`，包含依赖安装、类型检查、静态构建、链接/覆盖、SEO、Playwright 浏览器验收、响应式扫描与截图及产物上传。
-- **该结果仅证明上一版文档通过，不自动证明本轮提交通过。**
-
-## 三个源码分支
-
-| 仓库 | HEAD | CI / 核验结论 |
+| 仓库 | 当前核对 HEAD | 最新相关 CI / Release |
 | --- | --- | --- |
-| [AzurPilot](https://github.com/wess09/AzurPilot/commit/d058314ecfd1ca0b910ba832eb885a9e394599c9) | `d058314e` | [CI #41212750148](https://github.com/wess09/AzurPilot/actions/runs/41212750148) **failure**：`FleetRotation.test.ts` 两项断言失败，前端 470 通过 / 2 失败；Ruff、导入冒烟与按钮配置等其他 Job 成功不等于整体通过 |
-| [AzurPilotLauncher](https://github.com/wess09/AzurPilotLauncher/commit/4c024769c810391d30520a79e85a80cb1199fbc5) | `4c024769` | [Test #41196935846](https://github.com/wess09/AzurPilotLauncher/actions/runs/41196935846) success；[Pack #41243998845](https://github.com/wess09/AzurPilotLauncher/actions/runs/41243998845) success |
-| [AzurPilot-for-Android](https://github.com/wess09/AzurPilot-for-Android/commit/7bc1e48b4160bd8361570ba83208e66d6b142e9b) | `7bc1e48b` | [Sync to CNB #41249955896](https://github.com/wess09/AzurPilot-for-Android/actions/runs/41249955896) success；最近 [Android build #41234793370](https://github.com/wess09/AzurPilot-for-Android/actions/runs/41234793370) success 对应 `75c10296`，**不是当前 HEAD 的新构建** |
+| [AzurPilot master](https://github.com/wess09/AzurPilot/commit/3a607a920f30d43d69454f9403b719d8b660cb76) | `3a607a92` | master CI Report [42469549576](https://github.com/wess09/AzurPilot/actions/runs/42469549576) 为 **skipped**，不能据此声称完整 CI 通过。dev CI [42469166004](https://github.com/wess09/AzurPilot/actions/runs/42469166004) 为 **failure**：React / WebSocket 契约检查和 button-config-check 失败，Windows 集成作业在 uv setup 阶段失败；该结果属于 dev，不是 master。 |
+| [AzurPilotLauncher main](https://github.com/wess09/AzurPilotLauncher/commit/466b8c6b02dd990752cfcdb5bf93e807018bc0e5) | `466b8c6b` | Test [42459948454](https://github.com/wess09/AzurPilotLauncher/actions/runs/42459948454) **success**；Pack [42461003315](https://github.com/wess09/AzurPilotLauncher/actions/runs/42461003315) **success**；稳定版 3.0.7 已发布。 |
+| [AzurPilot-for-Android main](https://github.com/wess09/AzurPilot-for-Android/commit/a944e2ef5353d636f6531bcff78a0dd21908e376) | `a944e2ef` | Android build [42454640653](https://github.com/wess09/AzurPilot-for-Android/actions/runs/42454640653) **success**；滚动 Release 资源包含 1.3.196。 |
 
-## 本轮验证边界
+## 文档仓库
 
-- 已通过 GitHub 连接核对目标分支、提交 Diff、配置与测试，更新五语功能页及审计记录。
-- 本任务环境无法解析 `github.com` 进行 Git 克隆，**未在本机执行** `npm run build`、`npm run check`、`npm run test:e2e` 或截图检查，不能将其标为本地通过。
-- 本轮文档提交需要由对应 GitHub Actions 单独验证；CI 结束前不得声称已通过。
-- 三个源码仓库均只读，未改生产代码或 CI；未进行游戏真机、Android OEM 或桌面跨平台实测。
+- 上一版文档基线：[`acdb50d634cc`](https://github.com/wess09/AzurPilotDoc/commit/acdb50d634cc3dd174136d6718a452039090503c)。
+- 上一版 Docs CI [41254199608](https://github.com/wess09/AzurPilotDoc/actions/runs/41254199608)：**completed / success**。
+- **本轮文档 PR 必须由自己的 Docs CI 验证。** 上一版成功不能证明本轮构建、链接和覆盖通过。
+
+## 本轮范围与限制
+
+- 已核对四个仓库默认分支、关键提交、任务配置、MCP 注册表、Android 配置导入与截帧实现、Launcher 3.0.7 发布说明。
+- 生成索引输入从 2eba5705 到当前 master 3a607a92 未变化；保留 101 / 173 / 80 的数据并更新来源元数据。
+- 已更新五语大世界、MCP、Android、Launcher、调度与审计页面。
+- 未执行真实游戏、模拟器、Android OEM 或桌面跨平台人工测试；不得将静态源码核对写成真机通过。
