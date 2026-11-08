@@ -1,7 +1,7 @@
 ---
 title: API 概要
 description: AzurPilot が外部に公開する3系統のインターフェース：WebSocket RPC、Android 薄型インターフェース、MCP サービスの仕様と境界。
-updated: 2026-10-31
+updated: 2026-11-08
 ---
 
 # API 概要
@@ -19,7 +19,7 @@ updated: 2026-10-31
 ## <DocIcon name="shield" /> 安定性の境界
 
 ::: warning 登録されたメソッドのみが公開 API です
-`module/api/router.py` に登録された 72 個のメソッドが公式の公開インターフェース規約であり、`dev_tools.export_api_schema` により型定義が生成されます。業務モジュール内部の Python 関数は API ではないため、フロントエンドや外部ツールから直接呼び出さないでください。
+`module/api/router.py` に登録された 80 個のメソッドが公式の公開インターフェース規約であり、`dev_tools.export_api_schema` により型定義が生成されます。業務モジュール内部の Python 関数は API ではないため、フロントエンドや外部ツールから直接呼び出さないでください。
 :::
 
 | レイヤー | 安定性 |
@@ -93,7 +93,7 @@ MCP：
 ## <DocIcon name="map" /> 関連マニュアル
 
 <ul class="ap-linklist">
-<li><a href="/ja/api/websocket">WebSocket API<span class="desc">メッセージ形式・認証・72のメソッド</span></a></li>
+<li><a href="/ja/api/websocket">WebSocket API<span class="desc">メッセージ形式・認証・80のメソッド</span></a></li>
 <li><a href="/ja/api/android">Android 薄型インターフェース<span class="desc">ホストと Runtime 間の連携規約</span></a></li>
 <li><a href="/ja/api/mcp">MCP サービス<span class="desc">18のツールとクライアント連携</span></a></li>
 <li><a href="/ja/azurpilot/developer/webui-backend">WebUI バックエンド<span class="desc">実装の詳細</span></a></li>

@@ -1,7 +1,7 @@
 ---
 title: 通知・ログ・統計
 description: 実行ログとエラー現場データの保存先、OnePush 通知連携、LLM エラー解析、日次サマリーレポート、各種統計。
-updated: 2026-10-31
+updated: 2026-11-08
 ---
 
 # 通知・ログ・統計
@@ -106,7 +106,7 @@ updated: 2026-10-31
 
 ## <DocIcon name="plug" /> 外部監視システムとの統合
 
-- <DocIcon name="plug" /> **MCP 連携**：`get_status`、`get_resources`、`get_recent_logs` により AI クライアントから状態を取得可能。詳細は [MCP サービス](/ja/api/mcp) を参照。
+- **MCP**：既定エンドポイントは 25 個の **azurpilot_** ツールを公開します。状態・ログ・統計には **azurpilot_get_context**、**azurpilot_get_logs**、**azurpilot_get_statistics** を使用します。旧名称には明示的な互換入口が必要です。[MCP サービス](/ja/api/mcp) を参照してください。
 - <DocIcon name="zap" /> **WebSocket 購読**：`overview`、`logs`、`statistics` トピックをサブスクライブし、自作ダッシュボードを構築可能。詳細は [WebSocket API](/ja/api/websocket) を参照。
 - <DocIcon name="scroll" /> **ログ監視**：`log/<日付>_<インスタンス名>.txt` を直接監視（`tail -f` 等）することで、既存のログ収集基盤（Fluentd / Loki 等）と容易に連携可能。
 
