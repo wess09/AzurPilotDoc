@@ -1,152 +1,52 @@
 ---
 title: MCP サービス
-description: 18 個の MCP ツールの用途、マウント方式、認証、クライアント接続設定、および WebSocket API との境界。
-updated: 2026-10-20
+description: 25 個の azurpilot_ ツール、SSE 接続、認証、デバイス制御リースと互換入口。
+updated: 2026-11-08
 ---
 
 # MCP サービス
 
-MCP（Model Context Protocol）は、同プロトコルをサポートするクライアント（エディタ、AI Agent ツール）から AzurPilot を直接操作・問い合わせするためのインターフェースです。これは**外部連携用の別系統のエントリポイント**であり、WebSocket API を代替するものではありません。
+MCP（Model Context Protocol）を使うと、対応クライアントや Agent から AzurPilot を照会・管理・操作できます。AI クライアント向けのセマンティックな入口であり、WebSocket API の代替ではありません。
 
-## <DocIcon name="rocket" /> 2つの稼働形態
+## エンドポイントと認証
 
-| 形態 | エンドポイント | 説明 |
+| 方式 | エンドポイント | 説明 |
 | --- | --- | --- |
-| WebUI 同梱マウント | `http://<host>:25548/mcp/sse` | デフォルト構成。WebUI プロセスと同一ポートを共有 |
-| 独立サービス | `python mcp_server_sse.py`（ポート `22268`） | デバッグ時やプロセス分離環境向け |
+| WebUI にマウント | `http://<host>:25548/mcp/sse` | 既定方式。WebUI の Runtime とインスタンスを共有 |
+| 独立サービス | `uv run python mcp_server_sse.py`、既定ポート 22268 | 分離デプロイやデバッグ向け |
 
-::: warning 22268 ポートの OCR との競合
-MCP 独立サーバーと OCR サービスはデフォルトでどちらも 22268 ポートを使用します。同一マシン上で両者を動作させる場合は、事前にいずれかのポート番号を変更してください。
+独立 MCP と OCR サービスは既定で 22268 を使用します。同時に動かす場合は片方のポートを変更してください。MCP は WebUI パスワードを使用します。推奨は `Authorization: Bearer <WebUI password>`、互換方式は `X-API-Key: <WebUI password>` です。Header を設定できない場合のみ `?key=<WebUI password>` を使用してください。パスワード変更後は WebUI を再起動します。
+
+::: danger パスワードを URL に含めないでください
+クエリパラメーターはアクセスログや履歴に残る可能性があります。Authorization Header を優先してください。
 :::
 
-## <DocIcon name="key" /> 認証方式
+## 既定ツール一覧：25 個
 
-MCP は WebUI の認証パスワード（`--key` または `deploy.yaml` の `Password`）を流用します：
+既定エンドポイントが公開するのは次の **azurpilot_** ツール 25 個だけです。旧名称は明示的に作成した互換入口でのみ利用できます。
 
-| 方式 | 記法 |
-| --- | --- |
-| リクエストヘッダー（推奨） | `Authorization: Bearer <パスワード>` |
-| 互換ヘッダー | `X-API-Key: <パスワード>` |
-| クエリパラメータ | `?key=<パスワード>`（カスタムヘッダー非対応のクライアント限定） |
-
-認証情報が欠落している場合は `401` が返却されます。パスワード変更を反映するには WebUI の再起動が必要です。
-
-::: danger クエリパラメータは認証情報そのものです
-`?key=` はサーバーアクセスログやブラウザ履歴、スクリーンショット等に記録される危険があります。環境が許す限りヘッダー方式を利用してください。
-:::
-
-## <DocIcon name="settings" /> クライアント設定例
-
-ローカル環境：
-
-```json
-{
-  "mcpServers": {
-    "azurpilot": {
-      "url": "http://127.0.0.1:25548/mcp/sse",
-      "headers": { "Authorization": "Bearer <WebUI パスワード>" }
-    }
-  }
-}
-```
-
-リモートまたは LAN 経由：
-
-```json
-{
-  "mcpServers": {
-    "azurpilot": {
-      "url": "http://<IP_ADDRESS>:25548/mcp/sse",
-      "headers": { "Authorization": "Bearer <WebUI パスワード>" }
-    }
-  }
-}
-```
-
-ポート番号を変更している場合は適宜 URL を置き換えてください。
-
-## <DocIcon name="clipboard" /> 提供ツール一覧
-
-合計 18 種類のツールが提供されています。
-
-| カテゴリ | ツール名 | 機能概要 |
+| 分類 | ツール | 用途 |
 | --- | --- | --- |
-| インスタンス | `list_instances` | 全インスタンスの一覧を取得 |
-| インスタンス | `get_status` | インスタンスの実行状態を取得 |
-| インスタンス | `start_instance` | インスタンスを起動 |
-| インスタンス | `stop_instance` | インスタンスを停止 |
-| タスク | `list_tasks` | 全タスクの一覧を取得 |
-| タスク | `get_task_help` | タスクのヘルプ情報を取得 |
-| タスク | `trigger_task` | タスクを即座にトリガー実行 |
-| タスク | `get_scheduler_queue` | スケジューラーのキュー一覧を取得 |
-| タスク | `clear_scheduler_queue` | スケジューラーのキューをクリア |
-| 監視 | `get_current_running_task` | 現在実行中のタスク情報を取得 |
-| 監視 | `get_resources` | 保有リソース（燃料・資金等）の状態を取得 |
-| 監視 | `get_config` | インスタンスの設定を取得 |
-| 監視 | `get_recent_logs` | 直近のログを取得 |
-| 監視 | `get_screenshot` | 現在の画面スクリーンショットを取得 |
-| 設定 | `update_config` | インスタンスの設定を更新 |
-| メンテナンス | `restart_emulator` | エミュレーターを再起動 |
-| メンテナンス | `restart_adb` | ADB サーバーを再起動 |
-| メンテナンス | `update_alas` | AzurPilot 本体のコードを更新 |
+| インスタンス | **azurpilot_list_instances**、**azurpilot_get_context**、**azurpilot_start_instance**、**azurpilot_stop_instance** | 一覧、状態確認、起動、停止 |
+| タスク | **azurpilot_search_tasks**、**azurpilot_get_task_schema**、**azurpilot_set_task_schedule** | 検索、Schema 確認、有効状態と次回実行の設定 |
+| 設定 | **azurpilot_get_config**、**azurpilot_patch_config** | 設定 / revision の取得、revision 検証後の一括更新、dry_run |
+| ログ / 統計 | **azurpilot_get_logs**、**azurpilot_get_statistics**、**azurpilot_get_statistics_schema** | ログ、概要 / 資源 / 大世界 / 委託 / 研究統計、指標定義 |
+| デバイス | **azurpilot_observe_device**、**azurpilot_acquire_device_control**、**azurpilot_release_device_control** | 画面取得、制御リースの取得 / 解放 |
+| デバイス入力 | **azurpilot_click**、**azurpilot_swipe**、**azurpilot_long_press**、**azurpilot_input_text**、**azurpilot_press_key**、**azurpilot_adb_shell** | クリック、スワイプ、長押し、テキスト、キー、ADB Shell |
+| 操作照会 | **azurpilot_get_operation** | 書き込み操作の状態と最終結果を照会 |
+| 保守 / 更新 | **azurpilot_restart_emulator**、**azurpilot_restart_adb**、**azurpilot_update_application** | エミュレーター / ADB の再起動、コア更新 |
 
-::: tip パラメータの仕様はサーバー側の宣言に準拠します
-MCP クライアントは `tools/list` を介して各ツールの完全な JSON Schema を取得します。ここでは目的と機能概要のみを記載し、頻繁に更新される詳細パラメータ定義は省略しています。
-:::
+## デバイス制御と書き込み操作
 
-## <DocIcon name="lightbulb" /> 代表的な利用シナリオ
+- 直接操作の前に **azurpilot_acquire_device_control** でリースを取得し、終了後に **azurpilot_release_device_control** で解放します。
+- 先に **azurpilot_observe_device** で画面と frame_id を取得します。座標操作に frame_id を付けると、画面サイズや向きが変わった後の古い座標を拒否できます。
+- 入力ツールはコマンド送信と画面変化を区別します。**コマンド送信済みは UI 応答やタスク完了を意味しません。**
+- 書き込み操作は request_id による重複排除と operation_id をサポートします。タイムアウトで結果が不明な場合は **azurpilot_get_operation** で確認してください。
+- **azurpilot_patch_config** は revision で同時編集の上書きを防ぎます。変更前に設定を読み、必要に応じて dry_run を使います。
+- **azurpilot_set_task_schedule** はスケジュール変更を示すもので、ゲーム内操作の成功ではありません。
 
-### AI Agent による定期パトロール
+既定一覧には get_status、get_resources、get_recent_logs、trigger_task、clear_scheduler_queue は含まれません。旧名称は明示的な互換入口でのみ利用できます。
 
-```text
-1. list_instances           → 登録インスタンスの確認
-2. get_status(instance)     → 稼働状態・現在タスクの確認
-3. get_recent_logs(...)     → エラーログの有無の検知
-4. get_resources(...)       → 燃料や資金が枯渇していないか判定
-```
+**典型的な順序：** **azurpilot_list_instances** で選択し、**azurpilot_get_context** で状態を確認。設定変更前に読み取り、直接操作前に画面観測とリース取得を行い、不確かな書き込みは **azurpilot_get_operation** で確認します。
 
-### 手動トラブルシューティング介入
-
-```text
-trigger_task(instance, task)   → 特定タスクの即時テスト
-clear_scheduler_queue(...)     → キューに溜まったタスクの一括リセット
-restart_adb(...)               → ADB 接続切断時の自動復帰
-```
-
-### 注意を要する操作
-
-`update_alas`、`restart_emulator`、`clear_scheduler_queue` は実行中のタスクを強制中断します。Agent に自律実行させる前に、その影響範囲を確認してください。
-
-::: danger Agent による無制限な設定変更の回避
-`update_config` は設定を直接ディスクに永続化し、今後のスケジューリングに影響を及ぼします。楽観的ロック（revision）が存在しない外部からの変更は、ユーザーの手動編集を上書きするリスクがあります。
-:::
-
-## <DocIcon name="scale" /> WebSocket との役割分担
-
-| 機能 | MCP | WebSocket |
-| --- | --- | --- |
-| インスタンスの一覧・起動・停止 | ✅ | ✅ |
-| 詳細な設定スキーマの読み書き | 一部限定（`update_config`） | ✅ 完全対応 |
-| リアルタイムストリーミング購読 | ❌ | ✅ |
-| スケジュールキューの詳細編集 | ❌ | ✅ |
-| AI クライアント向けプロトコル | ✅ | 独自開発が必要 |
-
-MCP は「AI Agent のためのコンパクトなインターフェース」、WebSocket は「GUI フロントエンドのための完全なインターフェース」として設計されています。
-
-## <DocIcon name="shield" /> セキュリティ上の推奨事項
-
-1. 必要時のみ有効化し、公網へ恒常的にポートを開放しないでください。
-2. WebUI には強力なパスワードを設定し、ゲームアカウントのパスワードと共通化しないでください。
-3. リモート運用時は WSS や Cloudflare Tunnel 等を経由し、ポート 25548 を生でインターネットに公開しないでください。
-4. Agent が実行したツール呼び出し履歴（特に書き込み・更新操作）を定期的に監査してください。
-5. 長期間利用しない場合は WebUI を再起動し、認証パスワードを変更してください。
-
-## <DocIcon name="wrench" /> トラブルシューティング
-
-| 現象 | 主な原因と対策 |
-| --- | --- |
-| 401 Unauthorized | 認証ヘッダーの欠落、パスワード間違い、パスワード変更後の WebUI 未再起動 |
-| 接続が拒否される | ポート番号の不一致、または WebUI 起動時に MCP が無効化されている |
-| ツール呼び出しがタイムアウト | インスタンスが重い処理を実行中でバックエンドの応答が遅延 |
-| 古い設定値が返却される | 設定キャッシュの影響。再度 `get_config` を呼び出してください |
-| 独立サービスが起動しない | ポート 22268 が OCR サービスに占有されています |
+MCP は Agent 向けの限定インターフェース、WebSocket は WebUI、Android ホスト、独自クライアント向けの完全なインターフェースです。[WebSocket API](/ja/api/websocket) を参照してください。

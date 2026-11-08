@@ -1,130 +1,52 @@
 ---
-title: MCP Server
-description: 18 Model Context Protocol tools, endpoint mounting, authentication, and client integration with AI agents.
-updated: 2026-10-20
+title: MCP Service
+description: The 25 azurpilot_ tools, SSE connection, authentication, device-control leases and compatibility boundary.
+updated: 2026-11-08
 ---
 
-# MCP Server
+# MCP Service
 
-The Model Context Protocol (MCP) server allows compatible AI clients (editors, agent tools) to query and control AzurPilot programmatically. It operates as an **alternative integration channel** rather than replacing the WebSocket API.
+MCP (Model Context Protocol) lets compatible clients and agents query, manage and operate AzurPilot. It is a semantic interface for AI clients, not a replacement for the WebSocket API.
 
-## <DocIcon name="rocket" /> Mounting Modes
+## Endpoint and authentication
 
-| Mode | Endpoint | Description |
+| Mode | Endpoint | Notes |
 | --- | --- | --- |
-| Embedded in WebUI | `http://<host>:25548/mcp/sse` | Default; reuses WebUI process |
-| Standalone Service | `python mcp_server_sse.py` (port `22268`) | Debugging and isolated setups |
+| Mounted with WebUI | `http://<host>:25548/mcp/sse` | Default; shares the WebUI runtime and instances |
+| Standalone service | `uv run python mcp_server_sse.py`, port 22268 by default | Separate deployment or debugging |
 
-::: warning Port 22268 Collision
-Standalone MCP services and standalone OCR services default to port 22268. If hosting both concurrently on the same machine, modify one of the ports.
+The standalone MCP and OCR services both use port 22268 by default. Change one if both run on the same machine. MCP uses the WebUI password: preferably `Authorization: Bearer <WebUI password>`, alternatively `X-API-Key: <WebUI password>`; use `?key=<WebUI password>` only when headers cannot be set. Restart the WebUI after changing the password.
+
+::: danger Do not put passwords in URLs
+Query parameters may appear in access logs, history or screenshots. Prefer the Authorization header.
 :::
 
-## <DocIcon name="key" /> Authentication
+## Default tool directory: 25 tools
 
-The MCP service authenticates using the WebUI password (`--key` or `deploy.yaml`):
+The default endpoint exposes only these 25 **azurpilot_** tools. Legacy names require an explicitly created compatibility endpoint.
 
-| Header | Format |
-| --- | --- |
-| Standard (Recommended) | `Authorization: Bearer <password>` |
-| Compatibility Header | `X-API-Key: <password>` |
-| Query Parameter | `?key=<password>` (only for clients that cannot set headers) |
-
-Unauthenticated requests receive HTTP `401`. Modifying passwords requires restarting the server.
-
-::: danger Query Parameters Expose Credentials
-Query parameters appear in server logs, history, and screenshots. Use HTTP headers whenever supported.
-:::
-
-## <DocIcon name="settings" /> Client Configuration
-
-Local connection:
-
-```json
-{
-  "mcpServers": {
-    "azurpilot": {
-      "url": "http://127.0.0.1:25548/mcp/sse",
-      "headers": { "Authorization": "Bearer <WebUI-Password>" }
-    }
-  }
-}
-```
-
-Remote or local network:
-
-```json
-{
-  "mcpServers": {
-    "azurpilot": {
-      "url": "http://<IP_ADDRESS>:25548/mcp/sse",
-      "headers": { "Authorization": "Bearer <WebUI-Password>" }
-    }
-  }
-}
-```
-
-## <DocIcon name="clipboard" /> Available Tools
-
-18 tools are currently registered:
-
-| Category | Tool | Function |
+| Group | Tools | Purpose |
 | --- | --- | --- |
-| Instance | `list_instances` | Lists all instances |
-| Instance | `get_status` | Returns instance status |
-| Instance | `start_instance` | Starts an instance worker |
-| Instance | `stop_instance` | Stops an instance worker |
-| Tasks | `list_tasks` | Lists all available tasks |
-| Tasks | `get_task_help` | Retrieves task documentation |
-| Tasks | `trigger_task` | Triggers immediate task execution |
-| Tasks | `get_scheduler_queue` | Inspects scheduler queue |
-| Tasks | `clear_scheduler_queue` | Purges scheduler queue |
-| Telemetry | `get_current_running_task` | Returns active task |
-| Telemetry | `get_resources` | Returns resource gauges |
-| Telemetry | `get_config` | Reads instance settings |
-| Telemetry | `get_recent_logs` | Retrieves recent logs |
-| Telemetry | `get_screenshot` | Returns current frame capture |
-| Config | `update_config` | Writes configuration values |
-| Maintenance | `restart_emulator` | Reboots emulator |
-| Maintenance | `restart_adb` | Restarts ADB daemon |
-| Maintenance | `update_alas` | Updates AzurPilot core code |
+| Instances | **azurpilot_list_instances**, **azurpilot_get_context**, **azurpilot_start_instance**, **azurpilot_stop_instance** | List instances, inspect context, start and stop |
+| Tasks | **azurpilot_search_tasks**, **azurpilot_get_task_schema**, **azurpilot_set_task_schedule** | Search tasks, inspect schemas and set enablement / next run |
+| Configuration | **azurpilot_get_config**, **azurpilot_patch_config** | Read configuration and revision; atomically patch after revision check, with dry_run |
+| Logs / statistics | **azurpilot_get_logs**, **azurpilot_get_statistics**, **azurpilot_get_statistics_schema** | Logs, overview / resources / Operation Siren / commissions / research statistics and metric definitions |
+| Device | **azurpilot_observe_device**, **azurpilot_acquire_device_control**, **azurpilot_release_device_control** | Capture the screen and acquire / release a control lease |
+| Device input | **azurpilot_click**, **azurpilot_swipe**, **azurpilot_long_press**, **azurpilot_input_text**, **azurpilot_press_key**, **azurpilot_adb_shell** | Click, swipe, long-press, text, keys and controlled ADB shell |
+| Operation lookup | **azurpilot_get_operation** | Query a write operation's status and final result |
+| Maintenance / updates | **azurpilot_restart_emulator**, **azurpilot_restart_adb**, **azurpilot_update_application** | Restart emulator / ADB or request a core update |
 
-::: tip Schemas Provided Dynamically
-MCP clients fetch JSON Schemas dynamically via `tools/list`.
-:::
+## Device-control and write-operation semantics
 
-## <DocIcon name="lightbulb" /> Common Use Cases
+- Acquire a lease with **azurpilot_acquire_device_control** before direct control, then release it with **azurpilot_release_device_control**.
+- Call **azurpilot_observe_device** first to obtain the current screen and frame_id. Coordinate actions can include frame_id so stale coordinates are rejected after a size or orientation change.
+- Input tools distinguish between a command being dispatched and the screen changing. **A dispatched command does not prove that the UI responded or that a task completed.**
+- Write operations support request_id deduplication and return operation_id. If a timeout leaves the outcome uncertain, query **azurpilot_get_operation** instead of blindly retrying.
+- **azurpilot_patch_config** uses revisions to prevent overwriting concurrent edits. Read the current configuration first and use dry_run when appropriate.
+- **azurpilot_set_task_schedule** confirms a scheduling change, not successful in-game execution.
 
-### Health Checks
+The default directory excludes legacy names such as get_status, get_resources, get_recent_logs, trigger_task and clear_scheduler_queue. They are mapped only through an explicitly created compatibility endpoint.
 
-```text
-1. list_instances           → Check active instances
-2. get_status(instance)     → Inspect worker state and active task
-3. get_recent_logs(...)     → Check for error traces
-4. get_resources(...)       → Evaluate oil and coin levels
-```
+Typical sequence: choose an instance with **azurpilot_list_instances**, inspect it with **azurpilot_get_context**, read configuration before patching, acquire a device lease before direct input, and verify uncertain writes with **azurpilot_get_operation**.
 
-### Interventions
-
-```text
-trigger_task(instance, task)   → Run task on demand
-clear_scheduler_queue(...)     → Reset backlog during troubleshooting
-restart_adb(...)               → Recover dropped ADB connections
-```
-
-### Destructive Operations
-
-`update_alas`, `restart_emulator`, and `clear_scheduler_queue` disrupt running tasks. Ensure agents understand the consequences before delegating access.
-
-::: danger Supervise Configuration Changes
-`update_config` writes directly to disk, altering subsequent schedules. External edits lack optimistic revision locks and may overwrite concurrent user adjustments.
-:::
-
-## <DocIcon name="scale" /> Comparison with WebSocket API
-
-| Feature | MCP Server | WebSocket API |
-| --- | --- | --- |
-| List / Start / Stop Instances | ✅ | ✅ |
-| Detailed Configuration Edits | Basic (`update_config`) | ✅ Comprehensive |
-| Real-time Event Streaming | ❌ | ✅ |
-| Scheduler Canvas Orchestration | ❌ | ✅ |
-| Agent Integration Out-of-the-Box | ✅ | Requires custom client |
+MCP is a narrow interface for agents; WebSocket is the complete interface for WebUI, Android hosts and custom clients. See the [WebSocket API](/en/api/websocket).

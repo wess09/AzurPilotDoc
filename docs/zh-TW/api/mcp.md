@@ -1,152 +1,53 @@
+
 ---
 title: MCP 服務
-description: 18 個 MCP 工具的用途、掛載方式、鑑權與客戶端接入配置，以及和 WebSocket API 的邊界。
-updated: 2026-10-20
+description: 25 個 azurpilot_ 工具、SSE 接入、驗證、裝置控制租約與相容入口邊界。
+updated: 2026-11-08
 ---
 
 # MCP 服務
 
-MCP（Model Context Protocol）讓支援該協議的客戶端（編輯器、Agent 工具）直接查詢和控制 AzurPilot。它是**另一條入口**，不是 WebSocket API 的替代品。
+MCP（Model Context Protocol）讓支援該協定的用戶端與 Agent 直接查詢、管理及操作 AzurPilot。它是面向 AI 用戶端的語義介面，不是 WebSocket API 的替代品。
 
-## <DocIcon name="rocket" /> 兩種執行方式
+## 端點與驗證
 
 | 方式 | 端點 | 說明 |
 | --- | --- | --- |
-| 隨 WebUI 掛載 | `http://<host>:25548/mcp/sse` | 預設，複用 WebUI 處理程序 |
-| 獨立服務 | `python mcp_server_sse.py`，連接埠 `22268` | 調試或分離部署 |
+| 隨 WebUI 掛載 | `http://<host>:25548/mcp/sse` | 預設方式，與 WebUI 共用 Runtime 和實例 |
+| 獨立服務 | `uv run python mcp_server_sse.py`，預設連接埠 22268 | 獨立部署或除錯 |
 
-::: warning 22268 與 OCR 衝突
-獨立 MCP 與 OCR 服務預設都用 22268。同機執行兩者時，先改其中一個連接埠。
+獨立 MCP 與 OCR 服務預設都使用 22268 連接埠；同機執行時必須修改其中一個。MCP 使用 WebUI 密碼，建議使用 `Authorization: Bearer <WebUI 密碼>`，相容方式為 `X-API-Key: <WebUI 密碼>`；只有無法設定 Header 時才使用 `?key=<WebUI 密碼>`。修改密碼後需要重新啟動 WebUI。
+
+::: danger 不要把密碼放進 URL
+查詢參數可能出現在存取日誌、歷史紀錄或截圖中。優先使用 Authorization Header。
 :::
 
-## <DocIcon name="key" /> 鑑權
+## 預設工具目錄：25 個工具
 
-MCP 複用 WebUI 密碼（`--key` 或 `deploy.yaml` 的 `Password`）：
+預設端點只公開以下 25 個 **azurpilot_** 工具。舊名稱只會在明確建立的相容入口中提供。
 
-| 方式 | 寫法 |
-| --- | --- |
-| 請求頭（推薦） | `Authorization: Bearer <密码>` |
-| 兼容頭 | `X-API-Key: <密码>` |
-| 查詢參數 | `?key=<密码>`（僅限無法自定義 Header 的客戶端） |
-
-不帶憑據返回 `401`。修改密碼後需要重新啟動 WebUI，MCP 才會使用新密碼。
-
-::: danger 查詢參數就是憑據
-`?key=` 會出現在日誌、歷史記錄與截圖中。有條件就改用 Header。
-:::
-
-## <DocIcon name="settings" /> 客戶端配置
-
-本地：
-
-```json
-{
-  "mcpServers": {
-    "azurpilot": {
-      "url": "http://127.0.0.1:25548/mcp/sse",
-      "headers": { "Authorization": "Bearer <WebUI 密码>" }
-    }
-  }
-}
-```
-
-遠端或內網：
-
-```json
-{
-  "mcpServers": {
-    "azurpilot": {
-      "url": "http://<IP_ADDRESS>:25548/mcp/sse",
-      "headers": { "Authorization": "Bearer <WebUI 密码>" }
-    }
-  }
-}
-```
-
-連接埠被改過時同步替換。
-
-## <DocIcon name="clipboard" /> 工具清單
-
-共 18 個工具。
-
-| 類別 | 工具 | 作用 |
+| 分組 | 工具 | 用途 |
 | --- | --- | --- |
-| 實例 | `list_instances` | 列出所有實例 |
-| 實例 | `get_status` | 獲取實例狀態 |
-| 實例 | `start_instance` | 啟動實例 |
-| 實例 | `stop_instance` | 停止實例 |
-| 任務 | `list_tasks` | 列出所有任務 |
-| 任務 | `get_task_help` | 獲取任務幫助 |
-| 任務 | `trigger_task` | 觸發任務 |
-| 任務 | `get_scheduler_queue` | 獲取排程佇列 |
-| 任務 | `clear_scheduler_queue` | 清空排程佇列 |
-| 監控 | `get_current_running_task` | 當前執行任務 |
-| 監控 | `get_resources` | 資源狀態 |
-| 監控 | `get_config` | 實例配置 |
-| 監控 | `get_recent_logs` | 最近日誌 |
-| 監控 | `get_screenshot` | 當前截圖 |
-| 配置 | `update_config` | 更新配置 |
-| 維護 | `restart_emulator` | 重新啟動模擬器 |
-| 維護 | `restart_adb` | 重新啟動 ADB |
-| 維護 | `update_alas` | 更新 AzurPilot |
+| 實例 | **azurpilot_list_instances**、**azurpilot_get_context**、**azurpilot_start_instance**、**azurpilot_stop_instance** | 實例列表、上下文、啟動和停止 |
+| 任務 | **azurpilot_search_tasks**、**azurpilot_get_task_schema**、**azurpilot_set_task_schedule** | 搜尋任務、讀取 Schema、設定啟用狀態與下次執行 |
+| 設定 | **azurpilot_get_config**、**azurpilot_patch_config** | 讀取設定與 revision；驗證 revision 後原子修改，支援 dry_run |
+| 日誌 / 統計 | **azurpilot_get_logs**、**azurpilot_get_statistics**、**azurpilot_get_statistics_schema** | 日誌、概覽 / 資源 / 大世界 / 委託 / 科研統計及指標定義 |
+| 裝置 | **azurpilot_observe_device**、**azurpilot_acquire_device_control**、**azurpilot_release_device_control** | 截圖、取得和釋放裝置控制租約 |
+| 裝置輸入 | **azurpilot_click**、**azurpilot_swipe**、**azurpilot_long_press**、**azurpilot_input_text**、**azurpilot_press_key**、**azurpilot_adb_shell** | 點擊、滑動、長按、文字、按鍵及受控 ADB Shell |
+| 操作查詢 | **azurpilot_get_operation** | 查詢寫入操作狀態和最終結果 |
+| 維護 / 更新 | **azurpilot_restart_emulator**、**azurpilot_restart_adb**、**azurpilot_update_application** | 重新啟動模擬器、ADB 或要求更新核心程式 |
 
-::: tip 參數以伺服端聲明為準
-MCP 客戶端會通過 `tools/list` 拿到每個工具的 JSON Schema。這裡只說明用途，不復制容易過期的參數定義。
-:::
+## 裝置控制與寫入操作語義
 
-## <DocIcon name="lightbulb" /> 典型用法
+- 直接控制裝置前，先用 **azurpilot_acquire_device_control** 取得租約；完成後用 **azurpilot_release_device_control** 釋放。
+- 先用 **azurpilot_observe_device** 取得畫面與 frame_id。座標操作可攜帶 frame_id，避免畫面尺寸或方向改變後使用過期座標。
+- 輸入工具會區分命令已下發與畫面是否變化。**命令已下發不代表介面已回應，更不代表任務完成。**
+- 寫入操作支援 request_id 去重並回傳 operation_id。逾時且結果不確定時，先用 **azurpilot_get_operation** 查詢，不要盲目重試。
+- **azurpilot_patch_config** 使用 revision 防止覆蓋並行修改；修改前先讀取設定，必要時使用 dry_run。
+- **azurpilot_set_task_schedule** 只表示排程已修改，不代表遊戲內操作成功。
 
-### 讓 Agent 巡檢
+預設目錄不包含 get_status、get_resources、get_recent_logs、trigger_task 和 clear_scheduler_queue 等舊名稱。舊名稱只在明確建立的相容入口中提供。
 
-```text
-1. list_instances           → 有哪些实例
-2. get_status(instance)     → 哪个在跑、当前任务
-3. get_recent_logs(...)     → 有没有异常
-4. get_resources(...)       → 石油/物资是否异常
-```
+典型順序：使用 **azurpilot_list_instances** 選擇實例，再以 **azurpilot_get_context** 檢查狀態；修改設定前先讀取；直接控制裝置前先觀測畫面並取得租約；結果不確定的寫操作使用 **azurpilot_get_operation** 核實。
 
-### 手動干預
-
-```text
-trigger_task(instance, task)   → 立即执行某任务
-clear_scheduler_queue(...)     → 清掉排错时堆积的队列
-restart_adb(...)               → ADB 掉线
-```
-
-### 危險操作
-
-`update_alas`、`restart_emulator`、`clear_scheduler_queue` 都會中斷正在執行的任務。讓 Agent 自動調用前，先確認它理解後果。
-
-::: danger 不要讓 Agent 無人監督地改配置
-`update_config` 是寫操作，會直接落盤並影響後續排程。沒有 revision 衝突保護的外部寫入可能覆蓋用戶手動修改。
-:::
-
-## <DocIcon name="scale" /> 與 WebSocket 的分工
-
-| 能力 | MCP | WebSocket |
-| --- | --- | --- |
-| 列出/啟停實例 | ✅ | ✅ |
-| 精細配置讀寫 | 有限（`update_config`） | ✅ 完整 |
-| 實時訂閱 | ❌ | ✅ |
-| 排程程序編輯 | ❌ | ✅ |
-| 面向 AI 客戶端 | ✅ | 需自建 |
-
-MCP 是「給 Agent 的窄介面」，WebSocket 是「給前端的完整介面」。
-
-## <DocIcon name="shield" /> 安全建議
-
-1. 只在需要時開啟，不要長期暴露到公網。
-2. 密碼要強，且與遊戲帳號不同。
-3. 遠端訪問優先走 WSS / Tunnel，不要把 25548 直接映射到公網。
-4. 查看 Agent 的工具調用記錄，尤其是寫操作。
-5. 不用時重新啟動 WebUI 並更換密碼。
-
-## <DocIcon name="wrench" /> 疑難排解
-
-| 現象 | 原因 |
-| --- | --- |
-| 401 | 未帶憑據、密碼錯誤、改密碼後未重新啟動 |
-| 連接被拒 | 連接埠不對，或 MCP 未隨 WebUI 啟動 |
-| 工具調用超時 | 實例正在執行長任務，後端繁忙 |
-| 返回舊配置 | 配置快取，重新 `get_config` |
-| 獨立服務起不來 | 22268 被 OCR 佔用 |
+MCP 是面向 Agent 的精簡介面；WebSocket 是面向 WebUI、Android 宿主及自建用戶端的完整介面。完整方法見 [WebSocket API](/zh-TW/api/websocket)。
