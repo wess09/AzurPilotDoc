@@ -1,4 +1,3 @@
-
 ---
 title: MCP 服务
 description: 25 个 azurpilot_ 工具、SSE 接入、鉴权、设备控制租约和兼容入口边界。
