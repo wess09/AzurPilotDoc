@@ -1,7 +1,7 @@
 ---
 title: 介面總覽
 description: AzurPilot 對外暴露的三類介面：WebSocket RPC、Android 薄介面與 MCP 服務，以及鑑權與穩定性邊界。
-updated: 2026-10-31
+updated: 2026-11-08
 ---
 
 # 介面總覽
@@ -19,7 +19,7 @@ updated: 2026-10-31
 ## <DocIcon name="shield" /> 穩定性邊界
 
 ::: warning 只有註冊的方法才是公開介面
-`module/api/router.py` 裏的 72 個方法是公開契約，由 `dev_tools.export_api_schema` 生成類型。業務模組內部的 Python 函數不是 API，不要在前端或外部工具裏直接調用。
+`module/api/router.py` 裏的 80 個方法是公開契約，由 `dev_tools.export_api_schema` 生成類型。業務模組內部的 Python 函數不是 API，不要在前端或外部工具裏直接調用。
 :::
 
 | 層 | 穩定性 |
@@ -93,7 +93,7 @@ MCP：
 ## <DocIcon name="map" /> 繼續閲讀
 
 <ul class="ap-linklist">
-<li><a href="/zh-HK/api/websocket">WebSocket API<span class="desc">信封、鑑權、72 個方法</span></a></li>
+<li><a href="/zh-HK/api/websocket">WebSocket API<span class="desc">信封、鑑權、80 個方法</span></a></li>
 <li><a href="/zh-HK/api/android">Android 薄介面<span class="desc">宿主與 Runtime 的約定</span></a></li>
 <li><a href="/zh-HK/api/mcp">MCP 服務<span class="desc">18 個工具與接入方式</span></a></li>
 <li><a href="/zh-HK/azurpilot/developer/webui-backend">WebUI 後端<span class="desc">實現側</span></a></li>
