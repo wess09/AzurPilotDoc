@@ -1,7 +1,7 @@
 ---
 title: Android Update, Backup & Maintenance
 description: Differences between APK, Runtime, and script hot update channels, validation rules, data backups, and troubleshooting.
-updated: 2026-10-20
+updated: 2026-11-08
 ---
 
 # Android Update, Backup & Maintenance
@@ -135,3 +135,16 @@ adb forward tcp:25548 tcp:25548
 ```
 
 Windows users can utilize `tools/watch-android-logs.ps1` to track `com.azurpilot.ghio` logs automatically.
+
+
+## Desktop configuration import compatibility
+
+When importing desktop JSON configuration, Android normalizes common format mismatches against the core schema before writing:
+
+- Date/time: microsecond timestamps and ISO T separators are normalized to YYYY-MM-DD HH:mm:ss.
+- Numeric ranges: out-of-range values are adjusted to the schema's validate range.
+- String types: when a string is expected, null becomes an empty string and numbers / booleans become strings.
+- Internal state: fields outside the editable schema are preserved and are not rewritten.
+- Batched writes: batches are prepared and checked on a background thread before sending; argument groups stay intact, unchanged values are skipped and Android connection settings are preserved.
+
+This Android-side compatibility layer does not modify the original desktop file. Review account, device, task-enable and high-risk settings after import.

@@ -1,7 +1,7 @@
 ---
 title: 通知、日志与统计
 description: 日志文件与错误现场的位置、OnePush 推送配置、LLM 错误分析、每日日报与统计报表。
-updated: 2026-10-31
+updated: 2026-11-08
 ---
 
 # 通知、日志与统计
@@ -116,7 +116,7 @@ updated: 2026-10-31
 
 ## <DocIcon name="plug" /> 外部监控
 
-- <DocIcon name="plug" /> **MCP**：`get_status`、`get_resources`、`get_recent_logs` 可以让支持 MCP 的客户端读取状态。见 [MCP 服务](/api/mcp)。
+- **MCP**：默认端点提供 25 个 **azurpilot_** 工具；读取状态、日志和统计优先使用 **azurpilot_get_context**、**azurpilot_get_logs** 与 **azurpilot_get_statistics**。旧名称仅在显式启用兼容入口时可用。见 [MCP 服务](/api/mcp)。
 - <DocIcon name="zap" /> **WebSocket**：订阅 `overview`、`logs`、`statistics` 主题，自建看板。见 [WebSocket API](/api/websocket)。
 - <DocIcon name="scroll" /> **日志文件**：直接 tail `log/<日期>_<实例>.txt`，适合接入现有的日志系统。
 

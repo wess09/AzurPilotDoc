@@ -1,7 +1,7 @@
 ---
 title: 任务总览
-description: AzurPilot 102 个任务命令的中文名、分组与用途速查，以及任务手册的阅读方法。
-updated: 2026-10-20
+description: AzurPilot 101 个任务命令的中文名、分组与用途速查，以及任务手册的阅读方法。
+updated: 2026-11-08
 ---
 
 # 任务总览
@@ -22,11 +22,11 @@ updated: 2026-10-20
 | 活动每日 | 7 | [出击与活动](/azurpilot/user/tasks/campaign) | 每日 A/B/C/D/SP |
 | 日常 | 11 | [日常与资源](/azurpilot/user/tasks/daily) | 委托、科研、后宅、指挥喵 |
 | 每日任务 | 11 | [日常与资源](/azurpilot/user/tasks/daily) | 每日、困难图、演习、商店 |
-| 大世界 | 19 | [大型作战](/azurpilot/user/tasks/opsi) | 开荒、隐秘、深渊、智能调度 |
+| 大世界 | 16 | [大型作战](/azurpilot/user/tasks/opsi) | 开荒、隐秘、深渊、智能调度 |
 | 岛屿 | 17 | [岛屿计划](/azurpilot/user/tasks/island) | 农田、牧场、餐厅、制造 |
 | 舰队管理 / 运行参数 / 工具 | 15 | [辅助工具任务](/azurpilot/user/tasks/tools) | 扫描、基准测试、半自动 |
 
-数字来自当前审计版本的 `args.json`（共 102 个任务键）。活动适配会增删任务，以你 WebUI 里看到的为准。
+数字来自当前审计版本的 `args.json`（共 101 个任务键）。活动适配会增删任务，以你 WebUI 里看到的为准。
 
 ## <DocIcon name="clipboard" /> 每个任务的通用结构
 

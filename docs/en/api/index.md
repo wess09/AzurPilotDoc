@@ -1,7 +1,7 @@
 ---
 title: API Overview
 description: "Overview of the three external AzurPilot interfaces: WebSocket RPC, Android thin interface, and MCP services."
-updated: 2026-10-31
+updated: 2026-11-08
 ---
 
 # API Overview
@@ -19,7 +19,7 @@ Additionally, `/healthz` serves as an unauthenticated readiness probe returning 
 ## <DocIcon name="shield" /> Stability Boundaries
 
 ::: warning Only Registered Methods Form Public APIs
-The 72 methods defined in `module/api/router.py` represent the stable public contract, exported via `dev_tools.export_api_schema`. Internal Python functions inside feature modules are not APIs; do not invoke them directly from frontends or external integrations.
+The 80 methods defined in `module/api/router.py` represent the stable public contract, exported via `dev_tools.export_api_schema`. Internal Python functions inside feature modules are not APIs; do not invoke them directly from frontends or external integrations.
 :::
 
 | Layer | Contract Stability |
@@ -93,7 +93,7 @@ Uploads are optional and queued locally with idempotent record IDs, retry/backof
 ## <DocIcon name="map" /> Continue Reading
 
 <ul class="ap-linklist">
-<li><a href="/en/api/websocket">WebSocket API<span class="desc">Envelopes, authentication, and all 72 methods</span></a></li>
+<li><a href="/en/api/websocket">WebSocket API<span class="desc">Envelopes, authentication, and all 80 methods</span></a></li>
 <li><a href="/en/api/android">Android Thin Interface<span class="desc">Host-to-runtime IPC contracts</span></a></li>
 <li><a href="/en/api/mcp">MCP Service<span class="desc">18 tools and agent integrations</span></a></li>
 <li><a href="/en/azurpilot/developer/webui-backend">WebUI Backend<span class="desc">Implementation architecture</span></a></li>

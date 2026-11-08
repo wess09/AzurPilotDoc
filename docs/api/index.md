@@ -1,7 +1,7 @@
 ---
 title: 接口总览
 description: AzurPilot 对外暴露的三类接口：WebSocket RPC、Android 薄接口与 MCP 服务，以及鉴权与稳定性边界。
-updated: 2026-10-31
+updated: 2026-11-08
 ---
 
 # 接口总览
@@ -19,7 +19,7 @@ updated: 2026-10-31
 ## <DocIcon name="shield" /> 稳定性边界
 
 ::: warning 只有注册的方法才是公开接口
-`module/api/router.py` 里的 72 个方法是公开契约，由 `dev_tools.export_api_schema` 生成类型。业务模块内部的 Python 函数不是 API，不要在前端或外部工具里直接调用。
+`module/api/router.py` 里的 80 个方法是公开契约，由 `dev_tools.export_api_schema` 生成类型。业务模块内部的 Python 函数不是 API，不要在前端或外部工具里直接调用。
 :::
 
 | 层 | 稳定性 |
@@ -93,7 +93,7 @@ MCP：
 ## <DocIcon name="map" /> 继续阅读
 
 <ul class="ap-linklist">
-<li><a href="/api/websocket">WebSocket API<span class="desc">信封、鉴权、72 个方法</span></a></li>
+<li><a href="/api/websocket">WebSocket API<span class="desc">信封、鉴权、80 个方法</span></a></li>
 <li><a href="/api/android">Android 薄接口<span class="desc">宿主与 Runtime 的约定</span></a></li>
 <li><a href="/api/mcp">MCP 服务<span class="desc">18 个工具与接入方式</span></a></li>
 <li><a href="/azurpilot/developer/webui-backend">WebUI 后端<span class="desc">实现侧</span></a></li>

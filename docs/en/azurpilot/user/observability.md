@@ -1,7 +1,7 @@
 ---
 title: Notifications, Logs & Metrics
 description: Log file organization, crash dump locations, OnePush notifications, LLM error diagnostics, daily summaries, and metrics.
-updated: 2026-10-31
+updated: 2026-11-08
 ---
 
 # Notifications, Logs & Metrics
@@ -108,7 +108,7 @@ The optional screenshot pipeline in `module/statistics/cloud_upload.py` uses `/a
 
 ## <DocIcon name="plug" /> External Monitoring Integrations
 
-- <DocIcon name="plug" /> **MCP Service**: MCP clients can call `get_status`, `get_resources`, and `get_recent_logs`; see [MCP Server](/en/api/mcp).
+- **MCP**: The default endpoint exposes 25 **azurpilot_** tools. Use **azurpilot_get_context**, **azurpilot_get_logs** and **azurpilot_get_statistics** for status, logs and statistics; legacy names require an explicit compatibility endpoint. See [MCP Service](/en/api/mcp).
 - <DocIcon name="zap" /> **WebSocket**: Subscribe to `overview`, `logs`, and `statistics` topics to build custom dashboards; see [WebSocket API](/en/api/websocket).
 - <DocIcon name="scroll" /> **Log Streaming**: Monitor `log/<date>_<instance>.txt` with standard log aggregation agents (Fluentd, Promtail, Vector).
 

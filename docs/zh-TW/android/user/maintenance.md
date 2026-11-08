@@ -1,7 +1,7 @@
 ---
 title: 更新、備份與疑難排解
 description: APK、Runtime 與腳本熱更三條通道的區別，上游定時同步檢查，整包與熱更的判定，以及數據備份和常見故障處理。
-updated: 2026-10-31
+updated: 2026-11-08
 ---
 
 # 更新、備份與疑難排解
@@ -144,3 +144,16 @@ adb forward tcp:25548 tcp:25548
 Windows 可用倉庫的 `tools/watch-android-logs.ps1`，預設跟蹤 `com.azurpilot.ghio`。
 
 提 Issue 時附：設備型號、Android 版本、架構、Runtime 版本、操作步驟、日誌片段。**不要附 `deploy.yaml`、`password.txt`、`remote-access.json`。**
+
+
+## 桌面設定匯入相容性
+
+從桌面版匯入 JSON 設定時，Android 會在寫入前依核心 schema 整理常見格式差異：
+
+- 日期時間：微秒時間戳與 ISO T 分隔符規範為 YYYY-MM-DD HH:mm:ss。
+- 數值範圍：依 schema 的 validate 範圍修正超出範圍的值。
+- 字串型別：schema 預期字串時，null 轉為空字串，數字與布林值轉為字串。
+- 內部狀態：不屬於可編輯 schema 的內部狀態欄位保持原樣。
+- 批次寫入：先在背景執行緒產生並檢查所有批次，再開始傳送；同一參數組保持完整，跳過未變更值，並保留 Android 連線設定。
+
+這是 Android 匯入端的相容處理，不會修改桌面端原始設定檔。匯入後仍應檢查帳號、裝置、任務啟用狀態與高風險參數。

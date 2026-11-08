@@ -1,7 +1,7 @@
 ---
 title: Scheduler & Task Orchestration
 description: Task execution schedules, priority rules, recovery mechanisms, intervals, hoarding, warmup, and sensitive tasks.
-updated: 2026-10-20
+updated: 2026-11-08
 ---
 
 # Scheduler & Task Orchestration
@@ -164,3 +164,15 @@ This mechanism does not alter configured priority tables and does not apply to E
 <li><a href="/en/azurpilot/user/multi-instance">Multi-Instance & Config Management<span class="desc">Parallel automation setups</span></a></li>
 <li><a href="/en/azurpilot/developer/scheduler">Scheduler Lifecycle<span class="desc">Deep-dive engine implementation details</span></a></li>
 </ul>
+
+
+## Behavior when error handling is disabled
+
+When **Error.HandleError** is disabled, the core no longer attempts automatic game or emulator recovery:
+
+- An ordinary task exception saves an error log and stops the current AzurPilot process. It does not automatically restart the game or emulator.
+- A watchdog task timeout stops the current worker and preserves the emulator state.
+- Inspect logs, screenshots and the in-game state, resolve the cause, then start manually.
+- Automatic recovery runs only when error handling is enabled. Sensitive tasks still stop on error.
+
+Disabling error handling does not mean ignoring errors and continuing. It means preserving the current state and stopping.

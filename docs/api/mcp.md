@@ -1,152 +1,52 @@
 ---
 title: MCP 服务
-description: 18 个 MCP 工具的用途、挂载方式、鉴权与客户端接入配置，以及和 WebSocket API 的边界。
-updated: 2026-10-20
+description: 25 个 azurpilot_ 工具、SSE 接入、鉴权、设备控制租约和兼容入口边界。
+updated: 2026-11-08
 ---
 
 # MCP 服务
 
-MCP（Model Context Protocol）让支持该协议的客户端（编辑器、Agent 工具）直接查询和控制 AzurPilot。它是**另一条入口**，不是 WebSocket API 的替代品。
+MCP（Model Context Protocol）让支持该协议的客户端和 Agent 直接查询、管理及操作 AzurPilot。它是面向 AI 客户端的语义接口，不是 WebSocket API 的替代品。
 
-## <DocIcon name="rocket" /> 两种运行方式
+## 端点与鉴权
 
 | 方式 | 端点 | 说明 |
 | --- | --- | --- |
-| 随 WebUI 挂载 | `http://<host>:25548/mcp/sse` | 默认，复用 WebUI 进程 |
-| 独立服务 | `python mcp_server_sse.py`，端口 `22268` | 调试或分离部署 |
+| 随 WebUI 挂载 | `http://<host>:25548/mcp/sse` | 默认方式，与 WebUI 共用运行时和实例 |
+| 独立服务 | `uv run python mcp_server_sse.py`，默认端口 22268 | 独立部署或调试 |
 
-::: warning 22268 与 OCR 冲突
-独立 MCP 与 OCR 服务默认都用 22268。同机运行两者时，先改其中一个端口。
+独立 MCP 服务与 OCR 服务默认都使用 22268 端口；同机运行时必须修改其中一个端口。MCP 使用 WebUI 密码：推荐 `Authorization: Bearer <WebUI 密码>`，兼容 `X-API-Key: <WebUI 密码>`；只有客户端无法设置请求头时才使用 `?key=<WebUI 密码>`。修改密码后需要重启 WebUI。
+
+::: danger 不要把密码放进 URL
+查询参数可能进入访问日志、历史记录或截图。优先使用 Authorization Header，不要分享带密码的 MCP URL。
 :::
 
-## <DocIcon name="key" /> 鉴权
+## 默认工具目录：25 个工具
 
-MCP 复用 WebUI 密码（`--key` 或 `deploy.yaml` 的 `Password`）：
+默认端点只公开以下 25 个 **azurpilot_** 工具。旧名称不再默认暴露，只有显式创建兼容入口时才提供映射。
 
-| 方式 | 写法 |
-| --- | --- |
-| 请求头（推荐） | `Authorization: Bearer <密码>` |
-| 兼容头 | `X-API-Key: <密码>` |
-| 查询参数 | `?key=<密码>`（仅限无法自定义 Header 的客户端） |
-
-不带凭据返回 `401`。修改密码后需要重启 WebUI，MCP 才会使用新密码。
-
-::: danger 查询参数就是凭据
-`?key=` 会出现在日志、历史记录与截图中。有条件就改用 Header。
-:::
-
-## <DocIcon name="settings" /> 客户端配置
-
-本地：
-
-```json
-{
-  "mcpServers": {
-    "azurpilot": {
-      "url": "http://127.0.0.1:25548/mcp/sse",
-      "headers": { "Authorization": "Bearer <WebUI 密码>" }
-    }
-  }
-}
-```
-
-远程或内网：
-
-```json
-{
-  "mcpServers": {
-    "azurpilot": {
-      "url": "http://<IP_ADDRESS>:25548/mcp/sse",
-      "headers": { "Authorization": "Bearer <WebUI 密码>" }
-    }
-  }
-}
-```
-
-端口被改过时同步替换。
-
-## <DocIcon name="clipboard" /> 工具清单
-
-共 18 个工具。
-
-| 类别 | 工具 | 作用 |
+| 分组 | 工具 | 用途 |
 | --- | --- | --- |
-| 实例 | `list_instances` | 列出所有实例 |
-| 实例 | `get_status` | 获取实例状态 |
-| 实例 | `start_instance` | 启动实例 |
-| 实例 | `stop_instance` | 停止实例 |
-| 任务 | `list_tasks` | 列出所有任务 |
-| 任务 | `get_task_help` | 获取任务帮助 |
-| 任务 | `trigger_task` | 触发任务 |
-| 任务 | `get_scheduler_queue` | 获取调度队列 |
-| 任务 | `clear_scheduler_queue` | 清空调度队列 |
-| 监控 | `get_current_running_task` | 当前运行任务 |
-| 监控 | `get_resources` | 资源状态 |
-| 监控 | `get_config` | 实例配置 |
-| 监控 | `get_recent_logs` | 最近日志 |
-| 监控 | `get_screenshot` | 当前截图 |
-| 配置 | `update_config` | 更新配置 |
-| 维护 | `restart_emulator` | 重启模拟器 |
-| 维护 | `restart_adb` | 重启 ADB |
-| 维护 | `update_alas` | 更新 AzurPilot |
+| 实例 | **azurpilot_list_instances**、**azurpilot_get_context**、**azurpilot_start_instance**、**azurpilot_stop_instance** | 实例列表、运行上下文、启动和停止 |
+| 任务 | **azurpilot_search_tasks**、**azurpilot_get_task_schema**、**azurpilot_set_task_schedule** | 搜索任务、读取 Schema、设置启用状态和下次运行时间 |
+| 配置 | **azurpilot_get_config**、**azurpilot_patch_config** | 读取配置与 revision；校验 revision 后原子修改，支持 dry_run |
+| 日志 / 统计 | **azurpilot_get_logs**、**azurpilot_get_statistics**、**azurpilot_get_statistics_schema** | 日志、概览 / 资源 / 大世界 / 委托 / 科研统计及指标定义 |
+| 设备 | **azurpilot_observe_device**、**azurpilot_acquire_device_control**、**azurpilot_release_device_control** | 截图、获取和释放设备控制租约 |
+| 设备输入 | **azurpilot_click**、**azurpilot_swipe**、**azurpilot_long_press**、**azurpilot_input_text**、**azurpilot_press_key**、**azurpilot_adb_shell** | 点击、滑动、长按、文本、按键和受控 ADB Shell |
+| 操作查询 | **azurpilot_get_operation** | 查询写操作状态与最终结果 |
+| 维护 / 更新 | **azurpilot_restart_emulator**、**azurpilot_restart_adb**、**azurpilot_update_application** | 重启模拟器、ADB 或请求更新核心程序 |
 
-::: tip 参数以服务端声明为准
-MCP 客户端会通过 `tools/list` 拿到每个工具的 JSON Schema。这里只说明用途，不复制容易过期的参数定义。
-:::
+## 设备控制与写操作语义
 
-## <DocIcon name="lightbulb" /> 典型用法
+- 直接控制设备前，先用 **azurpilot_acquire_device_control** 获取租约；结束后用 **azurpilot_release_device_control** 释放。
+- 先用 **azurpilot_observe_device** 获取当前画面和 frame_id。坐标操作可以携带 frame_id，避免画面尺寸或方向变化后继续使用过期坐标。
+- 输入工具区分「命令已下发」和「画面是否变化」。**命令已下发不代表界面已响应，更不代表任务完成。**
+- 写操作可用 request_id 去重并返回 operation_id。超时且结果不确定时，先调用 **azurpilot_get_operation** 查询，不要盲目重试。
+- **azurpilot_patch_config** 使用 revision 防止覆盖并发修改；修改前先读取配置，必要时使用 dry_run。
+- **azurpilot_set_task_schedule** 只表示调度已修改，不代表游戏内操作成功。
 
-### 让 Agent 巡检
+默认目录不包含 get_status、get_resources、get_recent_logs、trigger_task 和 clear_scheduler_queue 等旧名称。旧名称只在显式创建的兼容入口中映射。
 
-```text
-1. list_instances           → 有哪些实例
-2. get_status(instance)     → 哪个在跑、当前任务
-3. get_recent_logs(...)     → 有没有异常
-4. get_resources(...)       → 石油/物资是否异常
-```
+典型调用顺序：先用 **azurpilot_list_instances** 选择实例，再用 **azurpilot_get_context** 检查状态；修改配置前读取 **azurpilot_get_config**；直接控制设备时先观测画面并取得租约；对结果不确定的写操作使用 **azurpilot_get_operation** 核实。
 
-### 手动干预
-
-```text
-trigger_task(instance, task)   → 立即执行某任务
-clear_scheduler_queue(...)     → 清掉排错时堆积的队列
-restart_adb(...)               → ADB 掉线
-```
-
-### 危险操作
-
-`update_alas`、`restart_emulator`、`clear_scheduler_queue` 都会中断正在运行的任务。让 Agent 自动调用前，先确认它理解后果。
-
-::: danger 不要让 Agent 无人监督地改配置
-`update_config` 是写操作，会直接落盘并影响后续调度。没有 revision 冲突保护的外部写入可能覆盖用户手动修改。
-:::
-
-## <DocIcon name="scale" /> 与 WebSocket 的分工
-
-| 能力 | MCP | WebSocket |
-| --- | --- | --- |
-| 列出/启停实例 | ✅ | ✅ |
-| 精细配置读写 | 有限（`update_config`） | ✅ 完整 |
-| 实时订阅 | ❌ | ✅ |
-| 调度程序编辑 | ❌ | ✅ |
-| 面向 AI 客户端 | ✅ | 需自建 |
-
-MCP 是「给 Agent 的窄接口」，WebSocket 是「给前端的完整接口」。
-
-## <DocIcon name="shield" /> 安全建议
-
-1. 只在需要时开启，不要长期暴露到公网。
-2. 密码要强，且与游戏账号不同。
-3. 远程访问优先走 WSS / Tunnel，不要把 25548 直接映射到公网。
-4. 查看 Agent 的工具调用记录，尤其是写操作。
-5. 不用时重启 WebUI 并更换密码。
-
-## <DocIcon name="wrench" /> 排查
-
-| 现象 | 原因 |
-| --- | --- |
-| 401 | 未带凭据、密码错误、改密码后未重启 |
-| 连接被拒 | 端口不对，或 MCP 未随 WebUI 启动 |
-| 工具调用超时 | 实例正在执行长任务，后端繁忙 |
-| 返回旧配置 | 配置缓存，重新 `get_config` |
-| 独立服务起不来 | 22268 被 OCR 占用 |
+MCP 是面向 Agent 的窄接口；WebSocket 是面向 WebUI、Android 宿主和自建客户端的完整接口。完整方法见 [WebSocket API](/api/websocket)。
