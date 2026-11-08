@@ -1,7 +1,7 @@
 ---
 title: 排程器與任務編排
 description: 任務何時執行、按什麼順序執行、失敗後如何恢復；優先級、間隔、囤積、預熱與敏感任務的配置方法。
-updated: 2026-10-31
+updated: 2026-11-08
 ---
 
 # 排程器與任務編排
@@ -185,3 +185,15 @@ Main
 <li><a href="/zh-TW/azurpilot/user/multi-instance">多實例與配置管理<span class="desc">多開時的隔離</span></a></li>
 <li><a href="/zh-TW/azurpilot/developer/scheduler">排程器生命週期<span class="desc">原始碼級細節</span></a></li>
 </ul>
+
+
+## 關閉異常處理時的行為
+
+關閉 **Error.HandleError** 後，核心程式不會再嘗試自動復原遊戲或模擬器：
+
+- 一般任務異常會保存錯誤日誌並停止目前的 AzurPilot 程序，不會自動重新啟動遊戲或模擬器。
+- 執行監護偵測到任務逾時時，會停止目前 worker，並保留模擬器現場。
+- 需要人工檢查日誌、截圖與遊戲狀態，處理後再手動啟動。
+- 只有啟用異常處理才會進入自動復原流程；敏感任務仍遵循出錯即停的保護規則。
+
+關閉異常處理不是「忽略錯誤繼續執行」，而是保留現場並停止。

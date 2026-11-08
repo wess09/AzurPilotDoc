@@ -1,7 +1,7 @@
 ---
 title: 任務總覽
-description: AzurPilot 102 個任務命令的中文名、分組與用途速查，以及任務手冊的閱讀方法。
-updated: 2026-10-20
+description: AzurPilot 101 個任務命令的中文名、分組與用途速查，以及任務手冊的閱讀方法。
+updated: 2026-11-08
 ---
 
 # 任務總覽
@@ -22,11 +22,11 @@ updated: 2026-10-20
 | 活動每日 | 7 | [出擊與活動](/zh-TW/azurpilot/user/tasks/campaign) | 每日 A/B/C/D/SP |
 | 日常 | 11 | [日常與資源](/zh-TW/azurpilot/user/tasks/daily) | 委託、科研、後宅、指揮喵 |
 | 每日任務 | 11 | [日常與資源](/zh-TW/azurpilot/user/tasks/daily) | 每日、困難圖、演習、商店 |
-| 大世界 | 19 | [大型作戰](/zh-TW/azurpilot/user/tasks/opsi) | 開荒、隱秘、深淵、智能排程 |
+| 大世界 | 16 | [大型作戰](/zh-TW/azurpilot/user/tasks/opsi) | 開荒、隱秘、深淵、智能排程 |
 | 島嶼 | 17 | [島嶼計劃](/zh-TW/azurpilot/user/tasks/island) | 農田、牧場、餐廳、製造 |
 | 艦隊管理 / 執行參數 / 工具 | 15 | [輔助工具任務](/zh-TW/azurpilot/user/tasks/tools) | 掃描、基準測試、半自動 |
 
-數字來自當前審計版本的 `args.json`（共 102 個任務鍵）。活動適配會增刪任務，以你 WebUI 裡看到的為準。
+數字來自當前審計版本的 `args.json`（共 101 個任務鍵）。活動適配會增刪任務，以你 WebUI 裡看到的為準。
 
 ## <DocIcon name="clipboard" /> 每個任務的通用結構
 
