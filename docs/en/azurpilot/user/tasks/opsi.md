@@ -69,9 +69,9 @@ Common reserves: **K** = Yellow Coin reserve (OperationCoinsPreserve); **R** = r
 
 Clearing the Operation Siren main story is the common prerequisite for every automation feature on this page. The following tasks also require additional progress:
 
-- **OpsiExplore and OpsiVoucher**: complete Simulation Battle and Siren Trial Grounds.
-- **OpsiDaily, OpsiObscure, OpsiAbyssal, OpsiStronghold, OpsiMonthBoss, OpsiMeowfficerFarming and OpsiArchive**: complete Simulation Battle and Siren Trial Grounds, and enable the monthly exploration task (`OpsiExplore`) or use the in-game Battle Information Recorder (the 5,000-oil item).
-- **OpsiShop**: the same Simulation Battle / Siren Trial Grounds and monthly-exploration-or-recorder requirements apply. It can only be used from the month after the main story is cleared, once allied-port shops have switched to the new version.
+- **OpsiExplore and OpsiVoucher**: complete Simulation Battle and Siren Proving Grounds.
+- **OpsiDaily, OpsiObscure, OpsiAbyssal, OpsiStronghold, OpsiMonthBoss, OpsiMeowfficerFarming and OpsiArchive**: complete Simulation Battle and Siren Proving Grounds, and enable the monthly exploration task (`OpsiExplore`) or use the in-game the task-specific Operation Siren recorder item (a 5,000-oil item).
+- **OpsiShop**: the same Simulation Battle / Siren Proving Grounds and monthly-exploration-or-recorder requirements apply. It can only be used from the month after the main story is cleared, once the Port Shop has switched to its new version.
 - **OpsiExploreCleanup**: normal-sector exploration for the current month must first reach 100%.
 
 **OpsiArchive** processes held coordinates before buying the next one from the voucher shop; it postpones itself while monthly exploration is running.
@@ -127,7 +127,7 @@ Do not enable everything at once. Test tasks individually, inspect logs and sect
 | Yellow Coin target is not reached | Check K + R, coin-task switches, fleets and coordinates |
 | Exploration progress is not saved | Confirm the sector exited normally |
 | Scheduler does not take over | Check OpsiScheduling, subtask switches and monthly exploration state |
-| Archive task does not run | Check main story, Simulation Battle, Siren Trial Grounds and coordinates / vouchers |
+| Archive task does not run | Check main story, Simulation Battle, Siren Proving Grounds and coordinates / vouchers |
 | Instance stops after a sensitive-task error | Review logs and screenshots, verify state and recover manually |
 
 See [Environment and compatibility](/en/guide/requirements) and [Scheduler and task orchestration](/en/azurpilot/user/scheduler).
