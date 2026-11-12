@@ -1,7 +1,7 @@
 ---
 title: ホストアーキテクチャとモジュール
 description: App シェル層、PRoot Runtime、特権サービス、ゲートウェイプロトコルのレイヤー分離、責務別ソースコードマップ。
-updated: 2026-10-20
+updated: 2026-11-12
 ---
 
 # ホストアーキテクチャとモジュール
@@ -94,6 +94,26 @@ Koin の設定はドメインごとに分割定義されています：
 | ログシステム | `log/`、`constant/AppPaths.kt` |
 
 保活サブシステムは何度でも繰り返し開始・停止が可能である必要があり、ユーザー設定のスイッチが最終判定となります。レシーバーやサービスが DI を経由しない経路で起動される可能性があるため、制御されたプロセスレベルのエントリを使用します。
+
+## 統計モジュールとデータフロー
+
+`AzurPilotPage.kt` は `AzurPilotSection.Statistics` を `StatisticsSection` に割り当てます。クエリは選択中の Runtime インスタンス単位で分離され、セクション選択から 8 種類のレポートと資源管理を切り替えます。
+
+| 層 | ソース入口 | 役割 |
+| --- | --- | --- |
+| ネイティブ UI | `sections/StatisticsSection.kt`、`ResourceManagementSection.kt`、`StatisticsContent.kt` | カテゴリ選択、絞り込み、指標、トレンド、表、資源管理 |
+| データモデル | `proot/AzurPilotStatistics.kt`、`AzurPilotResourceFlows.kt` | 指標、系列、表、在庫、取引、根拠情報のデコード |
+| アセット | `sections/StatisticsAssets.kt`、`assets/statistics.zip` | レポートアイコンと多言語アイテム名 |
+| エクスポート | `sections/StatisticsExport.kt` | Android のドキュメントピッカー経由で CSV を出力 |
+| Core API | `module/api/statistics_service.py`、`module/statistics/resource_flow.py`、`frontend/src/api/contract.json` | レポート、資源フロー、ローカルドロップ再集計の契約と実装 |
+
+- `statistics.report` は指標カード、系列、表、注記、タスク候補を返す読み取りクエリです。
+- `statistics.resourceFlows` は在庫残高、資源 / タスク別の収支、ページングされた取引を返します。
+- `statistics.refreshLoot` は端末に記録済みのドロップを再集計するだけで、ゲームを操作しません。
+- `StorageStatistics` は明示的に開始する倉庫スキャンタスクです。レポートの再読み込みは最新の完了済みスナップショットを読むだけです。
+- 現在庫は不明値（`null`）を許容します。スナップショットがない状態を 0 と解釈してはいけません。CSV は Android クライアント側で生成します。
+
+利用者向けの操作と絞り込みは[コンソールと統計](/ja/android/user/console)を参照してください。
 
 ## <DocIcon name="plug" /> ゲートウェイプロトコル
 

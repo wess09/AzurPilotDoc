@@ -1,10 +1,10 @@
 ---
-title: Console, Floating Window & Screensaver
-description: View structure, global floating overlay controls, OLED burn-in prevention screensaver, widgets, and log export.
-updated: 2026-10-31
+title: Console, Statistics, Floating Window & Screensaver
+description: Android console, native statistics, resource management, floating overlay, screensaver, widgets, keep-alive and log management.
+updated: 2026-11-12
 ---
 
-# Console, Floating Window & Screensaver
+# Console, Statistics, Floating Window & Screensaver
 
 The Android host decouples management from display: the Console configures automation, the Floating Overlay allows quick adjustments, and the Screensaver conserves battery while preventing display burn-in.
 
@@ -19,10 +19,42 @@ The Android host decouples management from display: the Console configures autom
 | Home | Runtime health, provisioning progress, start/stop toggle, remote pairing button |
 | Automation | Virtual display stream, active instance switcher, task start/stop controls |
 | Console | Embedded WebUI (identical frontend to desktop edition) |
+| Statistics | Eight native reports, resource management and CSV export |
 | Logs | Three-way logs covering Host, Runtime, and Privileged services |
 | Settings | Appearance, download mirrors, privileges, keep-alive, screensaver, about info |
 
 The remote pairing shortcut in the top right of the Home view connects directly to remote instances without requiring local Runtime deployment.
+
+## Native statistics and resource management
+
+From **Overview** in the AzurPilot page, open **Statistics**. Reports are scoped to the currently selected Runtime instance; a category may remain empty until its corresponding task has run.
+
+### Eight report categories
+
+| Category | Contents |
+| --- | --- |
+| Resource trends | Resource totals and changes over time |
+| Operation Siren trends | Trends for Operation Siren activity |
+| Operation Siren summary | Operation Siren task and resource summary |
+| Commission rewards | Rewards collected from commissions |
+| Ship EXP | Ship experience gains |
+| Operation Siren drops | Items dropped in Operation Siren; filterable by task |
+| Research drops | Research rewards, grouped by series or chips and coins |
+| Inventory | Warehouse item statistics; can launch an explicit inventory scan |
+
+Reports provide metric cards, trend charts, tables and notes. Trend ranges include 1, 7, 30, 90 and 365 days; Operation Siren reports can be viewed by month, research can switch between series and chips/coins, and loot can be filtered by task. **Recount** re-aggregates locally recorded claim data; it does not operate the game again. Reports can be exported as CSV.
+
+### Resource management
+
+Choose a 1-, 7- or 30-day range, or a custom date range up to 366 days. Filter by resource and task. The page provides an inventory overview, a resource-flow diagram and transaction details. Inventory separates current stock, interval income, expenses and adjustments; adjustments are listed separately rather than counted as task income or expenses. Each transaction identifies its evidence as confirmed, observed, recognition or adjustment. CSV export is available.
+
+Oil control can be enabled independently with a target from 1,000 to 24,999. Current stock comes from the latest valid inventory snapshot; if no snapshot exists, the value remains blank rather than being treated as zero.
+
+The **Run inventory scan** action in the Inventory category starts the explicit `StorageStatistics` task. Refreshing the report only reads the latest completed snapshot; it does not start another scan.
+
+::: warning Release status
+The native statistics module entered Android `main` in commit `7b468fb7`. As of 2026-11-12, the latest published rolling APK is still `1.3.196` (2026-11-08), which predates that commit. Do not assume these screens are present in APK `1.3.196`.
+:::
 
 ## <DocIcon name="monitor" /> Global Floating Overlay
 

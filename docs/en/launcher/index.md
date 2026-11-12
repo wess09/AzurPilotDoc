@@ -1,7 +1,7 @@
 ---
 title: AzurPilot Launcher Overview
-description: Cross-platform desktop launcher powered by Tauri 2 and Rust, featuring embedded Python, repository management, and process supervision.
-updated: 2026-10-20
+description: Cross-platform Tauri 2 + Rust desktop launcher with isolated runtimes, backend supervision, Windows Fluent tray menus and in-app context menus.
+updated: 2026-11-12
 ---
 
 # AzurPilot Launcher
@@ -36,7 +36,7 @@ Extract → Launcher process → Splash screen → Environment bootstrap (uv/Pyt
 | Dependency Synchronization | Runs `uv sync --frozen` locked strictly to `uv.lock` |
 | Backend Supervision | Frees conflicting ports, injects tracking markers, and cleans process trees on exit |
 | Self-Updater | Validates payload integrity via mTLS with multi-mirror fallback |
-| OS Integration | System tray, native notifications, single-instance lock, auto-start on boot |
+| OS Integration | Windows Fluent tray menu, macOS native tray menu, in-app context menu, native notifications, single-instance lock and auto-start; Linux currently has no tray icon |
 | Localization | English, Simplified Chinese, Traditional Chinese, and Japanese matching system locale |
 
 ## <DocIcon name="handshake" /> Relationship with Core Program
@@ -45,7 +45,7 @@ Extract → Launcher process → Splash screen → Environment bootstrap (uv/Pyt
 | --- | --- | --- |
 | Repository | AzurPilotLauncher | AzurPilot |
 | Tech Stack | Rust / Tauri 2 | Python / React |
-| Versioning | Independent semantic releases | Rolling updates following `master` |
+| Versioning | Independent semantic releases; latest stable release 3.0.7 |
 | Update Channel | Self-updating binary (mTLS) | `git pull` + `uv sync` |
 | Contains Game Logic | No | Yes |
 

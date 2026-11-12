@@ -1,32 +1,36 @@
 {
-  "audit_date": "2026-11-08",
+  "audit_date": "2026-11-12",
   "audit_type": "incremental cross-repository source and documentation audit",
   "source_branches": {
     "wess09/AzurPilot": {
       "branch": "master",
       "head": "3a607a920f30d43d69454f9403b719d8b660cb76",
-      "previous_audited_head": "d058314ecfd1ca0b910ba832eb885a9e394599c9",
-      "new_commits": 4,
-      "dev_head": "2943abb9e378ec13b4f9558fa232fd7f50fc8746",
-      "dev_note": "Three post-master commits cover Vite 8.3.6, frontend cleanup and startup dependency reuse; public docs follow default master."
+      "previous_audited_head": "3a607a920f30d43d69454f9403b719d8b660cb76",
+      "new_commits": 0,
+      "dev_head": "3da26f38150540d2da2054ddd7825e2f2e23da0f",
+      "dev_previous_audited_head": "2943abb9e378ec13b4f9558fa232fd7f50fc8746",
+      "dev_new_commits": 19,
+      "dev_ahead_of_master": 786,
+      "dev_note": "dev advanced 19 commits since the previous dev snapshot and is 786 commits ahead of master. Its Operation Siren help text now states the main-story prerequisite uniformly. Public documentation continues to follow the default master branch; dev-only implementation changes are recorded separately."
     },
     "wess09/AzurPilotLauncher": {
       "branch": "main",
-      "head": "466b8c6b02dd990752cfcdb5bf93e807018bc0e5",
-      "previous_audited_head": "4c024769c810391d30520a79e85a80cb1199fbc5",
-      "new_commits": 5
+      "head": "185e8ad976a2ed9a2860e653453d9112f1a3fa94",
+      "previous_audited_head": "466b8c6b02dd990752cfcdb5bf93e807018bc0e5",
+      "new_commits": 6
     },
     "wess09/AzurPilot-for-Android": {
       "branch": "main",
-      "head": "a944e2ef5353d636f6531bcff78a0dd21908e376",
-      "previous_audited_head": "7bc1e48b4160bd8361570ba83208e66d6b142e9b",
-      "new_commits": 35
+      "head": "3fcb6d538b54d5900d9a249e47998b059740cb43",
+      "previous_audited_head": "a944e2ef5353d636f6531bcff78a0dd21908e376",
+      "new_commits": 15,
+      "upstream_core_dev_head": "3da26f38150540d2da2054ddd7825e2f2e23da0f"
     }
   },
   "docs_repository": {
     "repository": "wess09/AzurPilotDoc",
     "branch": "master",
-    "head_before_this_audit": "acdb50d634cc3dd174136d6718a452039090503c"
+    "head_before_this_audit": "21e2be1a20b56efcee0faa0bf43ab87f2bff48c0"
   },
   "source_indexes": {
     "from_repository": "wess09/AzurPilot",
@@ -52,19 +56,19 @@
     }
   },
   "prior_docs_ci": {
-    "run_id": 41254199608,
-    "commit": "acdb50d634cc3dd174136d6718a452039090503c",
+    "run_id": 42479426147,
+    "commit": "21e2be1a20b56efcee0faa0bf43ab87f2bff48c0",
     "conclusion": "success"
   },
   "verification_notes": [
-    "Core master advanced by four commits since the Nov 1 audit. Comparing 2eba5705 to 3a607a92 shows no changes to task.yaml, args.json, argument.yaml, router.py or frontend API contract inputs; generated counts remain 101 tasks, 173 config groups and 80 WebSocket methods.",
-    "The current MCP registry exposes 25 azurpilot_ tools by default. Legacy names are available only through an explicitly created compatibility endpoint.",
-    "When Error.HandleError is disabled, ordinary exceptions save an error log and stop the AzurPilot process; watchdog task timeouts stop the worker and preserve emulator state.",
-    "Android main advanced by 35 commits. Current source includes schema-aware desktop-config import normalization and bounded first-frame retries for shared-memory capture.",
-    "Android latest main build run 42454640653 succeeded; rolling release assets include version 1.3.196.",
-    "Launcher main advanced by five commits and released 3.0.7 with a separate connection-error window, retry/exit actions, tray recovery and WinUI 3 dialogs. Test and Pack runs 42459948454 and 42461003315 succeeded.",
-    "Core master CI Report run 42469549576 was skipped. The latest dev CI run 42469166004 failed the React/WebSocket contract check and button-config-check; the Windows stock-exchange job failed during uv setup. This is a dev result, not a master CI result.",
-    "The previous Docs CI run 41254199608 succeeded. The current documentation branch requires its own Docs CI run.",
-    "No real-game, emulator, Android OEM or cross-platform manual tests were performed."
+    "Core master remained at 3a607a920f30 since the previous audit; task/config/API extraction inputs did not change, so the generated catalogs remain 101 task commands, 173 config groups and 80 WebSocket methods.",
+    "Core dev advanced 19 commits to 3da26f381505 and is 786 commits ahead of master. Its Operation Siren help text now states the main-story prerequisite uniformly; public docs continue to follow the default master branch.",
+    "Operation Siren task help in master identifies additional prerequisites: OpsiExplore and OpsiVoucher require Simulation Battle and Siren Trial Grounds; OpsiDaily, OpsiObscure, OpsiAbyssal, OpsiStronghold, OpsiMonthBoss, OpsiMeowfficerFarming and OpsiArchive also require monthly exploration or the 5,000-oil Battle Information Recorder; OpsiShop adds a next-month/new-port-shop condition.",
+    "Android main advanced 15 commits since the prior audit. Fourteen are scheduled upstream checks; feature commit 7b468fb7 adds eight native report categories, resource management, inventory scans and CSV export. The corresponding statistics APIs are present in core master.",
+    "Android build run 43131585649 failed on both x86_64 and arm64-v8a at Build rootfs: deploy/frontend.py could not import deploy.atomic (ModuleNotFoundError: No module named 'deploy'). APK and publish jobs were skipped. The latest published rolling APK remains 1.3.196 from 2026-11-08, before the statistics commit.",
+    "Launcher main advanced six commits and adds a Windows Fluent tray popup, an in-app context menu and visible keyboard focus styling. Test run 42809252165 and Pack run 42809252316 succeeded; scheduled Pack run 43128919622 also succeeded. Stable 3.0.7 predates these menu commits.",
+    "Core dev CI run 42687769681 failed in the React/WebSocket check with three test errors: mocked appear() callbacks rejected the new offset keyword in tests.test_mind_calculator and tests.test_fleet_tech. The macOS stock-exchange job was cancelled; ruff, import smoke, button-config and the Ubuntu/Windows stock-exchange jobs passed.",
+    "The previous documentation commit 21e2be1a20b5 passed Docs CI run 42479426147. The current documentation commit must be checked by its own Docs CI run.",
+    "No real-game account, Android OEM device, Windows/macOS/Linux manual tray interaction or cross-platform GUI test was performed."
   ]
 }

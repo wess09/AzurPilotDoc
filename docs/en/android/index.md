@@ -1,7 +1,7 @@
 ---
 title: AzurPilot for Android Overview
-description: Run AzurPilot natively on Android via Kotlin host, PRoot Linux runtime, and virtual displays, or connect remotely as a client.
-updated: 2026-10-20
+description: Android host features, native statistics, console, logs, runtime controls and system integration.
+updated: 2026-11-12
 ---
 
 # AzurPilot for Android
@@ -56,8 +56,10 @@ Three distinct process boundaries:
 | Capability | Description |
 | --- | --- |
 | Background Virtual Display | Game executes on an independent Virtual Display, keeping physical screen free |
+| Privileged Bridge Protocol | Local TCP 22301 with nine endpoints for screenshots, touch input, equipment-code read/write and app launch/focus |
 | Global Overlay Panel | Controls tasks, monitors queues, and streams live logs from any screen |
 | Embedded Console | Full on-device WebUI management without a computer |
+| Native Statistics | Eight report categories, inventory and resource flows, resource management, CSV export |
 | Hardware-Accelerated OCR | Supports Qualcomm QNN, MediaTek NeuroPilot, HiSilicon HiAI; CPU fallback |
 | High-Speed Frame Channel | Anonymous SharedMemory + SCM_RIGHTS benchmarked at 15.6 ms (TCP: 47.2 ms) |
 | OLED Screensaver | Ultra-low brightness black screen drifting 16dp every 10s to prevent burn-in |
@@ -96,6 +98,7 @@ Installing thin APK updates over full installations preserves the unpacked Runti
 | Home | Runtime status, download/extract controls, start/stop switches |
 | Automation | Virtual display stream, active instance, task start/stop controls |
 | Console | Embedded WebUI dashboard |
+| Statistics | Native reports and resource management |
 | Logs | Host and worker execution logs with zip export |
 | Settings | Themes, download mirrors, keep-alive, OCR backends, screensaver, remote access |
 

@@ -1,7 +1,7 @@
 ---
 title: Tauri 与 Rust 架构
 description: AzurPilot Launcher 的 Tauri 2 + Rust 原生桥、Node.js 运行时自举、deploy 引导全量替换、SQLite 设置持久化与跨平台进程边界。
-updated: 2026-10-31
+updated: 2026-11-12
 ---
 
 # Tauri 与 Rust 架构
@@ -134,6 +134,21 @@ updated: 2026-10-31
 - **Windows 平台**：使用 Windows Job Object（`JOB_OBJECT_LIMIT_BREAKAWAY_OK` 与 `JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE`）管理后端。模拟器启动时声明 Breakaway 机制，使得启动器退出时能够彻底回收 Python 后端和 worker，同时保持模拟器独立运行。
 - **Unix 平台**：通过独立进程组（Process Group）与信号机制回收子进程。
 - **控制台无窗口化**：Windows 平台统一附加 `CREATE_NO_WINDOW` 标记，彻底杜绝子进程弹黑窗。
+
+## 托盘与上下文菜单实现
+
+| 模块 | 源码入口 | 职责 |
+| --- | --- | --- |
+| 托盘事件 | `src/main.rs`、`src/launcher.rs` | 注册托盘图标事件、平台分支、菜单动作和 IPC 命令 |
+| Windows 托盘弹窗 | `src/tray_menu.rs`、`frontend/src/TrayMenu.tsx` | 预建透明 WebView 窗口，按 DPI 与指针位置定位；提供首页、显示 / 隐藏、退出动作 |
+| 页面右键菜单 | `frontend/src/ContextMenu.tsx`、`frontend/src/contextMenu.module.css` | 拦截 WebView 默认菜单，按选区与输入焦点启用刷新、复制、粘贴、全选 |
+| 权限与测试 | `capabilities/tray-menu.json`、`frontend/src/menus.test.tsx`、`frontend/src/focusRing.css` | 限定托盘窗口 IPC 权限，覆盖菜单交互并绘制可见键盘焦点 |
+
+Windows 使用自绘 Fluent 托盘弹窗；macOS 保留原生 NSMenu；Linux 当前不创建系统托盘图标。Windows 弹窗在启动时预建并隐藏，右键后贴近指针显示，失焦、Esc 或短时间内再次右键会收起。托盘菜单动作共用 `handle_tray_menu_action`，避免 Windows 与 macOS 两套业务逻辑分叉。
+
+页面内右键菜单替换 WebView2 / WKWebView 的浏览器默认菜单。复制仅在有文本选区时启用；粘贴和全选要求输入框或文本域聚焦。菜单外点击、窗口失焦或 Esc 会关闭菜单。
+
+当前 main 分支的功能状态与用户操作见[更新、修复与卸载](/launcher/user/maintenance)。
 
 ## 验证与测试命令
 

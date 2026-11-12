@@ -1,7 +1,7 @@
 ---
 title: 宿主架構與模組
 description: App 殼層、PRoot Runtime、特權服務、原生橋協議、網關與 Docker 上報微服務的分層架構及原始碼地圖。
-updated: 2026-10-31
+updated: 2026-11-12
 ---
 
 # 宿主架構與模組
@@ -105,6 +105,26 @@ Koin 組合根按領域拆分：
 | 日誌 | `log/`、`constant/AppPaths.kt` |
 
 保活子系統必須可重複啟停，設定開關是最終裁決。接收器和服務可能在無 DI 的路徑上啟動，因此使用受控的處理程序級管理器入口。
+
+## 統計模組與資料流
+
+`AzurPilotPage.kt` 將 `AzurPilotSection.Statistics` 對應到 `StatisticsSection`。查詢以目前選取的 Runtime 實例為範圍，頂部選單可切換八類報表與資源管理。
+
+| 層 | 原始碼入口 | 職責 |
+| --- | --- | --- |
+| 原生 UI | `sections/StatisticsSection.kt`、`ResourceManagementSection.kt`、`StatisticsContent.kt` | 報表選擇、篩選、指標卡、趨勢、表格與資源管理 |
+| 資料模型 | `proot/AzurPilotStatistics.kt`、`AzurPilotResourceFlows.kt` | 解碼指標、序列、表格、庫存、流水與證據類型 |
+| 資源 | `sections/StatisticsAssets.kt`、`assets/statistics.zip` | 統計項目圖示與多語言名稱 |
+| 匯出 | `sections/StatisticsExport.kt` | 透過 Android 文件選擇器匯出 CSV |
+| Core API | `module/api/statistics_service.py`、`module/statistics/resource_flow.py`、`frontend/src/api/contract.json` | 報表、資源流水與本機掉落重算的契約及實作 |
+
+- `statistics.report` 回傳指標卡、趨勢序列、表格、備註與任務候選項，是查詢介面。
+- `statistics.resourceFlows` 回傳庫存餘額、依資源 / 任務彙總的收支，以及分頁流水。
+- `statistics.refreshLoot` 只會重新彙總本機已記錄的掉落資料，不會操作遊戲。
+- `StorageStatistics` 是明確啟動的倉庫採集任務；重新整理報表只讀取最近一次完整快照，不會自動掃描。
+- 目前庫存可為未知值（`null`）；沒有有效快照時不可把空值當成 0。CSV 由 Android 客戶端匯出。
+
+使用者操作與篩選說明見[控制台與統計](/zh-TW/android/user/console)。
 
 ## <DocIcon name="plug" /> 網關協議
 

@@ -1,7 +1,7 @@
 ---
 title: AzurPilot Launcher
-description: Tauri 2 + Rust ベースのクロスプラットフォームデスクトップランチャー：uv と Python 内包、コード自動取得、プロセス管理。
-updated: 2026-10-20
+description: Tauri 2 + Rust ベースのクロスプラットフォームランチャー。独立ランタイム、バックエンド管理、Windows Fluent トレイメニューと画面内コンテキストメニューを提供します。
+updated: 2026-11-12
 ---
 
 # AzurPilot Launcher
@@ -36,7 +36,7 @@ updated: 2026-10-20
 | 依存同期 | `uv.lock` に基づき `uv sync --frozen` で厳密同期 |
 | プロセス管理 | ポート競合の解消、環境識別マーカーの注入、終了時の全プロセスクリーンアップ |
 | 自己自動更新 | mTLS 検証 ＋ 複数ミラーへのフォールバック |
-| システム統合 | システムトレイ、ネイティブ通知、単一インスタンス制御、OS 起動時自動開始 |
+| システム統合 | Windows の Fluent カスタムトレイメニュー、macOS のネイティブメニュー、画面内コンテキストメニュー、ネイティブ通知、単一インスタンス制御、自動起動。Linux には現在トレイアイコンがありません |
 | 多言語対応 | 簡体字 / 繁体字 / 日本語 / 英語（OS の locale に連動） |
 
 ## <DocIcon name="handshake" /> コアプログラムとの関係
@@ -45,7 +45,7 @@ updated: 2026-10-20
 | --- | --- | --- |
 | リポジトリ | AzurPilotLauncher | AzurPilot |
 | 開発言語 | Rust / Tauri | Python / React |
-| バージョン管理 | 独立したバージョン番号 | `master` ブランチのローリング更新 |
+| バージョン管理 | 独立したバージョン番号（最新安定版 3.0.7） |
 | 更新方式 | 自身の自動更新（mTLS） | `git pull` ＋ `uv sync` |
 | ゲームロジックの内包 | なし | あり |
 

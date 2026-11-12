@@ -1,7 +1,7 @@
 ---
 title: Operation Siren
-description: Complete guide to 16 schedulable tasks, resources, intelligent scheduling, monthly cycles and unlock requirements.
-updated: 2026-11-08
+description: Complete guide to 16 schedulable tasks, resources, intelligent scheduling, monthly cycles and task-specific unlock requirements.
+updated: 2026-11-12
 ---
 
 # Operation Siren
@@ -65,9 +65,16 @@ Common reserves: **K** = Yellow Coin reserve (OperationCoinsPreserve); **R** = r
 | **OpsiPreventActionPointOverflow** | Temporarily runs a selected task near the AP cap; upper / lower thresholds and target task |
 | **OpsiCrossMonth** | Enters before monthly reset, waits, then handles new-cycle daily missions and coordinates; default window is 10 minutes before reset |
 
-### Extra archive prerequisites
+### Task-specific prerequisites
 
-Besides clearing the main story, **OpsiArchive** requires the relevant Simulation Battle and Siren Trial Grounds content to be completed. It processes held coordinates before buying the next one. It postpones itself while monthly exploration is running.
+Clearing the Operation Siren main story is the common prerequisite for every automation feature on this page. The following tasks also require additional progress:
+
+- **OpsiExplore and OpsiVoucher**: complete Simulation Battle and Siren Trial Grounds.
+- **OpsiDaily, OpsiObscure, OpsiAbyssal, OpsiStronghold, OpsiMonthBoss, OpsiMeowfficerFarming and OpsiArchive**: complete Simulation Battle and Siren Trial Grounds, and enable the monthly exploration task (`OpsiExplore`) or use the in-game Battle Information Recorder (the 5,000-oil item).
+- **OpsiShop**: the same Simulation Battle / Siren Trial Grounds and monthly-exploration-or-recorder requirements apply. It can only be used from the month after the main story is cleared, once allied-port shops have switched to the new version.
+- **OpsiExploreCleanup**: normal-sector exploration for the current month must first reach 100%.
+
+**OpsiArchive** processes held coordinates before buying the next one from the voucher shop; it postpones itself while monthly exploration is running.
 
 ## Shared settings and sub-features
 

@@ -1,7 +1,7 @@
 ---
 title: AzurPilot Launcher
-description: 基於 Tauri 2 + Rust 的跨平臺桌面啟動器：內置 uv 與 Python、自動拉取核心程式碼、代管後端處理程序。
-updated: 2026-10-31
+description: 基於 Tauri 2 + Rust 的跨平台桌面啟動器：內置 uv 與獨立 Python/Node.js、自動拉取核心程式碼、代管後端處理程序，並提供 Windows Fluent 系統匣選單與頁面右鍵選單。
+updated: 2026-11-12
 ---
 
 # AzurPilot Launcher
@@ -36,7 +36,7 @@ updated: 2026-10-31
 | 依賴同步 | `uv sync --frozen --no-dev --no-install-project`，按 `uv.lock` 嚴格鎖定 |
 | 後端代管 | 清理連接埠佔用、注入環境標記、退出時全處理程序表回收（Windows Job Object / Unix 處理程序組） |
 | 自更新 | mTLS 校驗 + 多鏡像回退機制 |
-| 系統集成 | 系統匣、原生通知、單實例執行、開機自啟 |
+| 系統集成 | Windows Fluent 自繪系統匣選單、macOS 原生托盤選單、頁面內右鍵選單、原生通知、單一執行個體與開機自啟；Linux 目前沒有系統匣圖示 |
 | 國際化 | 簡中 / 繁中 / 日語 / 英語四語支援；系統 locale 自動識別，Windows 安裝嚮導內置簡體中文語言包 |
 
 ## <DocIcon name="handshake" /> 與核心程式的關係
@@ -45,13 +45,13 @@ updated: 2026-10-31
 | --- | --- | --- |
 | 倉庫 | AzurPilotLauncher | AzurPilot |
 | 語言 | Rust / Tauri 2 | Python / React |
-| 版本線 | 獨立版本號（發佈版基線 3.0.4，原始碼模板 0.0.0） | 跟隨 `master` 滾動 |
+| 版本線 | 獨立版本號（最新穩定版 3.0.7，原始碼模板 0.0.0） |
 | 更新 | 啟動器自更新（mTLS / 清單回退） | `git pull` + `uv sync` |
 | 包含遊戲邏輯 | 否 | 是 |
 
 ::: tip 兩個版本號不是一回事與 0.0.0 說明
 啟動器版本與核心程式完全解耦，啟動器 3.x / 1.x 可以配任意核心提交。更新啟動器不會回退核心程式碼，更新核心也不會改變啟動器二進制。
-在原始碼倉庫中，`Cargo.toml`、`tauri.conf.json` 與 `Info.plist` 統一固定為 `0.0.0` 模板基線；實際發佈版本（如穩定的 **3.0.4**）由 CI 工作流在打包時動態解析 Git Tag 或輸入參數並注入，避免多檔案硬編碼版本漂移。
+在原始碼倉庫中，`Cargo.toml`、`tauri.conf.json` 與 `Info.plist` 統一固定為 `0.0.0` 模板基線；實際發佈版本（如穩定的 **3.0.7**）由 CI 工作流在打包時動態解析 Git Tag 或輸入參數並注入，避免多檔案硬編碼版本漂移。
 :::
 
 ## <DocIcon name="clipboard" /> 環境要求
